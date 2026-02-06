@@ -9,9 +9,11 @@ dist/
 build/
 *.egg
 
-# Virtual Environment
-cuda_env/
-venv/
+# Virtual Environment - ignore contents but keep folder
+cuda_env/*
+!cuda_env/.gitkeep
+venv/*
+!venv/.gitkeep
 env/
 ENV/
 
@@ -25,33 +27,30 @@ ENV/
 *.swo
 *~
 
-# Data files (large datasets)
-data/raw/
-data/interim/
+# Data files - ignore contents but keep folder structure
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*.parquet
+data/processed/*.duckdb
+
+# Large file types
 *.dat
 *.hea
-*.parquet
-*.duckdb
 
-# Model checkpoints (can be large)
-models/checkpoints/*.pth
-models/checkpoints/*.pt
-models/checkpoints/*.ckpt
-
-# Keep directory structure but ignore contents
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-!data/interim/.gitkeep
+# Model checkpoints - ignore contents but keep folder
+models/checkpoints/*
 !models/checkpoints/.gitkeep
+
+# Generated visualizations - ignore contents but keep folder
+*.png
+*.jpg
+*.jpeg
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Generated visualizations (optional - comment out if you want to track them)
-*.png
-*.jpg
-*.jpeg
 
 # Logs
 *.log
