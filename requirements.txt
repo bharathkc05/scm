@@ -1,0 +1,354 @@
+# ============================================================================
+# ECG-Based MI Risk Prediction - Capstone Project Requirements
+# Generated: February 6, 2026
+# Python: 3.12+ | CUDA: 12.1+ | GPU: NVIDIA RTX 4050 (6GB VRAM)
+# ============================================================================
+
+# ============================================================================
+# DEEP LEARNING FRAMEWORK (PyTorch with CUDA 12.1)
+# ============================================================================
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+torchaudio==2.5.1+cu121
+
+# ============================================================================
+# CORE DATA SCIENCE & NUMERICAL COMPUTING
+# ============================================================================
+numpy==1.26.4
+pandas==2.3.3
+scipy==1.16.2
+scikit-learn==1.7.2
+
+# ============================================================================
+# ECG SIGNAL PROCESSING & MEDICAL DATA
+# ============================================================================
+wfdb==4.3.0                    # WFDB format ECG I/O (MIMIC-IV-ECG)
+neurokit2==0.2.12              # ECG feature extraction (validated HR/RR)
+biosppy==2.2.3                 # Biosignal processing
+PyWavelets==1.9.0              # Wavelet transforms for signal analysis
+soundfile==0.13.1              # Audio/signal file I/O
+
+# ============================================================================
+# DATA STORAGE & DATABASE
+# ============================================================================
+duckdb==1.4.1                  # In-memory analytics database
+pyarrow==21.0.0                # Parquet file format (efficient ECG storage)
+h5py==3.15.1                   # HDF5 file format
+
+# ============================================================================
+# VISUALIZATION & PLOTTING
+# ============================================================================
+matplotlib==3.10.7
+seaborn==0.13.2
+pillow==10.4.0
+opencv-python==4.12.0.88
+
+# ============================================================================
+# JUPYTER & INTERACTIVE COMPUTING
+# ============================================================================
+jupyter==1.1.1
+notebook==7.4.7
+jupyterlab==4.4.10
+ipykernel==7.0.1
+ipython==9.6.0
+ipywidgets==8.1.7
+jupyterlab_widgets==3.0.15
+
+# ============================================================================
+# MACHINE LEARNING UTILITIES
+# ============================================================================
+xgboost==3.1.2                 # Gradient boosting (baseline models)
+transformers==5.0.0            # Hugging Face transformers
+sentence-transformers==5.2.2   # Sentence embeddings
+huggingface_hub==1.3.7         # Model hub
+safetensors==0.7.0             # Safe tensor serialization
+tokenizers==0.22.2             # Fast tokenizers
+
+# ============================================================================
+# AI/LLM INTEGRATION (RAG System)
+# ============================================================================
+langchain==1.2.7
+langchain-core==1.2.7
+langchain-community==0.4.1
+langchain-google-genai==4.2.0
+langchain-text-splitters==1.1.0
+langchain-classic==1.0.1
+langgraph==1.0.7
+langgraph-checkpoint==4.0.0
+langgraph-prebuilt==1.0.7
+langgraph-sdk==0.3.3
+langsmith==0.6.6
+openai==2.16.0
+google-generativeai==0.3.2
+google-genai==1.60.0
+google-ai-generativelanguage==0.4.0
+ollama==0.6.1
+faiss-cpu==1.13.2              # Vector similarity search
+tiktoken==0.5.2                # OpenAI tokenizer
+
+# ============================================================================
+# WEB FRAMEWORK & API
+# ============================================================================
+streamlit==1.29.0              # Web app framework (RAG interface)
+starlette==0.52.1
+fastapi==0.115.6               # (implied by starlette)
+uvicorn==0.40.0                # ASGI server
+websockets==15.0.1
+
+# ============================================================================
+# HTTP & NETWORKING
+# ============================================================================
+requests==2.32.5
+requests-toolbelt==1.0.0
+httpx==0.28.1
+httpcore==1.0.9
+httpx-sse==0.4.3
+aiohttp==3.13.1
+websocket-client==1.9.0
+urllib3==2.5.0
+
+# ============================================================================
+# DATA VALIDATION & SERIALIZATION
+# ============================================================================
+pydantic==2.12.5
+pydantic_core==2.41.5
+pydantic-settings==2.12.0
+jsonschema==4.25.1
+marshmallow==3.26.2
+orjson==3.11.6
+ormsgpack==1.12.2
+
+# ============================================================================
+# UTILITIES & HELPER LIBRARIES
+# ============================================================================
+tqdm==4.67.1                   # Progress bars
+python-dotenv==1.0.0           # Environment variables
+PyYAML==6.0.3                  # YAML parsing
+toml==0.10.2                   # TOML parsing
+click==8.3.1                   # CLI framework
+typer-slim==0.21.1             # Modern CLI
+rich==13.9.4                   # Terminal formatting
+colorama==0.4.6                # Cross-platform colored terminal
+
+# ============================================================================
+# FILE HANDLING & COMPRESSION
+# ============================================================================
+fsspec==2025.9.0               # File system spec
+filetype==1.2.0                # File type detection
+pypdf==4.0.1                   # PDF processing
+zstandard==0.25.0              # Compression
+xxhash==3.6.0                  # Fast hashing
+
+# ============================================================================
+# DATE/TIME & INTERNATIONALIZATION
+# ============================================================================
+python-dateutil==2.9.0.post0
+pytz==2025.2
+tzdata==2025.2
+tzlocal==5.3.1
+arrow==1.4.0
+
+# ============================================================================
+# MONITORING & LOGGING
+# ============================================================================
+psutil==7.1.1                  # System monitoring
+prometheus_client==0.23.1      # Metrics
+watchdog==6.0.0                # File system watcher
+
+# ============================================================================
+# SECURITY & CRYPTOGRAPHY
+# ============================================================================
+cryptography==46.0.4
+PyJWT==2.10.1
+certifi==2025.10.5
+argon2-cffi==25.1.0
+argon2-cffi-bindings==25.1.0
+
+# ============================================================================
+# VERSION CONTROL & PACKAGE MANAGEMENT
+# ============================================================================
+GitPython==3.1.46
+gitdb==4.0.12
+kagglehub==0.3.13              # Kaggle dataset access
+hf-xet==1.2.0                  # Hugging Face XET
+
+# ============================================================================
+# JUPYTER SERVER & EXTENSIONS
+# ============================================================================
+jupyter_server==2.17.0
+jupyterlab_server==2.28.0
+jupyter-lsp==2.3.0
+jupyter_client==8.6.3
+jupyter-console==6.6.3
+jupyter_core==5.9.1
+jupyter-events==0.12.0
+jupyter_server_terminals==0.5.3
+nbclient==0.10.2
+nbconvert==7.16.6
+nbformat==5.10.4
+notebook_shim==0.2.4
+
+# ============================================================================
+# LOW-LEVEL DEPENDENCIES (Auto-installed)
+# ============================================================================
+attrs==25.4.0
+certifi==2025.10.5
+cffi==2.0.0
+charset-normalizer==3.4.4
+contourpy==1.3.3
+cycler==0.12.1
+decorator==5.2.1
+executing==2.2.1
+filelock==3.19.1
+fonttools==4.60.1
+frozenlist==1.8.0
+greenlet==3.3.1
+idna==3.11
+jinja2==3.1.6
+joblib==1.5.2
+kiwisolver==1.4.9
+lark==1.3.0
+MarkupSafe==2.1.5
+mpmath==1.3.0
+mypy_extensions==1.1.1
+narwhals==2.15.0
+nest-asyncio==1.6.0
+packaging==23.2
+parso==0.8.5
+pyparsing==3.2.5
+regex==2026.1.15
+six==1.17.0
+sympy==1.13.1
+threadpoolctl==3.6.0
+tornado==6.5.2
+traitlets==5.14.3
+typing_extensions==4.15.0
+wcwidth==0.2.14
+zipp==3.23.0
+
+# ============================================================================
+# GOOGLE CLOUD & GRPC
+# ============================================================================
+google-api-core==2.29.0
+google-auth==2.48.0
+googleapis-common-protos==1.72.0
+grpcio==1.76.0
+grpcio-status==1.62.3
+proto-plus==1.27.0
+protobuf==4.25.8
+pyasn1==0.6.2
+pyasn1_modules==0.4.2
+rsa==4.9.1
+
+# ============================================================================
+# ADDITIONAL ASYNC & NETWORKING
+# ============================================================================
+aiohappyeyeballs==2.6.1
+aiosignal==1.4.0
+anyio==4.11.0
+async-lru==2.0.5
+bidict==0.23.1
+h11==0.16.0
+multidict==6.7.0
+propcache==0.4.1
+sniffio==1.3.1
+yarl==1.22.0
+
+# ============================================================================
+# MARKUP & DOCUMENTATION
+# ============================================================================
+beautifulsoup4==4.14.2
+soupsieve==2.8
+bleach==6.2.0
+defusedxml==0.7.1
+mistune==3.1.4
+markdown-it-py==4.0.0
+mdurl==0.1.2
+Pygments==2.19.2
+webencodings==0.5.1
+
+# ============================================================================
+# VALIDATORS & URI HANDLING
+# ============================================================================
+validators==0.35.0
+fqdn==1.5.1
+isoduration==20.11.0
+jsonpointer==3.0.0
+jsonpatch==1.33
+rfc3339-validator==0.1.4
+rfc3986-validator==0.1.1
+rfc3987-syntax==1.1.0
+uri-template==1.3.0
+webcolors==24.11.1
+uuid_utils==0.14.0
+
+# ============================================================================
+# MISCELLANEOUS
+# ============================================================================
+altair==5.5.0                  # Declarative visualization
+annotated-types==0.7.0
+asttokens==3.0.0
+babel==2.17.0
+blinker==1.9.0
+cachetools==5.5.2
+comm==0.2.3
+dataclasses-json==0.6.7
+debugpy==1.8.17
+distro==1.9.0
+fastjsonschema==2.21.2
+importlib-metadata==6.11.0
+ipython_pygments_lexers==1.1.1
+jedi==0.19.2
+jiter==0.13.0
+json5==0.12.1
+jupyter_pygments_lexers==0.3.0
+matplotlib-inline==0.2.1
+mcp==1.26.0                    # Model Context Protocol
+mock==5.2.0
+networkx==3.5
+pandocfilters==1.5.1
+platformdirs==4.5.0
+prompt_toolkit==3.0.52
+pure_eval==0.2.3
+pycparser==2.23
+pydeck==0.9.1
+pywin32==311                   # Windows-specific
+pywinpty==3.0.2                # Windows PTY
+python-json-logger==4.0.0
+python-multipart==0.0.22
+pyzmq==27.1.0
+referencing==0.37.0
+rpds-py==0.28.0
+Send2Trash==1.8.3
+shellingham==1.5.4
+shortuuid==1.0.13
+smmap==5.0.2
+SQLAlchemy==2.0.46
+sse-starlette==3.2.0
+stack-data==0.6.3
+tenacity==8.5.0
+terminado==0.18.1
+tinycss2==1.4.0
+typing-inspect==0.9.0
+typing-inspection==0.4.2
+widgetsnbextension==4.0.14
+
+# ============================================================================
+# INSTALLATION NOTES
+# ============================================================================
+# 1. PyTorch with CUDA 12.1:
+#    Install from: https://pytorch.org/get-started/locally/
+#    Command: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+#
+# 2. For fresh installation:
+#    pip install -r requirements.txt
+#
+# 3. GPU Requirements:
+#    - NVIDIA GPU with CUDA 12.1+ support
+#    - 6GB+ VRAM (tested on RTX 4050)
+#    - CUDA drivers installed
+#
+# 4. Verify installation:
+#    python -c "import torch; print(torch.cuda.is_available())"
+#
+# ============================================================================

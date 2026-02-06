@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+cuda_env/
+venv/
+env/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files (large datasets)
+data/raw/
+data/interim/
+*.dat
+*.hea
+*.parquet
+*.duckdb
+
+# Model checkpoints (can be large)
+models/checkpoints/*.pth
+models/checkpoints/*.pt
+models/checkpoints/*.ckpt
+
+# Keep directory structure but ignore contents
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/interim/.gitkeep
+!models/checkpoints/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated visualizations (optional - comment out if you want to track them)
+*.png
+*.jpg
+*.jpeg
+
+# Logs
+*.log
