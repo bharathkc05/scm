@@ -30,14 +30,15 @@ ENV/
 # Data files
 data/
 
-2.analysis_and_validation/
-1.preprocessing/
 # Large file types
 *.dat
 *.hea
 
 # Model checkpoints
-models/
+models/*
+!models/baselines/
+!models/baselines/*
+
 
 
 # Generated visualizations - ignore contents but keep folder
