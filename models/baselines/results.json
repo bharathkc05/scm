@@ -1,0 +1,154 @@
+{
+  "timestamp": "2026-08-22T08:39:43.905532",
+  "target": "Label_Troponin == 'MI_Acute_Presentation'",
+  "train_size": 262813,
+  "val_size": 56319,
+  "test_size": 56798,
+  "prevalence_train": 0.020166430123319624,
+  "models": {
+    "logreg_clinical": {
+      "name": "Logistic Regression (Clinical Only)",
+      "n_features": 17,
+      "metrics": {
+        "auroc": 0.8163670754964353,
+        "auprc": 0.06496658492450004,
+        "brier_score": 0.18524428995670084,
+        "ece": 0.32136471621156565,
+        "sensitivity_at_90": 0.899913718723037,
+        "specificity_at_90": 0.6079368788080304,
+        "threshold_at_90_sens": 0.37658223752321424,
+        "threshold_optimal": 0.495000315260868,
+        "ppv_optimal": 0.054568458111007204,
+        "npv_optimal": 0.9956757036691783,
+        "n_features": 17
+      },
+      "subgroup_auroc": {
+        "age_group": {
+          "<50": 0.899673380836157,
+          "50-70": 0.8191968198095569,
+          ">70": 0.7643231902046775
+        },
+        "sex": {
+          "Male": 0.7955973747334955,
+          "Female": 0.8325077307273545
+        },
+        "diabetes": {
+          "Yes": 0.774733024242058,
+          "No": 0.8282685510669547
+        },
+        "prior_mi": {
+          "Yes": 0.6939736716550747,
+          "No": 0.8300244800812338
+        }
+      }
+    },
+    "xgb_ecg_features_clinical": {
+      "name": "XGBoost (ECG Features + Clinical)",
+      "n_features": 112,
+      "metrics": {
+        "auroc": 0.8667252399493028,
+        "auprc": 0.17466801021558867,
+        "brier_score": 0.12750659883022308,
+        "ece": 0.2480015487634211,
+        "sensitivity_at_90": 0.899913718723037,
+        "specificity_at_90": 0.6343571954923705,
+        "threshold_at_90_sens": 0.2647540867328644,
+        "threshold_optimal": 0.4647586941719055,
+        "ppv_optimal": 0.06578026592022393,
+        "npv_optimal": 0.99484802860638,
+        "n_features": 112
+      },
+      "subgroup_auroc": {
+        "age_group": {
+          "<50": 0.9338804800348076,
+          "50-70": 0.8690674848910948,
+          ">70": 0.8251070265292506
+        },
+        "sex": {
+          "Male": 0.8563128430099022,
+          "Female": 0.8753036786006716
+        },
+        "diabetes": {
+          "Yes": 0.8258837391987431,
+          "No": 0.8787979259872187
+        },
+        "prior_mi": {
+          "Yes": 0.7528261127057733,
+          "No": 0.8785747778937336
+        }
+      }
+    },
+    "xgb_embeddings_clinical": {
+      "name": "XGBoost (Embeddings + Clinical)",
+      "n_features": 81,
+      "metrics": {
+        "auroc": 0.8412124902115744,
+        "auprc": 0.10433690792583224,
+        "brier_score": 0.14666730165481567,
+        "ece": 0.27342656459994497,
+        "sensitivity_at_90": 0.899913718723037,
+        "specificity_at_90": 0.630816513596578,
+        "threshold_at_90_sens": 0.2880317270755768,
+        "threshold_optimal": 0.3930908143520355,
+        "ppv_optimal": 0.05678487269383298,
+        "npv_optimal": 0.9956597883195005,
+        "n_features": 81
+      },
+      "subgroup_auroc": {
+        "age_group": {
+          "<50": 0.913515208949842,
+          "50-70": 0.8483004874374407,
+          ">70": 0.7902856337947104
+        },
+        "sex": {
+          "Male": 0.8265757198806779,
+          "Female": 0.8529117888929741
+        },
+        "diabetes": {
+          "Yes": 0.7885052104219425,
+          "No": 0.855792274852583
+        },
+        "prior_mi": {
+          "Yes": 0.7083629910965826,
+          "No": 0.8551616406043194
+        }
+      }
+    },
+    "xgb_all_features": {
+      "name": "XGBoost (All Features)",
+      "n_features": 176,
+      "metrics": {
+        "auroc": 0.8666651412615353,
+        "auprc": 0.16844025833871437,
+        "brier_score": 0.12610051035881042,
+        "ece": 0.2469519632538395,
+        "sensitivity_at_90": 0.899913718723037,
+        "specificity_at_90": 0.637897877388163,
+        "threshold_at_90_sens": 0.2645740509033203,
+        "threshold_optimal": 0.41765955090522766,
+        "ppv_optimal": 0.06163161249203314,
+        "npv_optimal": 0.9953293762771237,
+        "n_features": 176
+      },
+      "subgroup_auroc": {
+        "age_group": {
+          "<50": 0.9333127706305002,
+          "50-70": 0.86849132369633,
+          ">70": 0.826229281004372
+        },
+        "sex": {
+          "Male": 0.8558100802023262,
+          "Female": 0.8753157564745397
+        },
+        "diabetes": {
+          "Yes": 0.8272485566279754,
+          "No": 0.8786399689670649
+        },
+        "prior_mi": {
+          "Yes": 0.7554048160148601,
+          "No": 0.8782602303317399
+        }
+      }
+    }
+  }
+}
