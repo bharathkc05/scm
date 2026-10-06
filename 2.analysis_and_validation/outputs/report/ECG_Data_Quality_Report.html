@@ -1,0 +1,2546 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG-Deli Data Quality Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+        .sidebar { height: 100vh; position: fixed; left: 0; padding: 20px; background-color: #343a40; color: white; overflow-y: auto; width: 250px;}
+        .sidebar a { color: #adb5bd; text-decoration: none; display: block; margin: 10px 0; }
+        .sidebar a:hover { color: white; }
+        .main-content { margin-left: 260px; padding: 30px; }
+        .card { margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .img-fluid { border: 1px solid #dee2e6; border-radius: 5px; }
+        .table-responsive { max-height: 400px; overflow-y: auto; }
+        h1, h2 { color: #212529; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; margin-top: 30px;}
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h4>ECG Analysis</h4>
+    <hr>
+    <a href="#summary">1. Quality Summary</a>
+    <a href="#batch">2. Batch Effects (PCA/UMAP)</a>
+    <a href="#missing">3. Missingness</a>
+    <a href="#outliers">4. Outliers</a>
+    <a href="#compare">5. Dataset Comparison</a>
+    <a href="#corr">6. Correlations</a>
+</div>
+
+<div class="main-content">
+    <div class="card p-4 bg-primary text-white">
+        <h1 class="text-white border-0">ECG-Deli Feature Quality Assessment</h1>
+        <p>Generated on: 2026-07-29 19:16:22</p>
+        <p>Comparing MIMIC-IV features against PTB-XL reference dataset.</p>
+    </div>
+
+    <section id="summary">
+        <h2>1. Feature Quality Score Summary</h2>
+        <div class="card p-3">
+            <p>Overall quality score combining missingness, outliers, physiological plausibility, and similarity to PTB-XL.</p>
+            <div class="table-responsive">
+                <table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Feature</th>
+      <th>Quality_Score</th>
+      <th>Category</th>
+      <th>Primary_Issues</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>R_Amp_V4</td>
+      <td>100</td>
+      <td>Excellent</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVR</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.2%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V6</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Outliers (5.5%) | Implausible Values (1.4%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V5</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Outliers (5.3%) | Implausible Values (1.3%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V3</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_III</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.4%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V4</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Outliers (5.2%) | Implausible Values (1.3%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_I</td>
+      <td>98</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.4%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V3</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.5%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V4</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Outliers (7.0%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V3</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.5%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVF</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.5%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_III</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.9%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVR</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Outliers (6.5%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_II</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.5%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V2</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.9%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V1</td>
+      <td>97</td>
+      <td>Excellent</td>
+      <td>Implausible Values (1.6%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_II</td>
+      <td>96</td>
+      <td>Excellent</td>
+      <td>Outliers (7.2%)</td>
+    </tr>
+    <tr>
+      <td>QRS_Dur_Global_iqr</td>
+      <td>96</td>
+      <td>Excellent</td>
+      <td>Implausible Values (2.2%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V2</td>
+      <td>96</td>
+      <td>Excellent</td>
+      <td>Implausible Values (2.0%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_II</td>
+      <td>96</td>
+      <td>Excellent</td>
+      <td>Outliers (6.2%) | Implausible Values (1.4%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_I</td>
+      <td>95</td>
+      <td>Excellent</td>
+      <td>Outliers (7.8%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_I_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V5_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V6_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V3_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V4_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V2_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V1_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>QRS_Dur_Global</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.2%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_III_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVF_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V5_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_III_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVL_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V3_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVR_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V2_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V2_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V4_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V3_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVR_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVL_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V6_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_II_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V1_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_I_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V6_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_II_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V5_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_II_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V2_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_III_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_I_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_I</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Outliers (5.7%) | Implausible Values (2.6%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V4_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V1_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V3_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V2_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_I_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>RR_Mean_Global</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVF_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVL_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V6_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVF_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V5_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V4_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V1_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V3</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Outliers (8.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V3_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V1_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.3%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVR_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVF_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVR_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVL_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_III_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_II_count</td>
+      <td>94</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V6</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Outliers (8.5%)</td>
+    </tr>
+    <tr>
+      <td>RR_Mean_Global_count</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.5%)</td>
+    </tr>
+    <tr>
+      <td>QRS_Dur_Global_count</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Implausible Values (3.5%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V5</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Outliers (8.7%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVL</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Outliers (8.7%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V4</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Outliers (8.6%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V5</td>
+      <td>93</td>
+      <td>Excellent</td>
+      <td>Outliers (6.9%) | Implausible Values (2.2%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVL</td>
+      <td>92</td>
+      <td>Excellent</td>
+      <td>Outliers (5.3%) | Implausible Values (4.2%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V2</td>
+      <td>92</td>
+      <td>Excellent</td>
+      <td>Outliers (9.0%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V1_iqr</td>
+      <td>92</td>
+      <td>Excellent</td>
+      <td>Outliers (8.4%) | Implausible Values (1.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVF_iqr</td>
+      <td>92</td>
+      <td>Excellent</td>
+      <td>Outliers (5.7%) | Implausible Values (3.6%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVL</td>
+      <td>92</td>
+      <td>Excellent</td>
+      <td>Outliers (7.4%) | Implausible Values (2.3%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVR</td>
+      <td>91</td>
+      <td>Excellent</td>
+      <td>Outliers (8.6%) | Implausible Values (1.5%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVR</td>
+      <td>91</td>
+      <td>Excellent</td>
+      <td>Outliers (8.0%) | Implausible Values (2.4%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVF</td>
+      <td>91</td>
+      <td>Excellent</td>
+      <td>Outliers (6.8%) | Implausible Values (3.4%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_III</td>
+      <td>91</td>
+      <td>Excellent</td>
+      <td>Outliers (7.7%) | Implausible Values (2.0%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVF</td>
+      <td>90</td>
+      <td>Excellent</td>
+      <td>Outliers (10.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V2</td>
+      <td>90</td>
+      <td>Excellent</td>
+      <td>Outliers (9.1%) | Implausible Values (1.4%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_III</td>
+      <td>90</td>
+      <td>Excellent</td>
+      <td>Outliers (10.2%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V3</td>
+      <td>90</td>
+      <td>Excellent</td>
+      <td>Outliers (8.5%) | Implausible Values (1.8%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V6_iqr</td>
+      <td>89</td>
+      <td>Good</td>
+      <td>Outliers (6.5%) | Implausible Values (4.4%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_III_iqr</td>
+      <td>88</td>
+      <td>Good</td>
+      <td>Outliers (5.9%) | Implausible Values (5.6%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_I</td>
+      <td>88</td>
+      <td>Good</td>
+      <td>Outliers (9.7%) | Implausible Values (1.6%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_I_iqr</td>
+      <td>88</td>
+      <td>Good</td>
+      <td>Outliers (5.5%) | Implausible Values (6.2%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V1</td>
+      <td>87</td>
+      <td>Good</td>
+      <td>Outliers (10.1%) | Implausible Values (2.0%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V1</td>
+      <td>87</td>
+      <td>Good</td>
+      <td>Outliers (11.6%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V6</td>
+      <td>87</td>
+      <td>Good</td>
+      <td>Outliers (8.5%) | Implausible Values (3.2%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V1</td>
+      <td>87</td>
+      <td>Good</td>
+      <td>Outliers (9.2%) | Implausible Values (2.5%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V5_iqr</td>
+      <td>86</td>
+      <td>Good</td>
+      <td>Outliers (6.3%) | Implausible Values (6.5%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_II_iqr</td>
+      <td>86</td>
+      <td>Good</td>
+      <td>Outliers (6.5%) | Implausible Values (5.6%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V2_iqr</td>
+      <td>86</td>
+      <td>Good</td>
+      <td>Outliers (8.0%) | Implausible Values (4.6%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V2_iqr</td>
+      <td>86</td>
+      <td>Good</td>
+      <td>Outliers (8.7%) | Implausible Values (3.5%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVL_iqr</td>
+      <td>85</td>
+      <td>Good</td>
+      <td>Outliers (6.2%) | Implausible Values (6.8%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V3_iqr</td>
+      <td>85</td>
+      <td>Good</td>
+      <td>Outliers (8.3%) | Implausible Values (4.6%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V3_iqr</td>
+      <td>85</td>
+      <td>Good</td>
+      <td>Outliers (7.0%) | Implausible Values (5.8%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V1</td>
+      <td>83</td>
+      <td>Good</td>
+      <td>Outliers (11.6%) | Implausible Values (2.2%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVR_iqr</td>
+      <td>83</td>
+      <td>Good</td>
+      <td>Outliers (6.3%) | Implausible Values (7.7%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V2_iqr</td>
+      <td>83</td>
+      <td>Good</td>
+      <td>Outliers (7.8%) | Implausible Values (6.4%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVF</td>
+      <td>83</td>
+      <td>Good</td>
+      <td>Outliers (13.0%) | Implausible Values (1.1%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V4_iqr</td>
+      <td>83</td>
+      <td>Good</td>
+      <td>Outliers (6.6%) | Implausible Values (7.3%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V1_iqr</td>
+      <td>82</td>
+      <td>Good</td>
+      <td>Outliers (6.6%) | Implausible Values (7.9%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V4_iqr</td>
+      <td>82</td>
+      <td>Good</td>
+      <td>Outliers (8.5%) | Implausible Values (5.9%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V1_iqr</td>
+      <td>82</td>
+      <td>Good</td>
+      <td>Outliers (8.7%) | Implausible Values (6.0%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V2_iqr</td>
+      <td>82</td>
+      <td>Good</td>
+      <td>Outliers (6.6%) | Implausible Values (7.7%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_III_iqr</td>
+      <td>81</td>
+      <td>Good</td>
+      <td>Outliers (8.6%) | Implausible Values (6.0%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V6</td>
+      <td>81</td>
+      <td>Good</td>
+      <td>Outliers (13.8%) | Implausible Values (1.4%)</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVL</td>
+      <td>81</td>
+      <td>Good</td>
+      <td>Implausible Values (9.5%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V3_iqr</td>
+      <td>80</td>
+      <td>Good</td>
+      <td>Outliers (8.6%) | Implausible Values (6.9%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V2_iqr</td>
+      <td>80</td>
+      <td>Good</td>
+      <td>Outliers (8.2%) | Implausible Values (7.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V3_iqr</td>
+      <td>80</td>
+      <td>Good</td>
+      <td>Outliers (7.9%) | Implausible Values (7.7%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V6_iqr</td>
+      <td>78</td>
+      <td>Fair</td>
+      <td>Outliers (10.6%) | Implausible Values (5.9%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V3_iqr</td>
+      <td>78</td>
+      <td>Fair</td>
+      <td>Outliers (8.6%) | Implausible Values (7.6%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V5</td>
+      <td>78</td>
+      <td>Fair</td>
+      <td>Outliers (19.2%) | Implausible Values (1.1%)</td>
+    </tr>
+    <tr>
+      <td>RR_Mean_Global_iqr</td>
+      <td>78</td>
+      <td>Fair</td>
+      <td>Outliers (13.8%) | Implausible Values (2.5%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V6_iqr</td>
+      <td>78</td>
+      <td>Fair</td>
+      <td>Outliers (9.7%) | Implausible Values (7.0%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_II</td>
+      <td>78</td>
+      <td>Fair</td>
+      <td>Outliers (15.9%) | Implausible Values (1.3%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_I_iqr</td>
+      <td>77</td>
+      <td>Fair</td>
+      <td>Outliers (6.8%) | Implausible Values (65.9%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVR_iqr</td>
+      <td>77</td>
+      <td>Fair</td>
+      <td>Outliers (6.9%) | Implausible Values (67.4%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVF_iqr</td>
+      <td>76</td>
+      <td>Fair</td>
+      <td>Outliers (7.5%) | Implausible Values (68.2%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_II_iqr</td>
+      <td>76</td>
+      <td>Fair</td>
+      <td>Outliers (7.3%) | Implausible Values (48.1%)</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V2</td>
+      <td>76</td>
+      <td>Fair</td>
+      <td>Outliers (17.0%) | Implausible Values (2.1%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_I_iqr</td>
+      <td>75</td>
+      <td>Fair</td>
+      <td>Outliers (7.8%) | Implausible Values (15.6%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVL_iqr</td>
+      <td>75</td>
+      <td>Fair</td>
+      <td>Outliers (7.7%) | Implausible Values (74.3%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V4_iqr</td>
+      <td>75</td>
+      <td>Fair</td>
+      <td>Outliers (9.4%) | Implausible Values (8.9%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_III_iqr</td>
+      <td>75</td>
+      <td>Fair</td>
+      <td>Outliers (7.9%) | Implausible Values (68.7%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVR_iqr</td>
+      <td>75</td>
+      <td>Fair</td>
+      <td>Outliers (7.7%) | Implausible Values (13.3%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_III_iqr</td>
+      <td>74</td>
+      <td>Fair</td>
+      <td>Outliers (9.2%) | Implausible Values (9.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V6_iqr</td>
+      <td>74</td>
+      <td>Fair</td>
+      <td>Outliers (8.4%) | Implausible Values (44.8%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_II_iqr</td>
+      <td>74</td>
+      <td>Fair</td>
+      <td>Outliers (8.4%) | Implausible Values (13.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V1_iqr</td>
+      <td>74</td>
+      <td>Fair</td>
+      <td>Outliers (8.1%) | Implausible Values (38.1%)</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V5_iqr</td>
+      <td>73</td>
+      <td>Fair</td>
+      <td>Outliers (8.6%) | Implausible Values (23.9%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVL_iqr</td>
+      <td>73</td>
+      <td>Fair</td>
+      <td>Outliers (8.5%) | Implausible Values (10.4%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVF_iqr</td>
+      <td>73</td>
+      <td>Fair</td>
+      <td>Outliers (8.5%) | Implausible Values (12.0%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V4_iqr</td>
+      <td>72</td>
+      <td>Fair</td>
+      <td>Outliers (9.2%) | Implausible Values (10.9%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_I_iqr</td>
+      <td>72</td>
+      <td>Fair</td>
+      <td>Outliers (9.4%) | Implausible Values (14.5%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVF_iqr</td>
+      <td>72</td>
+      <td>Fair</td>
+      <td>Outliers (9.1%) | Implausible Values (15.1%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVR_iqr</td>
+      <td>71</td>
+      <td>Fair</td>
+      <td>Outliers (9.7%) | Implausible Values (21.7%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V1_iqr</td>
+      <td>71</td>
+      <td>Fair</td>
+      <td>Outliers (9.5%) | Implausible Values (12.4%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVL_iqr</td>
+      <td>71</td>
+      <td>Fair</td>
+      <td>Outliers (9.6%) | Implausible Values (13.9%)</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V5_iqr</td>
+      <td>70</td>
+      <td>Fair</td>
+      <td>Outliers (10.1%) | Implausible Values (13.8%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_II_iqr</td>
+      <td>70</td>
+      <td>Fair</td>
+      <td>Outliers (10.0%) | Implausible Values (12.3%)</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V5_iqr</td>
+      <td>70</td>
+      <td>Fair</td>
+      <td>Outliers (10.1%) | Implausible Values (11.6%)</td>
+    </tr>
+  </tbody>
+</table>
+            </div>
+        </div>
+    </section>
+
+    <section id="batch">
+        <h2>2. Batch Effect Detection</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>Combined PCA</h5>
+                    <img src="../figures/batch_effects/combined_pca.png" class="img-fluid" alt="PCA">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>Combined UMAP</h5>
+                    <img src="../figures/batch_effects/combined_umap.png" class="img-fluid" alt="UMAP">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="missing">
+        <h2>3. Missingness</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>MIMIC-IV Missingness</h5>
+                    <img src="../figures/missingness/missing_bar_MIMIC-IV.png" class="img-fluid" alt="MIMIC-IV Missingness">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>PTB-XL Missingness</h5>
+                    <img src="../figures/missingness/missing_bar_PTB-XL.png" class="img-fluid" alt="PTB-XL Missingness">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="outliers">
+        <h2>4. Outliers</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>MIMIC-IV Outliers</h5>
+                    <img src="../figures/outliers/pca_outliers_MIMIC-IV.png" class="img-fluid" alt="MIMIC-IV Outliers">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>PTB-XL Outliers</h5>
+                    <img src="../figures/outliers/pca_outliers_PTB-XL.png" class="img-fluid" alt="PTB-XL Outliers">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="compare">
+        <h2>5. Dataset Comparison (MIMIC-IV vs PTB-XL)</h2>
+        <div class="card p-3">
+            <p>Formal similarity rankings using Jensen-Shannon Divergence and Overlap Coefficient.</p>
+            <div class="table-responsive">
+                <table border="1" class="dataframe table table-striped table-hover">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Feature</th>
+      <th>KS_Statistic</th>
+      <th>KS_pvalue</th>
+      <th>Cohens_d</th>
+      <th>JS_Divergence</th>
+      <th>Quantile_Correlation</th>
+      <th>Similarity_Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>T_Amp_aVR</td>
+      <td>0.096841</td>
+      <td>2.345580e-169</td>
+      <td>0.089604</td>
+      <td>0.000136</td>
+      <td>0.998185</td>
+      <td>98.028786</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_III</td>
+      <td>0.085347</td>
+      <td>1.406639e-131</td>
+      <td>0.022373</td>
+      <td>0.000225</td>
+      <td>0.995969</td>
+      <td>97.776959</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V6</td>
+      <td>0.108334</td>
+      <td>6.254866e-212</td>
+      <td>0.024065</td>
+      <td>0.000572</td>
+      <td>0.995998</td>
+      <td>97.641887</td>
+    </tr>
+    <tr>
+      <td>R_Amp_I</td>
+      <td>0.099416</td>
+      <td>1.765885e-178</td>
+      <td>-0.091720</td>
+      <td>0.001234</td>
+      <td>0.993915</td>
+      <td>97.395991</td>
+    </tr>
+    <tr>
+      <td>T_Amp_III</td>
+      <td>0.057450</td>
+      <td>8.338252e-60</td>
+      <td>0.011085</td>
+      <td>0.001242</td>
+      <td>0.997669</td>
+      <td>97.327279</td>
+    </tr>
+    <tr>
+      <td>T_Amp_I</td>
+      <td>0.116943</td>
+      <td>5.346126e-247</td>
+      <td>0.091942</td>
+      <td>0.000687</td>
+      <td>0.996848</td>
+      <td>97.031482</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V5</td>
+      <td>0.079842</td>
+      <td>3.553376e-115</td>
+      <td>-0.016684</td>
+      <td>0.001121</td>
+      <td>0.996100</td>
+      <td>97.005637</td>
+    </tr>
+    <tr>
+      <td>T_Amp_II</td>
+      <td>0.074744</td>
+      <td>5.585654e-101</td>
+      <td>0.016348</td>
+      <td>0.002339</td>
+      <td>0.996718</td>
+      <td>96.885008</td>
+    </tr>
+    <tr>
+      <td>QRS_Dur_Global_iqr</td>
+      <td>0.057765</td>
+      <td>1.855675e-60</td>
+      <td>0.116160</td>
+      <td>0.002729</td>
+      <td>0.998953</td>
+      <td>96.423994</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V4</td>
+      <td>0.141935</td>
+      <td>0.000000e+00</td>
+      <td>-0.105948</td>
+      <td>0.000707</td>
+      <td>0.997052</td>
+      <td>96.412537</td>
+    </tr>
+    <tr>
+      <td>R_Amp_III</td>
+      <td>0.071696</td>
+      <td>6.148660e-93</td>
+      <td>-0.069351</td>
+      <td>0.002136</td>
+      <td>0.998125</td>
+      <td>96.192873</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V3_iqr</td>
+      <td>0.205697</td>
+      <td>0.000000e+00</td>
+      <td>-0.051443</td>
+      <td>0.000148</td>
+      <td>0.991655</td>
+      <td>95.829890</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVR</td>
+      <td>0.188030</td>
+      <td>0.000000e+00</td>
+      <td>0.173933</td>
+      <td>0.001353</td>
+      <td>0.982733</td>
+      <td>95.827229</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVF_iqr</td>
+      <td>0.209335</td>
+      <td>0.000000e+00</td>
+      <td>-0.023838</td>
+      <td>0.000302</td>
+      <td>0.995333</td>
+      <td>95.726321</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V2_iqr</td>
+      <td>0.217337</td>
+      <td>0.000000e+00</td>
+      <td>-0.043593</td>
+      <td>0.000133</td>
+      <td>0.991991</td>
+      <td>95.619098</td>
+    </tr>
+    <tr>
+      <td>R_Amp_III_iqr</td>
+      <td>0.221309</td>
+      <td>0.000000e+00</td>
+      <td>-0.020797</td>
+      <td>0.000159</td>
+      <td>0.990478</td>
+      <td>95.549588</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVF</td>
+      <td>0.144824</td>
+      <td>0.000000e+00</td>
+      <td>-0.192909</td>
+      <td>0.004274</td>
+      <td>0.975893</td>
+      <td>95.523919</td>
+    </tr>
+    <tr>
+      <td>RR_Mean_Global_iqr</td>
+      <td>0.143643</td>
+      <td>0.000000e+00</td>
+      <td>0.067084</td>
+      <td>0.003476</td>
+      <td>0.993823</td>
+      <td>95.091846</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V4_iqr</td>
+      <td>0.247907</td>
+      <td>0.000000e+00</td>
+      <td>-0.055715</td>
+      <td>0.000140</td>
+      <td>0.996233</td>
+      <td>94.969511</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V1</td>
+      <td>0.239770</td>
+      <td>0.000000e+00</td>
+      <td>-0.036226</td>
+      <td>0.000810</td>
+      <td>0.984936</td>
+      <td>94.862440</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V5_iqr</td>
+      <td>0.258919</td>
+      <td>0.000000e+00</td>
+      <td>-0.073858</td>
+      <td>0.000094</td>
+      <td>0.989407</td>
+      <td>94.780189</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVF</td>
+      <td>0.121043</td>
+      <td>1.190101e-264</td>
+      <td>-0.069852</td>
+      <td>0.003935</td>
+      <td>0.986609</td>
+      <td>94.767679</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V1_iqr</td>
+      <td>0.266219</td>
+      <td>0.000000e+00</td>
+      <td>-0.052937</td>
+      <td>0.000054</td>
+      <td>0.994688</td>
+      <td>94.667563</td>
+    </tr>
+    <tr>
+      <td>R_Amp_I_iqr</td>
+      <td>0.279788</td>
+      <td>0.000000e+00</td>
+      <td>-0.027113</td>
+      <td>0.000160</td>
+      <td>0.995153</td>
+      <td>94.376406</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVL_iqr</td>
+      <td>0.279899</td>
+      <td>0.000000e+00</td>
+      <td>-0.023323</td>
+      <td>0.000203</td>
+      <td>0.976200</td>
+      <td>94.328310</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V3</td>
+      <td>0.229324</td>
+      <td>0.000000e+00</td>
+      <td>-0.254328</td>
+      <td>0.002926</td>
+      <td>0.996732</td>
+      <td>94.323579</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V6_iqr</td>
+      <td>0.282843</td>
+      <td>0.000000e+00</td>
+      <td>-0.086280</td>
+      <td>0.000074</td>
+      <td>0.975516</td>
+      <td>94.318718</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V1</td>
+      <td>0.177588</td>
+      <td>0.000000e+00</td>
+      <td>-0.165019</td>
+      <td>0.004405</td>
+      <td>0.988964</td>
+      <td>94.181694</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVL</td>
+      <td>0.239004</td>
+      <td>0.000000e+00</td>
+      <td>0.373969</td>
+      <td>0.007748</td>
+      <td>0.965056</td>
+      <td>94.049119</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V1</td>
+      <td>0.172571</td>
+      <td>0.000000e+00</td>
+      <td>0.211309</td>
+      <td>0.006292</td>
+      <td>0.983584</td>
+      <td>93.967084</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V2</td>
+      <td>0.138444</td>
+      <td>0.000000e+00</td>
+      <td>0.104833</td>
+      <td>0.004720</td>
+      <td>0.996321</td>
+      <td>93.772865</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V2_iqr</td>
+      <td>0.315652</td>
+      <td>0.000000e+00</td>
+      <td>-0.131809</td>
+      <td>0.000403</td>
+      <td>0.996686</td>
+      <td>93.573500</td>
+    </tr>
+    <tr>
+      <td>R_Amp_II_iqr</td>
+      <td>0.324906</td>
+      <td>0.000000e+00</td>
+      <td>-0.058378</td>
+      <td>0.000220</td>
+      <td>0.983680</td>
+      <td>93.429337</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V2</td>
+      <td>0.139269</td>
+      <td>0.000000e+00</td>
+      <td>-0.208301</td>
+      <td>0.007644</td>
+      <td>0.995060</td>
+      <td>93.369068</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V2</td>
+      <td>0.211391</td>
+      <td>0.000000e+00</td>
+      <td>0.235042</td>
+      <td>0.005772</td>
+      <td>0.991805</td>
+      <td>93.254648</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V3</td>
+      <td>0.211271</td>
+      <td>0.000000e+00</td>
+      <td>-0.067183</td>
+      <td>0.004739</td>
+      <td>0.995740</td>
+      <td>92.977424</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVL</td>
+      <td>0.216503</td>
+      <td>0.000000e+00</td>
+      <td>0.262451</td>
+      <td>0.005586</td>
+      <td>0.991416</td>
+      <td>92.971306</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V1_iqr</td>
+      <td>0.349205</td>
+      <td>0.000000e+00</td>
+      <td>-0.133206</td>
+      <td>0.000434</td>
+      <td>0.998108</td>
+      <td>92.913751</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V3_iqr</td>
+      <td>0.353388</td>
+      <td>0.000000e+00</td>
+      <td>-0.129155</td>
+      <td>0.000329</td>
+      <td>0.997279</td>
+      <td>92.849171</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V3_iqr</td>
+      <td>0.351871</td>
+      <td>0.000000e+00</td>
+      <td>-0.143609</td>
+      <td>0.000537</td>
+      <td>0.995826</td>
+      <td>92.790946</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V2_iqr</td>
+      <td>0.357591</td>
+      <td>0.000000e+00</td>
+      <td>-0.145560</td>
+      <td>0.000435</td>
+      <td>0.995790</td>
+      <td>92.722009</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVL_iqr</td>
+      <td>0.374251</td>
+      <td>0.000000e+00</td>
+      <td>-0.091154</td>
+      <td>0.000015</td>
+      <td>0.992071</td>
+      <td>92.511520</td>
+    </tr>
+    <tr>
+      <td>R_Amp_II</td>
+      <td>0.177153</td>
+      <td>0.000000e+00</td>
+      <td>-0.203498</td>
+      <td>0.009438</td>
+      <td>0.993013</td>
+      <td>92.335079</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V4_iqr</td>
+      <td>0.375465</td>
+      <td>0.000000e+00</td>
+      <td>-0.126513</td>
+      <td>0.000529</td>
+      <td>0.994509</td>
+      <td>92.306100</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V3_iqr</td>
+      <td>0.383446</td>
+      <td>0.000000e+00</td>
+      <td>-0.124347</td>
+      <td>0.000561</td>
+      <td>0.997466</td>
+      <td>92.202015</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_III_iqr</td>
+      <td>0.394332</td>
+      <td>0.000000e+00</td>
+      <td>-0.140177</td>
+      <td>0.000062</td>
+      <td>0.987268</td>
+      <td>92.081550</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V2_iqr</td>
+      <td>0.386848</td>
+      <td>0.000000e+00</td>
+      <td>-0.115902</td>
+      <td>0.000775</td>
+      <td>0.998776</td>
+      <td>92.059255</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V1</td>
+      <td>0.182195</td>
+      <td>0.000000e+00</td>
+      <td>-0.117836</td>
+      <td>0.006471</td>
+      <td>0.997530</td>
+      <td>91.993979</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V1_iqr</td>
+      <td>0.397323</td>
+      <td>0.000000e+00</td>
+      <td>-0.081855</td>
+      <td>0.000760</td>
+      <td>0.998250</td>
+      <td>91.889616</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V1_iqr</td>
+      <td>0.401621</td>
+      <td>0.000000e+00</td>
+      <td>-0.123601</td>
+      <td>0.000474</td>
+      <td>0.994820</td>
+      <td>91.862969</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVR_iqr</td>
+      <td>0.406437</td>
+      <td>0.000000e+00</td>
+      <td>-0.045317</td>
+      <td>0.000203</td>
+      <td>0.991131</td>
+      <td>91.822764</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVR</td>
+      <td>0.386975</td>
+      <td>0.000000e+00</td>
+      <td>-0.303215</td>
+      <td>0.001630</td>
+      <td>0.992840</td>
+      <td>91.230558</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V4_iqr</td>
+      <td>0.435840</td>
+      <td>0.000000e+00</td>
+      <td>-0.068301</td>
+      <td>0.000269</td>
+      <td>0.993361</td>
+      <td>91.217784</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V6</td>
+      <td>0.339364</td>
+      <td>0.000000e+00</td>
+      <td>0.218868</td>
+      <td>0.007204</td>
+      <td>0.975403</td>
+      <td>91.217101</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V5_iqr</td>
+      <td>0.446994</td>
+      <td>0.000000e+00</td>
+      <td>-0.161027</td>
+      <td>0.000475</td>
+      <td>0.972847</td>
+      <td>90.905368</td>
+    </tr>
+    <tr>
+      <td>QRS_Dur_Global</td>
+      <td>0.109807</td>
+      <td>9.493028e-218</td>
+      <td>0.144526</td>
+      <td>0.018230</td>
+      <td>0.996520</td>
+      <td>90.879836</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_II</td>
+      <td>0.321928</td>
+      <td>0.000000e+00</td>
+      <td>0.225110</td>
+      <td>0.005167</td>
+      <td>0.998003</td>
+      <td>90.866170</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVL</td>
+      <td>0.310839</td>
+      <td>0.000000e+00</td>
+      <td>-0.405947</td>
+      <td>0.016093</td>
+      <td>0.987935</td>
+      <td>90.633862</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_II_iqr</td>
+      <td>0.468516</td>
+      <td>0.000000e+00</td>
+      <td>-0.163942</td>
+      <td>0.000233</td>
+      <td>0.978666</td>
+      <td>90.569576</td>
+    </tr>
+    <tr>
+      <td>T_Amp_III_iqr</td>
+      <td>0.469283</td>
+      <td>0.000000e+00</td>
+      <td>-0.195871</td>
+      <td>0.000294</td>
+      <td>0.995973</td>
+      <td>90.543036</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V5_iqr</td>
+      <td>0.467719</td>
+      <td>0.000000e+00</td>
+      <td>-0.119833</td>
+      <td>0.000536</td>
+      <td>0.988738</td>
+      <td>90.531055</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVL_iqr</td>
+      <td>0.474318</td>
+      <td>0.000000e+00</td>
+      <td>-0.161194</td>
+      <td>0.000013</td>
+      <td>0.990406</td>
+      <td>90.509831</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVF</td>
+      <td>0.225605</td>
+      <td>0.000000e+00</td>
+      <td>0.207311</td>
+      <td>0.010900</td>
+      <td>0.986066</td>
+      <td>90.492482</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V3</td>
+      <td>0.208020</td>
+      <td>0.000000e+00</td>
+      <td>0.325619</td>
+      <td>0.012964</td>
+      <td>0.984029</td>
+      <td>90.377225</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V6_iqr</td>
+      <td>0.481988</td>
+      <td>0.000000e+00</td>
+      <td>-0.100730</td>
+      <td>0.000339</td>
+      <td>0.991003</td>
+      <td>90.289896</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V2_iqr</td>
+      <td>0.459628</td>
+      <td>0.000000e+00</td>
+      <td>-0.341279</td>
+      <td>0.003651</td>
+      <td>0.986991</td>
+      <td>90.187641</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V3_iqr</td>
+      <td>0.465308</td>
+      <td>0.000000e+00</td>
+      <td>-0.255041</td>
+      <td>0.003129</td>
+      <td>0.988934</td>
+      <td>90.164413</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVF_iqr</td>
+      <td>0.489719</td>
+      <td>0.000000e+00</td>
+      <td>-0.194638</td>
+      <td>0.000249</td>
+      <td>0.991822</td>
+      <td>90.158447</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVF_iqr</td>
+      <td>0.488961</td>
+      <td>0.000000e+00</td>
+      <td>-0.139944</td>
+      <td>0.000300</td>
+      <td>0.974325</td>
+      <td>90.145886</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_I_iqr</td>
+      <td>0.501826</td>
+      <td>0.000000e+00</td>
+      <td>-0.161546</td>
+      <td>0.000057</td>
+      <td>0.984942</td>
+      <td>89.954844</td>
+    </tr>
+    <tr>
+      <td>T_Amp_II_iqr</td>
+      <td>0.499280</td>
+      <td>0.000000e+00</td>
+      <td>-0.234146</td>
+      <td>0.000382</td>
+      <td>0.989009</td>
+      <td>89.930927</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V6_iqr</td>
+      <td>0.494113</td>
+      <td>0.000000e+00</td>
+      <td>-0.202144</td>
+      <td>0.000901</td>
+      <td>0.960618</td>
+      <td>89.903751</td>
+    </tr>
+    <tr>
+      <td>T_Amp_I_iqr</td>
+      <td>0.502862</td>
+      <td>0.000000e+00</td>
+      <td>-0.298166</td>
+      <td>0.000508</td>
+      <td>0.990430</td>
+      <td>89.790697</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V3</td>
+      <td>0.118610</td>
+      <td>4.204862e-254</td>
+      <td>-0.087616</td>
+      <td>0.019391</td>
+      <td>0.983886</td>
+      <td>89.665242</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVR_iqr</td>
+      <td>0.516701</td>
+      <td>0.000000e+00</td>
+      <td>-0.158848</td>
+      <td>0.000034</td>
+      <td>0.989519</td>
+      <td>89.660092</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V5</td>
+      <td>0.287762</td>
+      <td>0.000000e+00</td>
+      <td>0.086996</td>
+      <td>0.025988</td>
+      <td>0.968195</td>
+      <td>89.406780</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V5</td>
+      <td>0.373181</td>
+      <td>0.000000e+00</td>
+      <td>0.246044</td>
+      <td>0.008799</td>
+      <td>0.966033</td>
+      <td>89.118209</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVR_iqr</td>
+      <td>0.545160</td>
+      <td>0.000000e+00</td>
+      <td>-0.103178</td>
+      <td>0.000056</td>
+      <td>0.975400</td>
+      <td>89.084760</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V3</td>
+      <td>0.422266</td>
+      <td>0.000000e+00</td>
+      <td>-0.333526</td>
+      <td>0.004710</td>
+      <td>0.972949</td>
+      <td>88.992492</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V2</td>
+      <td>0.255686</td>
+      <td>0.000000e+00</td>
+      <td>-0.302249</td>
+      <td>0.014618</td>
+      <td>0.997751</td>
+      <td>88.377557</td>
+    </tr>
+    <tr>
+      <td>RR_Mean_Global</td>
+      <td>0.179641</td>
+      <td>0.000000e+00</td>
+      <td>-0.340998</td>
+      <td>0.024238</td>
+      <td>0.997032</td>
+      <td>88.221996</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V4</td>
+      <td>0.273171</td>
+      <td>0.000000e+00</td>
+      <td>-0.388084</td>
+      <td>0.020384</td>
+      <td>0.968109</td>
+      <td>88.015587</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V4</td>
+      <td>0.335652</td>
+      <td>0.000000e+00</td>
+      <td>-0.133769</td>
+      <td>0.034527</td>
+      <td>0.974656</td>
+      <td>87.556848</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V4_iqr</td>
+      <td>0.593660</td>
+      <td>0.000000e+00</td>
+      <td>-0.310297</td>
+      <td>0.003909</td>
+      <td>0.979987</td>
+      <td>87.461451</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVF_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V2_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V1_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_I_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V1_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_III_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_II_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>S_Amp_V3_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_II_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V2_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V3_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V1_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_III_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_II_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_I_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V3_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVF_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_I_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V1_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVL_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V3_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V2_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVF_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_aVR_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_III_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVL_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_aVR_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V2_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVR_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>R_Amp_aVL_count</td>
+      <td>0.201072</td>
+      <td>0.000000e+00</td>
+      <td>0.429931</td>
+      <td>0.030885</td>
+      <td>0.986008</td>
+      <td>86.676264</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V5_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V4_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V5_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V5_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V6_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V4_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V4_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>T_Amp_V6_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V6_count</td>
+      <td>0.201118</td>
+      <td>0.000000e+00</td>
+      <td>0.430094</td>
+      <td>0.030901</td>
+      <td>0.986008</td>
+      <td>86.672870</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V5</td>
+      <td>0.327456</td>
+      <td>0.000000e+00</td>
+      <td>-0.513438</td>
+      <td>0.024637</td>
+      <td>0.971468</td>
+      <td>86.610290</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V2</td>
+      <td>0.549140</td>
+      <td>0.000000e+00</td>
+      <td>-0.496795</td>
+      <td>0.010900</td>
+      <td>0.974169</td>
+      <td>86.505709</td>
+    </tr>
+    <tr>
+      <td>QRS_Dur_Global_count</td>
+      <td>0.205649</td>
+      <td>0.000000e+00</td>
+      <td>0.441777</td>
+      <td>0.031906</td>
+      <td>0.987618</td>
+      <td>86.378503</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V6</td>
+      <td>0.341071</td>
+      <td>0.000000e+00</td>
+      <td>0.179915</td>
+      <td>0.043310</td>
+      <td>0.955211</td>
+      <td>86.249036</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V5_iqr</td>
+      <td>0.696251</td>
+      <td>0.000000e+00</td>
+      <td>-0.382715</td>
+      <td>0.004779</td>
+      <td>0.978357</td>
+      <td>85.287955</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_II</td>
+      <td>0.365081</td>
+      <td>0.000000e+00</td>
+      <td>0.340078</td>
+      <td>0.037277</td>
+      <td>0.985100</td>
+      <td>85.073625</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_V4</td>
+      <td>0.359012</td>
+      <td>0.000000e+00</td>
+      <td>0.140288</td>
+      <td>0.032819</td>
+      <td>0.983995</td>
+      <td>84.517955</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_II_iqr</td>
+      <td>0.782743</td>
+      <td>0.000000e+00</td>
+      <td>-0.736080</td>
+      <td>0.004827</td>
+      <td>0.986267</td>
+      <td>83.579332</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V6_iqr</td>
+      <td>0.781115</td>
+      <td>0.000000e+00</td>
+      <td>-0.554314</td>
+      <td>0.005071</td>
+      <td>0.969334</td>
+      <td>83.542765</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V1_iqr</td>
+      <td>0.779480</td>
+      <td>0.000000e+00</td>
+      <td>-0.663514</td>
+      <td>0.007837</td>
+      <td>0.992582</td>
+      <td>83.154121</td>
+    </tr>
+    <tr>
+      <td>R_Amp_V6</td>
+      <td>0.269695</td>
+      <td>0.000000e+00</td>
+      <td>-0.386593</td>
+      <td>0.034351</td>
+      <td>0.981226</td>
+      <td>82.865496</td>
+    </tr>
+    <tr>
+      <td>Q_Amp_I</td>
+      <td>0.292604</td>
+      <td>0.000000e+00</td>
+      <td>0.251122</td>
+      <td>0.032428</td>
+      <td>0.993182</td>
+      <td>82.799725</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_III_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_II_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V2_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V3_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V5_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V6_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V1_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_I_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVR_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVL_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVF_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V4_count</td>
+      <td>0.234835</td>
+      <td>0.000000e+00</td>
+      <td>0.885637</td>
+      <td>0.079291</td>
+      <td>0.868836</td>
+      <td>82.639259</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVR_iqr</td>
+      <td>0.842264</td>
+      <td>0.000000e+00</td>
+      <td>-0.687019</td>
+      <td>0.004129</td>
+      <td>0.993810</td>
+      <td>82.512198</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVF_iqr</td>
+      <td>0.858952</td>
+      <td>0.000000e+00</td>
+      <td>-0.864163</td>
+      <td>0.006225</td>
+      <td>0.978886</td>
+      <td>81.844190</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVL_iqr</td>
+      <td>0.871728</td>
+      <td>0.000000e+00</td>
+      <td>-0.845849</td>
+      <td>0.005682</td>
+      <td>0.983089</td>
+      <td>81.671405</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_III_iqr</td>
+      <td>0.860676</td>
+      <td>0.000000e+00</td>
+      <td>-0.976880</td>
+      <td>0.007258</td>
+      <td>0.969866</td>
+      <td>81.630679</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_I_iqr</td>
+      <td>0.850421</td>
+      <td>0.000000e+00</td>
+      <td>-1.229809</td>
+      <td>0.012811</td>
+      <td>0.989130</td>
+      <td>80.996751</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_III</td>
+      <td>0.435653</td>
+      <td>0.000000e+00</td>
+      <td>0.383941</td>
+      <td>0.060959</td>
+      <td>0.918679</td>
+      <td>80.726513</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVL</td>
+      <td>0.348513</td>
+      <td>0.000000e+00</td>
+      <td>-0.056426</td>
+      <td>0.057447</td>
+      <td>0.956775</td>
+      <td>79.476124</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_I</td>
+      <td>0.319186</td>
+      <td>0.000000e+00</td>
+      <td>0.095360</td>
+      <td>0.091717</td>
+      <td>0.968971</td>
+      <td>78.984558</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVR</td>
+      <td>0.361006</td>
+      <td>0.000000e+00</td>
+      <td>-0.540697</td>
+      <td>0.099068</td>
+      <td>0.979623</td>
+      <td>77.607690</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_V1</td>
+      <td>0.580367</td>
+      <td>0.000000e+00</td>
+      <td>-0.580435</td>
+      <td>0.074037</td>
+      <td>0.935238</td>
+      <td>77.094684</td>
+    </tr>
+    <tr>
+      <td>RR_Mean_Global_count</td>
+      <td>0.330118</td>
+      <td>0.000000e+00</td>
+      <td>0.713146</td>
+      <td>0.079290</td>
+      <td>0.986008</td>
+      <td>77.020568</td>
+    </tr>
+    <tr>
+      <td>ST_Elev_aVF</td>
+      <td>0.371820</td>
+      <td>0.000000e+00</td>
+      <td>0.245958</td>
+      <td>0.116772</td>
+      <td>0.916562</td>
+      <td>74.344101</td>
+    </tr>
+  </tbody>
+</table>
+            </div>
+        </div>
+    </section>
+
+    <section id="corr">
+        <h2>6. Correlations</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>MIMIC-IV Spearman Correlation</h5>
+                    <img src="../figures/correlations/MIMIC-IV_spearman_heatmap.png" class="img-fluid" alt="MIMIC-IV Correlation">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5>PTB-XL Spearman Correlation</h5>
+                    <img src="../figures/correlations/PTB-XL_spearman_heatmap.png" class="img-fluid" alt="PTB-XL Correlation">
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
