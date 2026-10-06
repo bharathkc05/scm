@@ -1,0 +1,13 @@
+2026-08-02 15:57:08 | INFO | START PIPELINE
+2026-08-02 15:57:23 | INFO | Dataset loaded | shape=(407504, 160)
+2026-08-02 15:57:38 | INFO | Removed duplicate rows | removed=58
+2026-08-02 15:57:39 | INFO | Removed features | removed=64
+2026-08-02 15:57:47 | WARNING | Impossible values found | total=11 | affected_features=['RR_Mean_Global']
+2026-08-02 15:57:47 | INFO | Validation passed | stage=pre_split
+2026-08-02 15:57:48 | INFO | Split completed | train=(286236, 96) validation=(61594, 96) test=(59616, 96)
+2026-08-02 15:57:51 | INFO | Winsorization fitted and applied
+2026-08-02 15:58:38 | INFO | Transformation completed
+2026-08-02 15:58:42 | INFO | Scaling completed
+2026-08-02 16:06:18 | INFO | Validation passed | stage=post_processing
+2026-08-02 16:08:01 | INFO | Export completed
+2026-08-02 16:08:01 | INFO | Pipeline finished successfully
