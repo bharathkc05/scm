@@ -27,21 +27,18 @@ ENV/
 *.swo
 *~
 
-# Data files - ignore contents but keep folder structure
-data/raw/*
-!data/raw/.gitkeep
-data/interim/*
-!data/interim/.gitkeep
-data/processed/*.parquet
-data/processed/*.duckdb
+# Data files
+data/
 
+2.analysis_and_validation/
+1.preprocessing/
 # Large file types
 *.dat
 *.hea
 
-# Model checkpoints - ignore contents but keep folder
-models/checkpoints/*
-!models/checkpoints/.gitkeep
+# Model checkpoints
+models/
+
 
 # Generated visualizations - ignore contents but keep folder
 *.png
@@ -54,3 +51,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Documents
+*.pdf
+
