@@ -1,0 +1,58 @@
+{
+  "deduplicated_shape": [
+    407446,
+    160
+  ],
+  "duplicate_rows_removed": 58,
+  "feature_count_excluding_subjectid": 159,
+  "feature_count_including_subjectid": 160,
+  "feature_removal_applied": false,
+  "input_shape": [
+    407504,
+    160
+  ],
+  "post_validation": {
+    "duplicate_rows": {
+      "test": 0,
+      "train": 0,
+      "validation": 0
+    },
+    "feature_count": {
+      "test": 159,
+      "train": 159,
+      "validation": 159
+    },
+    "inf_count": {
+      "test": 0,
+      "train": 0,
+      "validation": 0
+    },
+    "nan_count": {
+      "test": 0,
+      "train": 0,
+      "validation": 0
+    },
+    "split_subject_overlap": 0
+  },
+  "pre_validation": {
+    "impossible_values": {
+      "by_feature": {
+        "RR_Mean_Global": 11
+      },
+      "total": 11
+    },
+    "inf_count": 0,
+    "invalid_dtype_columns": [],
+    "nan_count": 0,
+    "sentinel_hits": {
+      "by_feature": {},
+      "total": 0
+    }
+  },
+  "split_row_summary": {
+    "test": 59616,
+    "train": 286236,
+    "validation": 61594
+  },
+  "variant": "all_features_processed"
+}

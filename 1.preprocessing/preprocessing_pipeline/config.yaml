@@ -1,0 +1,102 @@
+paths:
+  input_csv: "../dataset/processed/extracted_ecg_features.csv"
+  output_dir: "./outputs"
+
+dataset:
+  required_columns:
+    - SubjectID
+  subject_id_column: "SubjectID"
+  expected_row_count: 407504
+
+split:
+  train_ratio: 0.70
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  random_seed: 42
+
+feature_groups:
+  identifier:
+    include:
+      - SubjectID
+  global_mean:
+    include:
+      - QRS_Dur_Global
+      - RR_Mean_Global
+  amplitude_mean:
+    regex: "^(Q_Amp|R_Amp|S_Amp|T_Amp)_[A-Za-z0-9]+$"
+  iqr:
+    regex: ".*_iqr$"
+  count:
+    regex: ".*_count$"
+  st_elev_mean:
+    regex: "^ST_Elev_[A-Za-z0-9]+$"
+
+feature_removal:
+  explicit: []
+  regex_patterns:
+    - "^ST_Elev_.*_iqr$"
+    - "^(?!QRS_Dur_Global_count$).+_count$"
+
+schema:
+  integer_patterns:
+    - "^SubjectID$"
+    - ".*_count$"
+  float_patterns:
+    - "^(?!SubjectID$)(?!.*_count$).+"
+
+validation:
+  sentinel_values:
+    - -9999
+    - -999
+    - 9999
+  non_negative_patterns:
+    - ".*_count$"
+    - ".*_iqr$"
+  physiological_limits:
+    RR_Mean_Global:
+      min: 200.0
+      max: 2500.0
+    QRS_Dur_Global:
+      min: 40.0
+      max: 500.0
+  correlation_threshold: 0.95
+  vif_threshold: 10.0
+
+outlier_treatment:
+  winsorization:
+    default:
+      lower_quantile: 0.005
+      upper_quantile: 0.995
+    by_group:
+      global_mean:
+        lower_quantile: 0.005
+        upper_quantile: 0.995
+      amplitude_mean:
+        lower_quantile: 0.005
+        upper_quantile: 0.995
+      iqr:
+        lower_quantile: 0.0
+        upper_quantile: 0.995
+      count:
+        lower_quantile: 0.005
+        upper_quantile: 0.995
+      st_elev_mean:
+        lower_quantile: 0.005
+        upper_quantile: 0.995
+
+transformation:
+  by_group:
+    global_mean: "none"
+    amplitude_mean: "yeo_johnson"
+    iqr: "log1p"
+    count: "none"
+    st_elev_mean: "yeo_johnson"
+
+scaling:
+  by_group:
+    global_mean: "standard"
+    amplitude_mean: "robust"
+    iqr: "robust"
+    count: "standard"
+    st_elev_mean: "robust"
+
