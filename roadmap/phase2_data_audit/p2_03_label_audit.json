@@ -1,0 +1,71 @@
+{
+  "troponin_items": [
+    {
+      "itemid": 51002,
+      "label": "Troponin I",
+      "fluid": "Blood"
+    },
+    {
+      "itemid": 51003,
+      "label": "Troponin T",
+      "fluid": "Blood"
+    },
+    {
+      "itemid": 52642,
+      "label": "Troponin I",
+      "fluid": "Blood"
+    }
+  ],
+  "legacy_vs_acute_mi_admissions": {
+    "admissions_in_both": 194587,
+    "crosstab_acute_mi_rows_legacy_cols": {
+      "0": {
+        "0": 184333,
+        "1": 0
+      },
+      "1": {
+        "0": 818,
+        "1": 9436
+      }
+    },
+    "agreement": 0.9958,
+    "legacy_MI_but_no_acute_code_with_old_or_subsequent_code": 813
+  },
+  "troponin_tested_share": {
+    "acute_mi": 0.9253,
+    "no_acute_mi": 0.2881,
+    "no_acute_mi_with_feature_ecg": 0.495,
+    "chest_pain_no_mi_with_feature_ecg": 0.934,
+    "acute_mi_with_feature_ecg": 0.9374
+  },
+  "timing_class_vs_legacy_label_first_feature_ecg": {
+    "MI_Acute_Presentation": {
+      "after": 2353,
+      "uncertain": 1595
+    },
+    "MI_Post-Incident": {
+      "after": 1623,
+      "uncertain": 856
+    },
+    "MI_Pre-Incident": {
+      "after": 1667,
+      "uncertain": 1329
+    }
+  },
+  "mi_subtypes_with_feature_ecg_by_timing": {
+    "after": {
+      "mi_stemi": 1306,
+      "mi_nstemi": 4176,
+      "mi_type2": 80,
+      "mi_other_unspecified": 167,
+      "n": 5643
+    },
+    "uncertain": {
+      "mi_stemi": 397,
+      "mi_nstemi": 2588,
+      "mi_type2": 669,
+      "mi_other_unspecified": 159,
+      "n": 3780
+    }
+  }
+}

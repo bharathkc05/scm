@@ -1,0 +1,61 @@
+{
+  "run_dir": "vae_zdim64_beta4.0_20260821_030245",
+  "config": {
+    "z_dim": 64,
+    "beta": 4.0,
+    "seed": 42,
+    "epochs": 160,
+    "num_train": 262813,
+    "num_val": 56319,
+    "num_test": 56798
+  },
+  "split_rows": {
+    "train": 262813,
+    "validation": 56319,
+    "test": 56798
+  },
+  "embedding_rows": {
+    "train": 262813,
+    "validation": 56319,
+    "test": 56798
+  },
+  "config_counts_match_split_files": true,
+  "embedding_ids_match_split_ids": {
+    "train": true,
+    "validation": true,
+    "test": true
+  },
+  "train_label_composition": {
+    "Control_Symptomatic": 253334,
+    "MI_Acute_Presentation": 5300,
+    "MI_Pre-Incident": 4179
+  },
+  "training_loss_uses_labels": false,
+  "best_checkpoint_epoch": 109,
+  "reencode_vs_stored": {
+    "train": {
+      "n": 256,
+      "max_abs_diff": 2.1556392669763724e-06,
+      "mean_abs_diff": 3.275218918910593e-07,
+      "min_dim_correlation": 0.9999999999998289
+    },
+    "validation": {
+      "n": 256,
+      "max_abs_diff": 2.1439909362319653e-06,
+      "mean_abs_diff": 3.3772492554224144e-07,
+      "min_dim_correlation": 0.999999999999845
+    },
+    "test": {
+      "n": 256,
+      "max_abs_diff": 2.086132148748643e-06,
+      "mean_abs_diff": 3.337917774401668e-07,
+      "min_dim_correlation": 0.9999999999998396
+    }
+  },
+  "hdf5_vs_wfdb_max_abs_diff": {
+    "n": 12,
+    "worst": 4.761988403600981e-07,
+    "median": 2.475821956338109e-07
+  },
+  "h5_rows": 377113
+}

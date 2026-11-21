@@ -1,0 +1,49 @@
+{
+  "admissions": 431231,
+  "patients": 180733,
+  "admissions_without_any_dx": 379,
+  "acute_mi": 11222,
+  "acute_mi_principal": 6640,
+  "acute_mi_planned_admission": 389,
+  "arrived_via_ed": 298534,
+  "age_missing": 0,
+  "sex_missing": 0,
+  "seq_num_check_first_admission_is_0_prior": true,
+  "history_flags": {
+    "diabetes": {
+      "primary_prevalence": 0.2677,
+      "strict_prevalence": 0.183,
+      "primary_positive": 115455,
+      "share_of_primary_supported_by_earlier_admission": 0.6833
+    },
+    "hypertension": {
+      "primary_prevalence": 0.5704,
+      "strict_prevalence": 0.3661,
+      "primary_positive": 245962,
+      "share_of_primary_supported_by_earlier_admission": 0.6418
+    },
+    "ckd": {
+      "primary_prevalence": 0.182,
+      "strict_prevalence": 0.1302,
+      "primary_positive": 78498,
+      "share_of_primary_supported_by_earlier_admission": 0.7153
+    },
+    "prior_mi": {
+      "primary_prevalence": 0.0974,
+      "strict_prevalence": 0.0761,
+      "primary_positive": 42013,
+      "share_of_primary_supported_by_earlier_admission": 0.7807
+    }
+  },
+  "first_admissions": 180733,
+  "acute_mi_rate_first_vs_repeat_admission": [
+    0.0327,
+    0.0212
+  ],
+  "acute_mi_by_context": {
+    "planned=0|principal=0": 4352,
+    "planned=0|principal=1": 6481,
+    "planned=1|principal=0": 230,
+    "planned=1|principal=1": 159
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "ecgs_total": 800035,
+  "ecgs_linked_to_admission": 464033,
+  "ecgs_with_features": 407504,
+  "ecgs_with_features_linked": 406455,
+  "ecgs_in_legacy_master": 375930,
+  "ecg_timing_class_counts": {
+    "control": 393730,
+    "unlinked": 336002,
+    "after": 26152,
+    "before": 25496,
+    "uncertain": 18655
+  },
+  "legacy_hadm_agreement_where_both_present": 0.999,
+  "admissions_total": 431231,
+  "admissions_with_any_ecg": 219471,
+  "admissions_with_ecg_with_features": 193470,
+  "admissions_where_first_ecg_lacks_features_but_later_has": 24319,
+  "ecg_coverage_by_group": {
+    "acute_mi": {
+      "admissions": 11222,
+      "with_any_ecg": 0.8453,
+      "with_feature_ecg": 0.8397
+    },
+    "no_acute_mi": {
+      "admissions": 420009,
+      "with_any_ecg": 0.5,
+      "with_feature_ecg": 0.4382
+    },
+    "chest_pain_no_mi": {
+      "admissions": 25973,
+      "with_any_ecg": 0.8838,
+      "with_feature_ecg": 0.7942
+    }
+  },
+  "mi_admissions_with_feature_ecg_by_timing": {
+    "after": 5643,
+    "uncertain": 3780
+  },
+  "mi_after_onset_first_feature_ecg_in_legacy_master": 0.7124,
+  "mi_first_feature_ecg_legacy_label": {
+    "MI_Acute_Presentation": 3948,
+    "MI_Pre-Incident": 2996,
+    "MI_Post-Incident": 2479
+  },
+  "mi_after_onset_hours_from_arrival_quantiles": {
+    "0.1": 0.13,
+    "0.25": 0.2,
+    "0.5": 0.83,
+    "0.75": 7.66,
+    "0.9": 17.8
+  },
+  "control_first_feature_ecg_in_legacy_master": 0.9975,
+  "control_first_feature_ecg_legacy_label": {
+    "Control_Symptomatic": 183180,
+    "MI_Post-Incident": 403,
+    "MI_Acute_Presentation": 322,
+    "MI_Pre-Incident": 90,
+    "NaN": 52
+  },
+  "before_pool_admissions_with_feature_ecg": 10508
+}

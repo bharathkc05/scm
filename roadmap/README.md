@@ -6,7 +6,9 @@ branches are archived at `C:\Users\Acer\Desktop\Capstone\_archive_pre_roadmap\` 
 
 ## Rules
 - All paths come from `config.py` (`python -m roadmap.config` checks them).
-- Reuse the master, splits and longitudinal files; do not rebuild them or retrain models.
+- Reuse the splits and longitudinal files; do not retrain models. Exception (Phase 2, G1): Layer 2 is
+  built from the raw full feature file, because the legacy master dropped post-onset ECGs by troponin timing.
+- Patient-level outputs go to `data/roadmap/` (git-ignored); only aggregates and code are committed.
 - Each phase writes its outputs into its own folder plus a `GATE_DECISION.md`.
 - Lock estimands and adjustment sets (commit them) before running Phase 5.
 - Never use troponin, `Label_Troponin` or `index_mi_time` as covariates.

@@ -29,6 +29,8 @@ ENV/
 
 # Data files
 data/
+# ...but src/data/ is code (ECG dataset loader), not data
+!src/data/
 
 # Large file types
 *.dat

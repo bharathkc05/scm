@@ -29,6 +29,11 @@ PATHS = {
     "vae_best_model": REPO / "models/checkpoints/vae_zdim64_beta4.0_20260821_030245/best_model.pt",
     "ecg_embeddings_dir": REPO / "data/modeling/ecg_embeddings",
     "ecg_signals_h5": REPO / "data/processed/ecg_signals.h5",
+    "vae_labels_dir": REPO / "data/modeling/labels",
+    # --- Legacy label/feature files (audited in Phase 2, not trusted blindly) ---
+    "ecg_features_full": REPO / "data/processed/extracted_ecg_features_with_study_id.csv",  # raw, all ECGs
+    "legacy_troponin_labels": REPO / "data/processed/final_ecg_cohorts_troponin.csv",
+    "mimic_duckdb": RAW.parent / "mimic_database.duckdb",  # read-only; has labevents, record_list
     # --- Raw MIMIC-IV v2.2 (only the tables the roadmap needs) ---
     "raw_admissions": RAW / "MIMIC-IV-2.2/hosp/admissions.csv",
     "raw_patients": RAW / "MIMIC-IV-2.2/hosp/patients.csv",
@@ -37,6 +42,9 @@ PATHS = {
     "raw_omr": RAW / "MIMIC-IV-2.2/hosp/omr.csv",
     "raw_ecg_record_list": RAW / "MIMIC-IV-ECG-1.0/record_list.csv",
 }
+
+# Patient-level outputs go here (under data/, so git-ignored). Reports/aggregates go in PHASE_DIRS.
+DATA_OUT = REPO / "data/roadmap"
 
 # One output folder per phase; each phase also writes GATE_DECISION.md.
 PHASE_DIRS = {
