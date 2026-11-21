@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECG Explainer</title>
+<style>
+:root{--surface:#fcfcfb;--page:#f9f9f7;--ink:#0b0b0b;--ink2:#52514e;--line:#e6e5e0;--accent:#2a78d6;
+--warn-bg:#fff4d6;--warn-ink:#5c4300;--flag-bg:#fdecea;--flag-ink:#6b1d1d;--ok:#0c7a0c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--surface:#1a1a19;--page:#0d0d0d;--ink:#f0efec;
+--ink2:#c3c2b7;--line:#383835;--accent:#3987e5;--warn-bg:#3a2f0b;--warn-ink:#fbe3a0;--flag-bg:#3b1716;--flag-ink:#f6c9c6;--ok:#4cc24c}}
+:root[data-theme="dark"]{--surface:#1a1a19;--page:#0d0d0d;--ink:#f0efec;--ink2:#c3c2b7;--line:#383835;--accent:#3987e5;
+--warn-bg:#3a2f0b;--warn-ink:#fbe3a0;--flag-bg:#3b1716;--flag-ink:#f6c9c6;--ok:#4cc24c}
+*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:16px;max-width:1200px;margin:0 auto}h1{font-size:20px;margin:0 0 4px}.sub{color:var(--ink2);margin:0}
+.banner{max-width:1200px;margin:0 auto 12px;padding:10px 16px;background:var(--warn-bg);color:var(--warn-ink);border-radius:8px;font-weight:600}
+main{max-width:1200px;margin:0 auto;padding:0 16px 32px;display:grid;grid-template-columns:minmax(280px,360px) 1fr;gap:16px}
+@media (max-width:820px){main{grid-template-columns:1fr}}
+section{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+h2{font-size:15px;margin:0 0 12px}label{display:block;margin:8px 0 2px;color:var(--ink2)}
+input[type=number],select{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--page);color:var(--ink)}
+.checks label{display:flex;gap:8px;align-items:center;color:var(--ink)}button{margin-top:12px;padding:8px 14px;border-radius:6px;
+border:1px solid var(--accent);background:var(--accent);color:#fff;font-weight:600;cursor:pointer}button.secondary{background:transparent;color:var(--accent)}
+details{margin-top:12px}summary{cursor:pointer;color:var(--ink2)}.grid{display:grid;grid-template-columns:1fr 90px;gap:4px 8px;max-height:320px;overflow:auto;margin-top:8px}
+.grid input{width:100%;padding:3px 6px;border:1px solid var(--line);border-radius:4px;background:var(--page);color:var(--ink);font-variant-numeric:tabular-nums}
+.grid span{font-size:12px;color:var(--ink2);align-self:center;overflow-wrap:anywhere}
+.flags{background:var(--flag-bg);color:var(--flag-ink);border-radius:8px;padding:8px 12px;margin-bottom:12px}.flags ul{margin:4px 0 0 18px;padding:0}
+.errors{background:var(--flag-bg);color:var(--flag-ink);border-radius:8px;padding:8px 12px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}th{color:var(--ink2);font-weight:600;font-size:12px}.group td{background:var(--page);font-weight:600;text-align:left}
+.wrap{overflow-x:auto}.caveat{color:var(--ink2);font-size:12px;margin-top:12px}.dir-yes{color:var(--ok)}.muted{color:var(--ink2)}
+</style>
+</head>
+<body>
+<header><h1>ECG Explainer</h1><p class="sub">Compares one ECG with what the study's causal model expects for the same patient without MI.</p></header>
+<div class="banner" role="note">⚠ Research prototype: not a diagnosis, not medical advice. No MI probability is computed.</div>
+<main>
+<section aria-labelledby="in-h">
+  <h2 id="in-h">1. Enter a patient</h2>
+  <label for="age">Age (years)</label><input id="age" type="number" min="18" max="100" value="65">
+  <label for="sex">Sex</label><select id="sex"><option value="1">Male</option><option value="0">Female</option></select>
+  <div class="checks">
+    <label><input type="checkbox" id="diabetes_primary"> Diabetes</label>
+    <label><input type="checkbox" id="hypertension_primary"> Hypertension</label>
+    <label><input type="checkbox" id="ckd_primary"> Chronic kidney disease</label>
+    <label><input type="checkbox" id="prior_mi_primary"> Prior MI</label>
+  </div>
+  <label for="timing">ECG timing</label>
+  <select id="timing"><option value="unknown">Unknown</option><option value="after_onset">Recorded after arrival for a suspected MI</option></select>
+  <h2 style="margin-top:16px">ECG features</h2>
+  <label for="file">Load a feature file (CSV, training format)</label><input id="file" type="file" accept=".csv,text/csv">
+  <div class="checks"><label><input type="checkbox" id="rawfile" checked> File is raw ECGdeli output (swap aVL/aVF labels)</label></div>
+  <label for="rowsel">Row in file</label><select id="rowsel" disabled><option>—</option></select>
+  <button class="secondary" id="example" type="button">Fill with training medians (example)</button>
+  <details><summary>Edit the 54 ECG fields</summary><div class="grid" id="fields"></div></details>
+  <button id="run" type="button">Run comparison</button>
+</section>
+<section aria-labelledby="out-h" aria-live="polite">
+  <h2 id="out-h">2. Read the result</h2>
+  <div id="out"><p class="muted">Enter a patient and an ECG, then run the comparison.</p></div>
+  <p class="caveat" id="caveat"></p>
+</section>
+</main>
+<script>/*__PARAMS__*/</script>
+<script>/*__EXPLAINER__*/</script>
+<script>
+(function(){
+  const P = window.DEMO_PARAMS, E = window.ECGExplainer, pre = P.preprocessing;
+  const fields = [...pre.point_inputs, pre.count_input];
+  const grid = document.getElementById("fields"); let fileRows = [];
+  for (const f of fields){ const s=document.createElement("span"); s.textContent=f; const i=document.createElement("input");
+    i.id="f_"+f; i.inputMode="decimal"; i.setAttribute("aria-label", f); grid.append(s,i); }
+  document.getElementById("caveat").textContent = E.CAVEAT;
+  const fmt=(v,d=3)=>Number.isFinite(v)?v.toFixed(d):"–";
+  function setFields(obj, swap){ const o = swap ? E.swapLeadLabels(obj) : obj; for (const f of fields) document.getElementById("f_"+f).value = o[f] ?? ""; }
+  document.getElementById("example").onclick=()=>{ setFields(pre.training_medians,false); document.getElementById("rawfile").checked=false; };
+  document.getElementById("file").onchange=(ev)=>{ const file=ev.target.files[0]; if(!file) return; const r=new FileReader();
+    r.onload=()=>{ try{ fileRows=E.parseCSV(r.result); const sel=document.getElementById("rowsel"); sel.innerHTML="";
+      fileRows.forEach((row,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=row.study_id?`study ${row.study_id}`:`row ${i+1}`; sel.append(o); });
+      sel.disabled=false; setFields(fileRows[0], document.getElementById("rawfile").checked); }
+      catch(e){ document.getElementById("out").innerHTML=`<div class="errors">${e.message}</div>`; } }; r.readAsText(file); };
+  document.getElementById("rowsel").onchange=(ev)=>setFields(fileRows[+ev.target.value], document.getElementById("rawfile").checked);
+  document.getElementById("run").onclick=()=>{
+    const patient={age:document.getElementById("age").value===""?"":Number(document.getElementById("age").value),
+      sex_male:Number(document.getElementById("sex").value)};
+    for (const c of ["diabetes_primary","hypertension_primary","ckd_primary","prior_mi_primary"]) patient[c]=document.getElementById(c).checked?1:0;
+    const feats={}; for (const f of fields) feats[f]=document.getElementById("f_"+f).value;
+    const r=E.explain(patient,feats,P,{timing:document.getElementById("timing").value}); render(r); };
+  function render(r){
+    const out=document.getElementById("out"); let h="";
+    if (r.flags.length) h+=`<div class="flags"><strong>Flags</strong><ul>${r.flags.map(f=>`<li>${f}</li>`).join("")}</ul></div>`;
+    if (r.rejected){ out.innerHTML=h+`<div class="errors"><strong>Input rejected</strong><ul>${r.errors.map(e=>`<li>${e}</li>`).join("")}</ul></div>`; return; }
+    h+=`<div class="wrap"><table><thead><tr><th>Measure</th><th>Observed</th><th>Expected without MI</th><th>Difference (SD)</th><th>Estimated MI effect, SD (95% CI)</th><th>Same direction as MI effect</th></tr></thead><tbody>`;
+    for (const g of r.groups){ h+=`<tr class="group"><td colspan="6">${g.group} — ${g.in_mi_direction} of ${g.measures} measures differ in the MI-effect direction; mean aligned difference ${fmt(g.mean_aligned_difference_sd,2)} SD</td></tr>`;
+      for (const x of r.rows.filter(x=>x.group===g.group)){ const sd=P.effects[x.measure].control_sd;
+        h+=`<tr><td>${x.measure.replace(/_/g," ")}</td><td>${fmt(x.observed)}</td><td>${fmt(x.expected_without_mi)}</td><td>${fmt(x.difference_sd,2)}</td>
+        <td>${fmt(x.mi_effect_sd,2)} (${fmt(x.mi_effect_ci[0]/sd,2)} to ${fmt(x.mi_effect_ci[1]/sd,2)})</td><td class="${x.in_mi_effect_direction?"dir-yes":""}">${x.in_mi_effect_direction?"yes":"no"}</td></tr>`; } }
+    h+=`</tbody></table></div><p class="muted">Units: ST and amplitudes in mV (winsorized to the training range). SD = control standard deviation. The MI effect is the study's average effect among MI admissions, not an estimate for this patient.</p>`;
+    out.innerHTML=h; }
+})();
+</script>
+</body>
+</html>
