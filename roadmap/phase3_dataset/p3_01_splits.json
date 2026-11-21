@@ -1,0 +1,27 @@
+{
+  "patients": 180733,
+  "by_source": {
+    "legacy_manifest": 99256,
+    "new_assignment": 81477
+  },
+  "by_split": {
+    "train": 126513,
+    "test": 27110,
+    "validation": 27110
+  },
+  "by_split_and_source": {
+    "legacy_manifest|test": 14889,
+    "legacy_manifest|train": 69479,
+    "legacy_manifest|validation": 14888,
+    "new_assignment|test": 12221,
+    "new_assignment|train": 57034,
+    "new_assignment|validation": 12222
+  },
+  "ever_acute_mi_rate_by_split": {
+    "test": 0.0536,
+    "train": 0.0521,
+    "validation": 0.0523
+  },
+  "rule": "legacy manifest kept; new patients 70/15/15 by seed, stratified by ever_acute_mi",
+  "seed": 20261121
+}

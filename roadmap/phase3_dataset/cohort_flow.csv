@@ -1,0 +1,12 @@
+step,admissions,patients
+All admissions (MIMIC-IV v2.2),431231,180733.0
+Layer 1: with >=1 diagnosis code,430852,180640.0
+  of which acute MI,11222,9459.0
+With any linked ECG,219366,108729.0
+Layer 2 candidates: ECG with features,193470,100098.0
+"  acute MI, after onset",5643,5112.0
+"  acute MI, uncertain timing (excluded from primary)",3780,
+  410.x2 follow-up admissions (excluded from controls),805,
+  no diagnosis codes (excluded from controls),77,
+  controls (no acute MI),183165,95964.0
+Layer 2 primary set,188808,98662.0

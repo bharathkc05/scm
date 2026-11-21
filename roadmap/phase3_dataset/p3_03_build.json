@@ -1,0 +1,164 @@
+{
+  "gate_checks": {
+    "layer1_rows_eq_admissions_with_dx": true,
+    "layer2_rows_eq_admissions_with_feature_ecg": true,
+    "after_onset_eq_phase2": true,
+    "one_row_per_admission": true,
+    "every_patient_in_one_split": true,
+    "split_missing": 0,
+    "features_complete": true,
+    "latents_complete": true
+  },
+  "flow": [
+    {
+      "step": "All admissions (MIMIC-IV v2.2)",
+      "admissions": 431231,
+      "patients": 180733
+    },
+    {
+      "step": "Layer 1: with >=1 diagnosis code",
+      "admissions": 430852,
+      "patients": 180640
+    },
+    {
+      "step": "  of which acute MI",
+      "admissions": 11222,
+      "patients": 9459
+    },
+    {
+      "step": "With any linked ECG",
+      "admissions": 219366,
+      "patients": 108729
+    },
+    {
+      "step": "Layer 2 candidates: ECG with features",
+      "admissions": 193470,
+      "patients": 100098
+    },
+    {
+      "step": "  acute MI, after onset",
+      "admissions": 5643,
+      "patients": 5112
+    },
+    {
+      "step": "  acute MI, uncertain timing (excluded from primary)",
+      "admissions": 3780,
+      "patients": null
+    },
+    {
+      "step": "  410.x2 follow-up admissions (excluded from controls)",
+      "admissions": 805,
+      "patients": null
+    },
+    {
+      "step": "  no diagnosis codes (excluded from controls)",
+      "admissions": 77,
+      "patients": null
+    },
+    {
+      "step": "  controls (no acute MI)",
+      "admissions": 183165,
+      "patients": 95964
+    },
+    {
+      "step": "Layer 2 primary set",
+      "admissions": 188808,
+      "patients": 98662
+    }
+  ],
+  "analysis_sets": {
+    "set_primary": {
+      "rows": 188808,
+      "exposed": 5643
+    },
+    "set_active_comparator": {
+      "rows": 26186,
+      "exposed": 5643
+    },
+    "set_after_strict": {
+      "rows": 187141,
+      "exposed": 3976
+    },
+    "set_nstemi": {
+      "rows": 187314,
+      "exposed": 4149
+    },
+    "set_no_type2": {
+      "rows": 188728,
+      "exposed": 5563
+    },
+    "set_first_ecg_has_features": {
+      "rows": 165135,
+      "exposed": 4787
+    },
+    "set_negative_control": {
+      "rows": 159071,
+      "exposed": 6938
+    }
+  },
+  "layer2_by_split": {
+    "test": {
+      "rows": 29260,
+      "acute_mi_after": 863
+    },
+    "train": {
+      "rows": 135179,
+      "acute_mi_after": 3922
+    },
+    "validation": {
+      "rows": 29031,
+      "acute_mi_after": 858
+    }
+  },
+  "machine_measure_coverage": {
+    "qrs": 0.9988,
+    "rr": 0.9987
+  },
+  "quality_ok_share": 0.9996,
+  "beat_detection_ratio_quantiles": {
+    "0.01": 0.896,
+    "0.05": 0.951,
+    "0.5": 0.999,
+    "0.95": 1.042,
+    "0.99": 1.066
+  },
+  "latent_source": {
+    "stored": 190536,
+    "encoded_wfdb": 2934
+  },
+  "layer1_columns": [
+    "subject_id",
+    "hadm_id",
+    "age",
+    "sex_male",
+    "arrived_via_ed",
+    "planned_admission",
+    "admission_type",
+    "admission_location",
+    "hospital_expire_flag",
+    "acute_mi",
+    "acute_mi_principal",
+    "mi_stemi",
+    "mi_nstemi",
+    "mi_type2",
+    "mi_other_unspecified",
+    "mi_subsequent_episode_icd9",
+    "old_mi",
+    "chest_pain",
+    "n_prior_admissions",
+    "future_acute_mi",
+    "diabetes_primary",
+    "diabetes_strict",
+    "hypertension_primary",
+    "hypertension_strict",
+    "ckd_primary",
+    "ckd_strict",
+    "prior_mi_primary",
+    "prior_mi_strict",
+    "split",
+    "recent_mi_followup",
+    "has_feature_ecg",
+    "has_any_ecg"
+  ],
+  "layer2_n_columns": 313
+}

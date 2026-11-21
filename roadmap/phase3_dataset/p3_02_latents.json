@@ -1,0 +1,12 @@
+{
+  "selected_ecgs": 193470,
+  "stored": 190536,
+  "encoded_from_wfdb": 2934,
+  "wfdb_vs_stored_check": {
+    "n": 128,
+    "max_abs_diff": 2.310180660103356e-07,
+    "mean_abs_diff": 1.2317716100586096e-08
+  },
+  "checkpoint_epoch": 109,
+  "all_selected_covered": true
+}
