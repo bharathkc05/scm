@@ -1,0 +1,30 @@
+{
+  "target_admissions": 425146,
+  "selected": 188808,
+  "selection_rate": 0.4441015557008651,
+  "p_select_quantiles": [
+    0.043,
+    0.107,
+    0.453,
+    0.859,
+    0.971
+  ],
+  "weight_quantiles_selected": [
+    0.457,
+    0.492,
+    0.833,
+    2.792,
+    10.069
+  ],
+  "ess_selected": 152063.16937047784,
+  "n_selected_primary": 188808,
+  "missing_p_select": 0,
+  "robust_sign_agreement": 1.0,
+  "robust_ci_excludes_0": 1.0,
+  "ST_T_magnitude_ratio": 0.9853200722486445,
+  "lateral_ST_att_sd": -0.35995884728145033,
+  "lateral_ST_ci": [
+    -0.39770304448693283,
+    -0.3227709215193749
+  ]
+}

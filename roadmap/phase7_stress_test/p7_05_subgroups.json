@@ -1,0 +1,321 @@
+{
+  "layer2_by_subgroup": {
+    "age_lt65": {
+      "n": 89865,
+      "exposed": 1895,
+      "robust_sign_agreement": 1.0,
+      "robust_ci_excludes_0": 1.0,
+      "ST_T_magnitude_ratio": 0.997774385631089,
+      "lateral_ST_att_sd": -0.2892883726846482,
+      "lateral_ST_ci": [
+        -0.3549778134305936,
+        -0.2223651636607943
+      ]
+    },
+    "age_ge65": {
+      "n": 98943,
+      "exposed": 3748,
+      "robust_sign_agreement": 1.0,
+      "robust_ci_excludes_0": 1.0,
+      "ST_T_magnitude_ratio": 1.0103111984888602,
+      "lateral_ST_att_sd": -0.3967130937942928,
+      "lateral_ST_ci": [
+        -0.4404410172757503,
+        -0.3519267345833898
+      ]
+    },
+    "female": {
+      "n": 92817,
+      "exposed": 2085,
+      "robust_sign_agreement": 1.0,
+      "robust_ci_excludes_0": 1.0,
+      "ST_T_magnitude_ratio": 1.0989380008158136,
+      "lateral_ST_att_sd": -0.3640911093244035,
+      "lateral_ST_ci": [
+        -0.4350024540613116,
+        -0.29849668612362773
+      ]
+    },
+    "male": {
+      "n": 95991,
+      "exposed": 3558,
+      "robust_sign_agreement": 1.0,
+      "robust_ci_excludes_0": 1.0,
+      "ST_T_magnitude_ratio": 0.937913203750429,
+      "lateral_ST_att_sd": -0.35693421398197317,
+      "lateral_ST_ci": [
+        -0.3982590120692002,
+        -0.31212160693939794
+      ]
+    }
+  },
+  "layer2_interactions_bh05": [
+    {
+      "modifier": "age",
+      "outcome": "ST_Elev_III",
+      "difference": -0.183
+    },
+    {
+      "modifier": "age",
+      "outcome": "ST_Elev_aVR",
+      "difference": 0.11
+    },
+    {
+      "modifier": "age",
+      "outcome": "ST_Elev_aVL",
+      "difference": 0.141
+    },
+    {
+      "modifier": "age",
+      "outcome": "ST_Elev_V5",
+      "difference": -0.173
+    },
+    {
+      "modifier": "age",
+      "outcome": "ST_Elev_V6",
+      "difference": -0.167
+    },
+    {
+      "modifier": "age",
+      "outcome": "ST_lateral_mean",
+      "difference": -0.107
+    },
+    {
+      "modifier": "sex",
+      "outcome": "T_Amp_aVR",
+      "difference": -0.129
+    },
+    {
+      "modifier": "sex",
+      "outcome": "T_Amp_V5",
+      "difference": 0.094
+    },
+    {
+      "modifier": "sex",
+      "outcome": "ST_max_depression",
+      "difference": 0.101
+    }
+  ],
+  "layer1": [
+    {
+      "subgroup": "age_lt65",
+      "label": "diabetes | age, sex",
+      "n": 251607,
+      "exposed": 50611,
+      "outcome_events": 3383,
+      "rd_pp": 1.0083,
+      "rr": 1.9231,
+      "rr_ci_low": 1.7515,
+      "rr_ci_high": 2.1226
+    },
+    {
+      "subgroup": "age_lt65",
+      "label": "diabetes | age, sex, HTN",
+      "n": 251607,
+      "exposed": 50611,
+      "outcome_events": 3383,
+      "rd_pp": 0.7534,
+      "rr": 1.6547,
+      "rr_ci_low": 1.5129,
+      "rr_ci_high": 1.8233
+    },
+    {
+      "subgroup": "age_lt65",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 251607,
+      "exposed": 100154,
+      "outcome_events": 3383,
+      "rd_pp": 0.6516,
+      "rr": 1.627,
+      "rr_ci_low": 1.4717,
+      "rr_ci_high": 1.804
+    },
+    {
+      "subgroup": "age_lt65",
+      "label": "CKD | age, sex, D, H",
+      "n": 175313,
+      "exposed": 24659,
+      "outcome_events": 3304,
+      "rd_pp": 0.399,
+      "rr": 1.231,
+      "rr_ci_low": 1.0831,
+      "rr_ci_high": 1.4206
+    },
+    {
+      "subgroup": "age_lt65",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 151400,
+      "exposed": 12748,
+      "outcome_events": 3208,
+      "rd_pp": 4.1447,
+      "rr": 3.3145,
+      "rr_ci_low": 2.8524,
+      "rr_ci_high": 3.806
+    },
+    {
+      "subgroup": "age_ge65",
+      "label": "diabetes | age, sex",
+      "n": 179245,
+      "exposed": 64805,
+      "outcome_events": 7839,
+      "rd_pp": 2.0424,
+      "rr": 1.5635,
+      "rr_ci_low": 1.4826,
+      "rr_ci_high": 1.655
+    },
+    {
+      "subgroup": "age_ge65",
+      "label": "diabetes | age, sex, HTN",
+      "n": 179245,
+      "exposed": 64805,
+      "outcome_events": 7839,
+      "rd_pp": 1.8326,
+      "rr": 1.4963,
+      "rr_ci_low": 1.4251,
+      "rr_ci_high": 1.5758
+    },
+    {
+      "subgroup": "age_ge65",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 179245,
+      "exposed": 145720,
+      "outcome_events": 7839,
+      "rd_pp": 1.2277,
+      "rr": 1.3661,
+      "rr_ci_low": 1.2696,
+      "rr_ci_high": 1.4888
+    },
+    {
+      "subgroup": "age_ge65",
+      "label": "CKD | age, sex, D, H",
+      "n": 179245,
+      "exposed": 53472,
+      "outcome_events": 7839,
+      "rd_pp": 1.4672,
+      "rr": 1.3808,
+      "rr_ci_low": 1.3057,
+      "rr_ci_high": 1.4648
+    },
+    {
+      "subgroup": "age_ge65",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 179245,
+      "exposed": 28872,
+      "outcome_events": 7839,
+      "rd_pp": 3.5535,
+      "rr": 1.9491,
+      "rr_ci_low": 1.8315,
+      "rr_ci_high": 2.0734
+    },
+    {
+      "subgroup": "female",
+      "label": "diabetes | age, sex",
+      "n": 224789,
+      "exposed": 54172,
+      "outcome_events": 4334,
+      "rd_pp": 1.3905,
+      "rr": 1.9219,
+      "rr_ci_low": 1.7922,
+      "rr_ci_high": 2.057
+    },
+    {
+      "subgroup": "female",
+      "label": "diabetes | age, sex, HTN",
+      "n": 224789,
+      "exposed": 54172,
+      "outcome_events": 4334,
+      "rd_pp": 1.1726,
+      "rr": 1.753,
+      "rr_ci_low": 1.6379,
+      "rr_ci_high": 1.8941
+    },
+    {
+      "subgroup": "female",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 224789,
+      "exposed": 118839,
+      "outcome_events": 4334,
+      "rd_pp": 0.7269,
+      "rr": 1.4988,
+      "rr_ci_low": 1.3369,
+      "rr_ci_high": 1.6871
+    },
+    {
+      "subgroup": "female",
+      "label": "CKD | age, sex, D, H",
+      "n": 167078,
+      "exposed": 32906,
+      "outcome_events": 4289,
+      "rd_pp": 1.0539,
+      "rr": 1.4645,
+      "rr_ci_low": 1.3354,
+      "rr_ci_high": 1.6213
+    },
+    {
+      "subgroup": "female",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 151865,
+      "exposed": 15634,
+      "outcome_events": 4228,
+      "rd_pp": 3.781,
+      "rr": 2.6035,
+      "rr_ci_low": 2.2841,
+      "rr_ci_high": 2.8749
+    },
+    {
+      "subgroup": "male",
+      "label": "diabetes | age, sex",
+      "n": 205943,
+      "exposed": 61243,
+      "outcome_events": 6888,
+      "rd_pp": 1.5063,
+      "rr": 1.53,
+      "rr_ci_low": 1.4345,
+      "rr_ci_high": 1.6144
+    },
+    {
+      "subgroup": "male",
+      "label": "diabetes | age, sex, HTN",
+      "n": 206063,
+      "exposed": 61244,
+      "outcome_events": 6888,
+      "rd_pp": 1.235,
+      "rr": 1.4232,
+      "rr_ci_low": 1.3367,
+      "rr_ci_high": 1.5124
+    },
+    {
+      "subgroup": "male",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 206063,
+      "exposed": 127035,
+      "outcome_events": 6888,
+      "rd_pp": 1.0722,
+      "rr": 1.4114,
+      "rr_ci_low": 1.2973,
+      "rr_ci_high": 1.5239
+    },
+    {
+      "subgroup": "male",
+      "label": "CKD | age, sex, D, H",
+      "n": 188999,
+      "exposed": 45258,
+      "outcome_events": 6860,
+      "rd_pp": 0.8912,
+      "rr": 1.2743,
+      "rr_ci_low": 1.1929,
+      "rr_ci_high": 1.3683
+    },
+    {
+      "subgroup": "male",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 178325,
+      "exposed": 25985,
+      "outcome_events": 6814,
+      "rd_pp": 3.6413,
+      "rr": 2.1117,
+      "rr_ci_low": 1.9257,
+      "rr_ci_high": 2.2996
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "layer1_bmi_coverage": 0.5524193922739131,
+  "layer2_bmi_coverage": 0.5606965806533621,
+  "layer2_bmi_coverage_mi": 0.44178628389154706,
+  "layer2_bmi_median_mi_vs_control": [
+    28.0,
+    27.6
+  ],
+  "layer1": [
+    {
+      "label": "diabetes | age, sex",
+      "n": 238011,
+      "rr_without_bmi": 1.9132516460219933,
+      "ci_without": [
+        1.8001595912591195,
+        2.0354007048835245
+      ],
+      "rr_with_bmi": 1.9354099182709166,
+      "ci_with": [
+        1.8242092845106723,
+        2.0691105302972153
+      ]
+    },
+    {
+      "label": "diabetes | age, sex, HTN",
+      "n": 237993,
+      "rr_without_bmi": 1.7253091380873828,
+      "ci_without": [
+        1.6190918164384718,
+        1.8479720311025838
+      ],
+      "rr_with_bmi": 1.75436451328139,
+      "ci_with": [
+        1.633890555447524,
+        1.8703471321280094
+      ]
+    },
+    {
+      "label": "hypertension | age, sex, diabetes",
+      "n": 238011,
+      "rr_without_bmi": 1.6710981719208728,
+      "ci_without": [
+        1.4963631028103581,
+        1.8762989500261902
+      ],
+      "rr_with_bmi": 1.7048628291321575,
+      "ci_with": [
+        1.5221589032732998,
+        1.9260866226255595
+      ]
+    }
+  ],
+  "layer2_rows": 105864,
+  "layer2_exposed": 2493,
+  "layer2_with_bmi_vs_without_same_rows": {
+    "robust_sign_agreement": 1.0,
+    "robust_ci_excludes_0": 0.9375,
+    "ST_T_magnitude_ratio": 0.9985158083130623,
+    "lateral_ST_att_sd": -0.43765775792829115,
+    "lateral_ST_ci": [
+      -0.49318327924579014,
+      -0.3841924562272515
+    ]
+  },
+  "layer2_without_bmi_vs_full_primary": {
+    "robust_sign_agreement": 1.0,
+    "robust_ci_excludes_0": 0.9375,
+    "ST_T_magnitude_ratio": 1.0802260702438322,
+    "lateral_ST_att_sd": -0.43449886336113186,
+    "lateral_ST_ci": [
+      -0.487309778605664,
+      -0.37401885513245714
+    ]
+  }
+}

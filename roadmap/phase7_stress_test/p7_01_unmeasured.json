@@ -1,0 +1,72 @@
+{
+  "layer1": [
+    {
+      "label": "diabetes | age, sex",
+      "role": "primary",
+      "rr": 1.672,
+      "rr_ci": "1.60-1.75",
+      "evalue_point": 2.732,
+      "evalue_ci": 2.581
+    },
+    {
+      "label": "diabetes | age, sex, HTN",
+      "role": "bracket",
+      "rr": 1.544,
+      "rr_ci": "1.48-1.62",
+      "evalue_point": 2.46,
+      "evalue_ci": 2.314
+    },
+    {
+      "label": "hypertension | age, sex, diabetes",
+      "role": "primary",
+      "rr": 1.442,
+      "rr_ci": "1.35-1.53",
+      "evalue_point": 2.24,
+      "evalue_ci": 2.029
+    },
+    {
+      "label": "hypertension | age, sex (roadmap)",
+      "role": "sensitivity",
+      "rr": 1.684,
+      "rr_ci": "1.59-1.78",
+      "evalue_point": 2.758,
+      "evalue_ci": 2.558
+    },
+    {
+      "label": "CKD | age, sex, D, H",
+      "role": "primary",
+      "rr": 1.343,
+      "rr_ci": "1.27-1.42",
+      "evalue_point": 2.021,
+      "evalue_ci": 1.855
+    },
+    {
+      "label": "CKD | age, sex, D, H, prior MI",
+      "role": "sensitivity",
+      "rr": 1.222,
+      "rr_ci": "1.16-1.29",
+      "evalue_point": 1.743,
+      "evalue_ci": 1.583
+    },
+    {
+      "label": "prior MI | age, sex, D, H, CKD",
+      "role": "primary",
+      "rr": 2.346,
+      "rr_ci": "2.19-2.50",
+      "evalue_point": 4.123,
+      "evalue_ci": 3.807
+    }
+  ],
+  "layer2_evalue_point_range": [
+    1.3363467730793444,
+    2.129984555298365
+  ],
+  "layer2_evalue_ci_range": [
+    1.2504988851227161,
+    2.0330346341672065
+  ],
+  "benchmark_measured_rr": {
+    "diabetes": 1.672185102904875,
+    "prior_mi": 2.346182986280736
+  }
+}

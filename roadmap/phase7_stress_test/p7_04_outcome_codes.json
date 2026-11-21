@@ -1,0 +1,181 @@
+{
+  "layer2_broad": {
+    "n": 189613,
+    "exposed": 6448,
+    "robust_sign_agreement": 1.0,
+    "robust_ci_excludes_0": 1.0,
+    "ST_T_magnitude_ratio": 0.9736710908612631,
+    "lateral_ST_att_sd": -0.3372563670947062,
+    "lateral_ST_ci": [
+      -0.37222756232427334,
+      -0.29910638757404745
+    ]
+  },
+  "layer1": [
+    {
+      "variant": "narrow_principal",
+      "label": "diabetes | age, sex",
+      "n": 430852,
+      "exposed": 115416,
+      "outcome_events": 6640,
+      "rd_pp": 0.5899,
+      "rr": 1.4379,
+      "rr_ci_low": 1.3617,
+      "rr_ci_high": 1.5211
+    },
+    {
+      "variant": "narrow_principal",
+      "label": "diabetes | age, sex, HTN",
+      "n": 430852,
+      "exposed": 115416,
+      "outcome_events": 6640,
+      "rd_pp": 0.5186,
+      "rr": 1.3744,
+      "rr_ci_low": 1.2958,
+      "rr_ci_high": 1.4498
+    },
+    {
+      "variant": "narrow_principal",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 430852,
+      "exposed": 245874,
+      "outcome_events": 6640,
+      "rd_pp": 0.4295,
+      "rr": 1.3393,
+      "rr_ci_low": 1.2374,
+      "rr_ci_high": 1.465
+    },
+    {
+      "variant": "narrow_principal",
+      "label": "CKD | age, sex, D, H",
+      "n": 354329,
+      "exposed": 78148,
+      "outcome_events": 6602,
+      "rd_pp": -0.0482,
+      "rr": 0.9737,
+      "rr_ci_low": 0.9074,
+      "rr_ci_high": 1.0479
+    },
+    {
+      "variant": "narrow_principal",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 334191,
+      "exposed": 41663,
+      "outcome_events": 6550,
+      "rd_pp": 1.7131,
+      "rr": 1.9874,
+      "rr_ci_low": 1.8073,
+      "rr_ci_high": 2.1592
+    },
+    {
+      "variant": "broad_any_410_I21_I22",
+      "label": "diabetes | age, sex",
+      "n": 430852,
+      "exposed": 115416,
+      "outcome_events": 12187,
+      "rd_pp": 1.603,
+      "rr": 1.6919,
+      "rr_ci_low": 1.6129,
+      "rr_ci_high": 1.7709
+    },
+    {
+      "variant": "broad_any_410_I21_I22",
+      "label": "diabetes | age, sex, HTN",
+      "n": 430852,
+      "exposed": 115416,
+      "outcome_events": 12187,
+      "rd_pp": 1.3209,
+      "rr": 1.5531,
+      "rr_ci_low": 1.4839,
+      "rr_ci_high": 1.624
+    },
+    {
+      "variant": "broad_any_410_I21_I22",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 430852,
+      "exposed": 245874,
+      "outcome_events": 12187,
+      "rd_pp": 1.032,
+      "rr": 1.4845,
+      "rr_ci_low": 1.3945,
+      "rr_ci_high": 1.5905
+    },
+    {
+      "variant": "broad_any_410_I21_I22",
+      "label": "CKD | age, sex, D, H",
+      "n": 354329,
+      "exposed": 78148,
+      "outcome_events": 12103,
+      "rd_pp": 1.07,
+      "rr": 1.3511,
+      "rr_ci_low": 1.2814,
+      "rr_ci_high": 1.4312
+    },
+    {
+      "variant": "broad_any_410_I21_I22",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 334191,
+      "exposed": 41663,
+      "outcome_events": 12031,
+      "rd_pp": 5.6631,
+      "rr": 2.9391,
+      "rr_ci_low": 2.757,
+      "rr_ci_high": 3.1175
+    },
+    {
+      "variant": "type1_only",
+      "label": "diabetes | age, sex",
+      "n": 429387,
+      "exposed": 114621,
+      "outcome_events": 9757,
+      "rd_pp": 1.1281,
+      "rr": 1.5894,
+      "rr_ci_low": 1.5055,
+      "rr_ci_high": 1.6689
+    },
+    {
+      "variant": "type1_only",
+      "label": "diabetes | age, sex, HTN",
+      "n": 429387,
+      "exposed": 114621,
+      "outcome_events": 9757,
+      "rd_pp": 0.9499,
+      "rr": 1.4823,
+      "rr_ci_low": 1.4032,
+      "rr_ci_high": 1.5711
+    },
+    {
+      "variant": "type1_only",
+      "label": "hypertension | age, sex, diabetes",
+      "n": 429387,
+      "exposed": 244572,
+      "outcome_events": 9757,
+      "rd_pp": 0.7179,
+      "rr": 1.3965,
+      "rr_ci_low": 1.3059,
+      "rr_ci_high": 1.5049
+    },
+    {
+      "variant": "type1_only",
+      "label": "CKD | age, sex, D, H",
+      "n": 352949,
+      "exposed": 77320,
+      "outcome_events": 9687,
+      "rd_pp": 0.5354,
+      "rr": 1.2107,
+      "rr_ci_low": 1.133,
+      "rr_ci_high": 1.279
+    },
+    {
+      "variant": "type1_only",
+      "label": "prior MI | age, sex, D, H, CKD",
+      "n": 332657,
+      "exposed": 41144,
+      "outcome_events": 9614,
+      "rd_pp": 3.3241,
+      "rr": 2.3389,
+      "rr_ci_low": 2.174,
+      "rr_ci_high": 2.5096
+    }
+  ]
+}

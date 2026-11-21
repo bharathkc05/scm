@@ -1,0 +1,167 @@
+[
+  {
+    "variant": "strict_flags",
+    "label": "diabetes | age, sex",
+    "n": 424481,
+    "exposed": 78797,
+    "outcome_events": 11217,
+    "rd_pp": 0.3865,
+    "rr": 1.1506,
+    "rr_ci_low": 1.0827,
+    "rr_ci_high": 1.2129
+  },
+  {
+    "variant": "lookback_only",
+    "label": "diabetes | age, sex",
+    "n": 250279,
+    "exposed": 83365,
+    "outcome_events": 5309,
+    "rd_pp": 1.5674,
+    "rr": 2.0337,
+    "rr_ci_low": 1.9119,
+    "rr_ci_high": 2.1849
+  },
+  {
+    "variant": "lookback_covariate",
+    "label": "diabetes | age, sex",
+    "n": 430852,
+    "exposed": 115416,
+    "outcome_events": 11222,
+    "rd_pp": 1.8371,
+    "rr": 1.9002,
+    "rr_ci_low": 1.8073,
+    "rr_ci_high": 1.9787
+  },
+  {
+    "variant": "strict_flags",
+    "label": "diabetes | age, sex, HTN",
+    "n": 419862,
+    "exposed": 78748,
+    "outcome_events": 11205,
+    "rd_pp": 0.0698,
+    "rr": 1.029,
+    "rr_ci_low": 0.9473,
+    "rr_ci_high": 1.1047
+  },
+  {
+    "variant": "lookback_only",
+    "label": "diabetes | age, sex, HTN",
+    "n": 250279,
+    "exposed": 83365,
+    "outcome_events": 5309,
+    "rd_pp": 1.2478,
+    "rr": 1.7904,
+    "rr_ci_low": 1.673,
+    "rr_ci_high": 1.9142
+  },
+  {
+    "variant": "lookback_covariate",
+    "label": "diabetes | age, sex, HTN",
+    "n": 430852,
+    "exposed": 115416,
+    "outcome_events": 11222,
+    "rd_pp": 1.4867,
+    "rr": 1.7046,
+    "rr_ci_low": 1.6251,
+    "rr_ci_high": 1.783
+  },
+  {
+    "variant": "strict_flags",
+    "label": "hypertension | age, sex, diabetes",
+    "n": 426153,
+    "exposed": 157755,
+    "outcome_events": 11220,
+    "rd_pp": -0.7803,
+    "rr": 0.7192,
+    "rr_ci_low": 0.6823,
+    "rr_ci_high": 0.7541
+  },
+  {
+    "variant": "lookback_only",
+    "label": "hypertension | age, sex, diabetes",
+    "n": 250279,
+    "exposed": 168037,
+    "outcome_events": 5309,
+    "rd_pp": 1.2925,
+    "rr": 2.2408,
+    "rr_ci_low": 1.953,
+    "rr_ci_high": 2.6704
+  },
+  {
+    "variant": "lookback_covariate",
+    "label": "hypertension | age, sex, diabetes",
+    "n": 426573,
+    "exposed": 244934,
+    "outcome_events": 11184,
+    "rd_pp": 1.4268,
+    "rr": 1.8566,
+    "rr_ci_low": 1.7096,
+    "rr_ci_high": 2.0209
+  },
+  {
+    "variant": "strict_flags",
+    "label": "CKD | age, sex, D, H",
+    "n": 236083,
+    "exposed": 54932,
+    "outcome_events": 8594,
+    "rd_pp": 0.1317,
+    "rr": 1.0397,
+    "rr_ci_low": 0.934,
+    "rr_ci_high": 1.1486
+  },
+  {
+    "variant": "lookback_only",
+    "label": "CKD | age, sex, D, H",
+    "n": 228110,
+    "exposed": 63350,
+    "outcome_events": 5300,
+    "rd_pp": 1.3725,
+    "rr": 1.7672,
+    "rr_ci_low": 1.6405,
+    "rr_ci_high": 1.906
+  },
+  {
+    "variant": "lookback_covariate",
+    "label": "CKD | age, sex, D, H",
+    "n": 344851,
+    "exposed": 78149,
+    "outcome_events": 11028,
+    "rd_pp": 1.7444,
+    "rr": 1.652,
+    "rr_ci_low": 1.5598,
+    "rr_ci_high": 1.7473
+  },
+  {
+    "variant": "strict_flags",
+    "label": "prior MI | age, sex, D, H, CKD",
+    "n": 236324,
+    "exposed": 31821,
+    "outcome_events": 8560,
+    "rd_pp": 3.8148,
+    "rr": 2.2868,
+    "rr_ci_low": 2.0937,
+    "rr_ci_high": 2.493
+  },
+  {
+    "variant": "lookback_only",
+    "label": "prior MI | age, sex, D, H, CKD",
+    "n": 217926,
+    "exposed": 35456,
+    "outcome_events": 5292,
+    "rd_pp": 4.4392,
+    "rr": 3.7182,
+    "rr_ci_low": 3.4646,
+    "rr_ci_high": 3.983
+  },
+  {
+    "variant": "lookback_covariate",
+    "label": "prior MI | age, sex, D, H, CKD",
+    "n": 330680,
+    "exposed": 41625,
+    "outcome_events": 10916,
+    "rd_pp": 4.5895,
+    "rr": 2.7064,
+    "rr_ci_low": 2.541,
+    "rr_ci_high": 2.8817
+  }
+]
