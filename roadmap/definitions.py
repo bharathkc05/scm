@@ -55,6 +55,19 @@ FORBIDDEN_COVARIATES = (
 )
 
 
+def fix_lead_labels(df: pd.DataFrame) -> pd.DataFrame:
+    """Swap aVL <-> aVF in ECGdeli feature names (Phase 5 finding).
+
+    MIMIC-IV-ECG WFDB files store leads as I, II, III, aVR, aVF, aVL, V1..V6, but
+    src/matlab/extract_ecg_features.m labelled rows positionally as I, II, III, aVR, aVL, aVF.
+    Verified against the limb-lead identities: the column labelled aVL tracks (II+III)/2 (r 0.87-0.90).
+    Apply to every frame read from the raw ECGdeli feature file. Values are unchanged; only names swap.
+    """
+    def swap(c: str) -> str:
+        return c.replace("_aVL", "\0").replace("_aVF", "_aVL").replace("\0", "_aVF")
+    return df.rename(columns={c: swap(c) for c in df.columns})
+
+
 def _norm(codes: pd.Series) -> pd.Series:
     return codes.astype(str).str.replace(".", "", regex=False).str.strip().str.upper()
 

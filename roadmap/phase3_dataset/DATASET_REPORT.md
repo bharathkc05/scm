@@ -79,6 +79,14 @@ Controls everywhere = no acute MI, not a 410.x2 follow-up, at least one diagnosi
 - 27 after-onset MI admissions carry both a STEMI and an NSTEMI code and are left out of the NSTEMI set
   (4,149 rather than the 4,176 in the audit).
 
+## Correction (Phase 5): aVL/aVF labels
+
+The MATLAB extraction labelled the 5th and 6th leads as aVL, aVF, but MIMIC-IV-ECG stores aVF, aVL.
+`p3_03_build.py` now applies `fix_lead_labels()` when reading the raw features, and Layer 2 was rebuilt.
+This changed the inferior and lateral ST composites and the names of the aVL/aVF features and their
+winsorization bounds; counts are unchanged. A new gate check requires corr(T aVF, (T II + T III)/2) > 0.8.
+Details: `roadmap/phase5_estimation/ESTIMATION_REPORT.md`, Section 2.
+
 ## 7. Gate check (`p3_03_build.json`)
 
 | Check | Result |
@@ -89,3 +97,4 @@ Controls everywhere = no acute MI, not a 410.x2 follow-up, at least one diagnosi
 | One row per admission; every patient in one split; no missing split | ✅ |
 | All 95 features and 64 latents complete | ✅ |
 | No forbidden covariate in the dataset (except `legacy_label`, audit-only) | ✅ |
+| Limb-lead identity: corr(T aVF, (T II + T III)/2) > 0.8 (added in Phase 5) | ✅ |

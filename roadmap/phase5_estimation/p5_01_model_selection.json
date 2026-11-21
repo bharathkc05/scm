@@ -1,0 +1,38 @@
+{
+  "by_spec": {
+    "age_df3": {
+      "layer1_mean_logloss": 0.2309643177854688,
+      "layer2_propensity_logloss": 0.1307411473516162,
+      "layer2_outcome_mse_sd_units": 0.950271683424576
+    },
+    "age_df5": {
+      "layer1_mean_logloss": 0.23092591451282599,
+      "layer2_propensity_logloss": 0.13072906341949067,
+      "layer2_outcome_mse_sd_units": 0.9502504203251317
+    },
+    "age_df7": {
+      "layer1_mean_logloss": 0.2309583258550397,
+      "layer2_propensity_logloss": 0.1307490659426628,
+      "layer2_outcome_mse_sd_units": 0.9502874418545401
+    },
+    "age_df5_int": {
+      "layer1_mean_logloss": 0.23079584753421212,
+      "layer2_propensity_logloss": 0.13042819094794844,
+      "layer2_outcome_mse_sd_units": 0.947463531438853
+    },
+    "age_df7_int": {
+      "layer1_mean_logloss": 0.23081183190589924,
+      "layer2_propensity_logloss": 0.13045030773858177,
+      "layer2_outcome_mse_sd_units": 0.9474585836270767
+    },
+    "age_df5_int_agexall": {
+      "layer1_mean_logloss": 0.23059598781045187,
+      "layer2_propensity_logloss": 0.13043953376340325,
+      "layer2_outcome_mse_sd_units": 0.94737481158272
+    }
+  },
+  "chosen": {
+    "layer1": "age_df5_int_agexall",
+    "layer2": "age_df5_int_agexall"
+  }
+}

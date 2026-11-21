@@ -1,0 +1,104 @@
+{
+  "checks": {
+    "H1_age_sex_smd_test": 0.0806666944255611,
+    "H1_pass": true,
+    "H2_pass": true,
+    "H3_pass": true
+  },
+  "layer1_test": [
+    {
+      "label": "diabetes | age, sex",
+      "role": "primary",
+      "n_test": 64925,
+      "rr_test": 1.6810697912348125,
+      "rr_test_ci": [
+        1.488188064530172,
+        1.8890782337203391
+      ],
+      "rr_full": 1.672185102904875,
+      "same_side_of_1": true
+    },
+    {
+      "label": "diabetes | age, sex, HTN",
+      "role": "bracket",
+      "n_test": 64925,
+      "rr_test": 1.568052355308292,
+      "rr_test_ci": [
+        1.3961940265305597,
+        1.7630445738912732
+      ],
+      "rr_full": 1.5436841942972253,
+      "same_side_of_1": true
+    },
+    {
+      "label": "hypertension | age, sex, diabetes",
+      "role": "primary",
+      "n_test": 64925,
+      "rr_test": 1.2994750674924977,
+      "rr_test_ci": [
+        1.1092141001447315,
+        1.517094822270165
+      ],
+      "rr_full": 1.4418474608195675,
+      "same_side_of_1": true
+    },
+    {
+      "label": "hypertension | age, sex (roadmap)",
+      "role": "sensitivity",
+      "n_test": 64925,
+      "rr_test": 1.538237245015059,
+      "rr_test_ci": [
+        1.3288492234840081,
+        1.8185934886441295
+      ],
+      "rr_full": 1.6843553585141686,
+      "same_side_of_1": true
+    },
+    {
+      "label": "CKD | age, sex, D, H",
+      "role": "primary",
+      "n_test": 53404,
+      "rr_test": 1.3244951838137247,
+      "rr_test_ci": [
+        1.1433090446091625,
+        1.5136210798352918
+      ],
+      "rr_full": 1.3428646466377576,
+      "same_side_of_1": true
+    },
+    {
+      "label": "CKD | age, sex, D, H, prior MI",
+      "role": "sensitivity",
+      "n_test": 53297,
+      "rr_test": 1.226750239685207,
+      "rr_test_ci": [
+        1.058956691963395,
+        1.403323393540806
+      ],
+      "rr_full": 1.222090685479401,
+      "same_side_of_1": true
+    },
+    {
+      "label": "prior MI | age, sex, D, H, CKD",
+      "role": "primary",
+      "n_test": 49852,
+      "rr_test": 2.1736871354025817,
+      "rr_test_ci": [
+        1.7156662674543048,
+        2.623219495901567
+      ],
+      "rr_full": 2.346182986280736,
+      "same_side_of_1": true
+    }
+  ],
+  "layer2_test": {
+    "n_test": 28547,
+    "exposed_test": 863,
+    "sign_agreement_among_significant": 1.0,
+    "n_significant": 34,
+    "sign_agreement_all": 0.8867924528301887,
+    "median_abs_diff_sd": 0.022971736633685402,
+    "max_abs_diff_sd": 0.07813258179863988,
+    "corr_full_vs_test": 0.9778986442824915
+  }
+}

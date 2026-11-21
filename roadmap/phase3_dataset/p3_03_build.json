@@ -7,7 +7,8 @@
     "every_patient_in_one_split": true,
     "split_missing": 0,
     "features_complete": true,
-    "latents_complete": true
+    "latents_complete": true,
+    "limb_lead_identity_aVF_T_corr_gt_0.8": true
   },
   "flow": [
     {

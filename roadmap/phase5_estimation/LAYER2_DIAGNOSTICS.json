@@ -1,0 +1,62 @@
+{
+  "spec": "age_df5_int_agexall",
+  "n": 188808,
+  "exposed": 5643,
+  "patients": 98662,
+  "propensity_quantiles_exposed": [
+    0.0005,
+    0.0079,
+    0.0376,
+    0.0683,
+    0.0815
+  ],
+  "propensity_quantiles_control": [
+    0.0,
+    0.0002,
+    0.0294,
+    0.0664,
+    0.0816
+  ],
+  "att_control_weight_max": 0.08887829643364123,
+  "att_ess_controls": 139545.3762201298,
+  "ate_clipped_share": 0.13206008219990678,
+  "smd_unweighted": {
+    "age": 0.3800355608481767,
+    "sex_male": 0.25615145943414497,
+    "diabetes_primary": 0.18912134411099132,
+    "hypertension_primary": 0.26819888610782733,
+    "ckd_primary": 0.1160725326688169,
+    "prior_mi_primary": 0.2947636846634564
+  },
+  "smd_att_weighted": {
+    "age": 0.0009654795744827257,
+    "sex_male": -0.0006314964503910874,
+    "diabetes_primary": -0.0009686104439752636,
+    "hypertension_primary": -0.0005057847005469896,
+    "ckd_primary": -0.0011728311151975685,
+    "prior_mi_primary": -0.0016526363621056329
+  },
+  "smd_ate_weighted": {
+    "age": 0.19194574703685632,
+    "sex_male": 0.03744502684777912,
+    "diabetes_primary": 0.044619321001364516,
+    "hypertension_primary": 0.11504220319556663,
+    "ckd_primary": 0.040015889383570105,
+    "prior_mi_primary": 0.040130344969240464
+  },
+  "bh05_significant_point": {
+    "att": 34,
+    "ate": 40,
+    "tests": 53
+  },
+  "bh05_significant_iqr": {
+    "att": 35,
+    "ate": 27,
+    "tests": 41
+  },
+  "bh05_significant_latent": {
+    "att": 43,
+    "ate": 42,
+    "tests": 64
+  }
+}

@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 from roadmap.config import DATA_OUT, PATHS, PHASE_DIRS
-from roadmap.definitions import FORBIDDEN_COVARIATES
+from roadmap.definitions import FORBIDDEN_COVARIATES, fix_lead_labels
 
 P2, OUT, DOC = DATA_OUT / "phase2", DATA_OUT / "phase3", PHASE_DIRS[3]
 FEATS = json.loads((PHASE_DIRS[2] / "ecg_feature_list.json").read_text())
@@ -64,6 +64,7 @@ def main() -> dict:
 
     raw = pd.read_csv(PATHS["ecg_features_full"], usecols=["study_id"] + ALL95)
     raw = raw[raw["study_id"].isin(set(l2["study_id"]))].drop_duplicates("study_id")
+    raw = fix_lead_labels(raw)          # aVL/aVF were swapped by the MATLAB extraction (see definitions.py)
     l2 = l2.merge(raw, on="study_id", how="left", validate="one_to_one")
     lat = pd.read_parquet(OUT / "latents_selected.parquet")
     l2 = l2.merge(lat, on="study_id", how="left", validate="one_to_one")
@@ -139,6 +140,9 @@ def main() -> dict:
         "split_missing": int(l2["split"].isna().sum() + l1["split"].isna().sum()),
         "features_complete": bool(l2[ALL95].notna().all().all()),
         "latents_complete": bool(l2[Z].notna().all().all()),
+        # Goldberger identity aVF = (II+III)/2 must hold for T amplitude (guards the aVL/aVF label fix)
+        "limb_lead_identity_aVF_T_corr_gt_0.8": bool(
+            l2["T_Amp_aVF"].corr((l2["T_Amp_II"] + l2["T_Amp_III"]) / 2) > 0.8),
     }
     sets = {c: {"rows": int(l2[c].sum()), "exposed": int((l2[c].astype(bool) & (l2["acute_mi"] == 1)).sum())}
             for c in l2.columns if c.startswith("set_")}
