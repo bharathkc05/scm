@@ -1,0 +1,21 @@
+graph,independence,x,y,given,testable
+G0_roadmap,A _||_ S | {},A,S,,True
+G0_roadmap,"D _||_ H | A,S",D,H,"A,S",True
+G0_roadmap,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_revised,A _||_ S | {},A,S,,True
+G_revised,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_D_to_H,A _||_ S | {},A,S,,True
+G_D_to_H,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_H_to_D,A _||_ S | {},A,S,,True
+G_H_to_D,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_DH_common_cause,A _||_ S | {},A,S,,True
+G_DH_common_cause,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_P_before_K,A _||_ S | {},A,S,,True
+G_P_before_K,"D _||_ H | A,S",D,H,"A,S",True
+G_P_before_K,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_lifestyle_U,A _||_ S | {},A,S,,True
+G_lifestyle_U,"F _||_ R | A,D,H,K,M,P,S",F,R,"A,D,H,K,M,P,S",False
+G_lifestyle_U_to_ECG,A _||_ S | {},A,S,,True
+G_lifestyle_U_to_ECG,"R _||_ F | A,D,H,K,M,P,S",R,F,"A,D,H,K,M,P,S",False
+G_severity_selection,A _||_ S | {},A,S,,True
+G_severity_selection,"D _||_ H | A,S",D,H,"A,S",True

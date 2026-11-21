@@ -1,0 +1,7 @@
+test,sample,flags,n,effect,estimate,ci_low,ci_high,p_value,partial_r,threshold,implied_in_this_sample,holds
+T1 A _||_ S,layer1_train,-,301337,SMD age (M-F),0.0732,,,,,|SMD|<0.1,True,True
+"T2 D _||_ H | A,S",layer1_train,primary,301337,adjusted OR (H on D),5.774,5.442,6.125,0.0,0.2818,"OR in (0.8, 1.25) and |r|<0.05",True,False
+"T2 D _||_ H | A,S",layer1_train,strict,301337,adjusted OR (H on D),21.546,20.077,23.122,0.0,0.485,"OR in (0.8, 1.25) and |r|<0.05",True,False
+T1 A _||_ S,layer2_primary_train,-,131916,SMD age (M-F),-0.1107,,,,,|SMD|<0.1,False,False
+"T2 D _||_ H | A,S",layer2_primary_train,primary,131916,adjusted OR (H on D),5.151,4.84,5.482,0.0,0.266,"OR in (0.8, 1.25) and |r|<0.05",False,False
+"T2 D _||_ H | A,S",layer2_primary_train,strict,131916,adjusted OR (H on D),23.956,22.215,25.833,0.0,0.5043,"OR in (0.8, 1.25) and |r|<0.05",False,False

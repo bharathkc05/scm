@@ -1,0 +1,126 @@
+{
+  "tests": [
+    {
+      "test": "T1 A _||_ S",
+      "sample": "layer1_train",
+      "flags": "-",
+      "n": 301337,
+      "effect": "SMD age (M-F)",
+      "estimate": 0.0732,
+      "ci_low": NaN,
+      "ci_high": NaN,
+      "p_value": NaN,
+      "partial_r": NaN,
+      "threshold": "|SMD|<0.1",
+      "implied_in_this_sample": true,
+      "holds": true
+    },
+    {
+      "test": "T2 D _||_ H | A,S",
+      "sample": "layer1_train",
+      "flags": "primary",
+      "n": 301337,
+      "effect": "adjusted OR (H on D)",
+      "estimate": 5.774,
+      "ci_low": 5.442,
+      "ci_high": 6.125,
+      "p_value": 0.0,
+      "partial_r": 0.2818,
+      "threshold": "OR in (0.8, 1.25) and |r|<0.05",
+      "implied_in_this_sample": true,
+      "holds": false
+    },
+    {
+      "test": "T2 D _||_ H | A,S",
+      "sample": "layer1_train",
+      "flags": "strict",
+      "n": 301337,
+      "effect": "adjusted OR (H on D)",
+      "estimate": 21.546,
+      "ci_low": 20.077,
+      "ci_high": 23.122,
+      "p_value": 0.0,
+      "partial_r": 0.485,
+      "threshold": "OR in (0.8, 1.25) and |r|<0.05",
+      "implied_in_this_sample": true,
+      "holds": false
+    },
+    {
+      "test": "T1 A _||_ S",
+      "sample": "layer2_primary_train",
+      "flags": "-",
+      "n": 131916,
+      "effect": "SMD age (M-F)",
+      "estimate": -0.1107,
+      "ci_low": NaN,
+      "ci_high": NaN,
+      "p_value": NaN,
+      "partial_r": NaN,
+      "threshold": "|SMD|<0.1",
+      "implied_in_this_sample": false,
+      "holds": false
+    },
+    {
+      "test": "T2 D _||_ H | A,S",
+      "sample": "layer2_primary_train",
+      "flags": "primary",
+      "n": 131916,
+      "effect": "adjusted OR (H on D)",
+      "estimate": 5.151,
+      "ci_low": 4.84,
+      "ci_high": 5.482,
+      "p_value": 0.0,
+      "partial_r": 0.266,
+      "threshold": "OR in (0.8, 1.25) and |r|<0.05",
+      "implied_in_this_sample": false,
+      "holds": false
+    },
+    {
+      "test": "T2 D _||_ H | A,S",
+      "sample": "layer2_primary_train",
+      "flags": "strict",
+      "n": 131916,
+      "effect": "adjusted OR (H on D)",
+      "estimate": 23.956,
+      "ci_low": 22.215,
+      "ci_high": 25.833,
+      "p_value": 0.0,
+      "partial_r": 0.5043,
+      "threshold": "OR in (0.8, 1.25) and |r|<0.05",
+      "implied_in_this_sample": false,
+      "holds": false
+    }
+  ],
+  "lookback_descriptive_OR_[est,lo,hi]": {
+    "C_vs_acute_mi_adjusted_OR": [
+      0.537,
+      0.511,
+      0.564
+    ],
+    "C_vs_diabetes_primary_OR": [
+      2.08,
+      2.016,
+      2.146
+    ],
+    "C_vs_hypertension_primary_OR": [
+      2.654,
+      2.57,
+      2.742
+    ],
+    "C_vs_ckd_primary_OR": [
+      3.484,
+      3.364,
+      3.609
+    ],
+    "strict_flag_positive_share_when_no_prior_admission": {
+      "diabetes": 0.0,
+      "hypertension": 0.0,
+      "ckd": 0.0
+    },
+    "T2_strict_flags_among_admissions_with_prior_admission_OR": [
+      6.198,
+      5.714,
+      6.724
+    ]
+  }
+}
