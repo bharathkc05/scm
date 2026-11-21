@@ -1,0 +1,24 @@
+{
+  "admissions_total": 431231,
+  "admissions_with_dx": 430852,
+  "admissions_under_18": 0,
+  "admissions_with_prior_admission": 250498,
+  "acute_mi": 11222,
+  "mi_stemi": 1917,
+  "mi_nstemi": 7611,
+  "mi_type2": 1465,
+  "mi_other_unspecified": 370,
+  "mi_subsequent_episode_icd9": 1013,
+  "old_mi": 24061,
+  "diabetes": 103903,
+  "hypertension": 216447,
+  "ckd": 62558,
+  "chest_pain": 26093,
+  "acute_mi_by_icd_version": {
+    "9": 5376,
+    "10": 5846
+  },
+  "subsequent_episode_only": 965,
+  "acute_mi_without_subtype": 0,
+  "chest_pain_without_acute_mi": 25973
+}
