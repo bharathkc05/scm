@@ -1,0 +1,21 @@
+claim_id,manuscript_section,claim,evidence_files,assumptions,strength
+C01,Abstract; 5.1,Diabetes is associated with acute MI at admission (RR 1.54-1.67 bracket),phase5_estimation/LAYER1_ESTIMATES.csv; phase7_stress_test/*,A1; A5 (bounded by E-value 2.31-2.58); A6; total effect not identified (bracket),survives all stress tests except strict flags (explained artefact)
+C02,Abstract; 5.1,Hypertension is associated with acute MI given age sex diabetes (RR 1.44),phase5_estimation/LAYER1_ESTIMATES.csv; phase7_stress_test/*,A1; A5 (E-value CI 2.03); A6; D->H ordering (revised graph),survives
+C03,5.1; 6,CKD association (RR 1.34) is fragile and tied to secondary-diagnosis MI,phase7_stress_test/OUTCOME_CODES_LAYER1.csv,A1; A5,reported as fragile
+C04,5.1,Prior MI is associated with acute MI (RR 2.35) - descriptive only,phase5_estimation/LAYER1_ESTIMATES.csv,not causal (unmeasured coronary disease),descriptive
+C05,3,The roadmap draft graph is contradicted (D not independent of H given age sex; OR 5.77) and revised,phase4_graph/INDEPENDENCE_TESTS.csv; GRAPH.md,pre-declared effect-size threshold,tested
+C06,5.2,MI causes lateral ST depression and T flattening with reciprocal aVR changes (ATT up to -0.36 SD),phase5_estimation/LAYER2_ESTIMATES.csv; phase6_novelty/DECONFOUNDED_ECG_EFFECTS.csv,A2; A3 (E-value up to 2.13); A4,causal under assumptions; negative-control bound 38%
+C07,5.3,14 point features + 2 composites are robust MI signs,phase6_novelty/DECONFOUNDED_ECG_EFFECTS.csv; phase7_stress_test/*,A2; A3; A4,survives all stress tests
+C08,5.3,Crude R/Q/S amplitude differences are explained by confounding,phase6_novelty/DECONFOUNDED_ECG_EFFECTS.csv,A3 (adjustment set adequate),classification rule pre-declared
+C09,5.4,The ST/T pattern is not an artefact of STEMI coding,phase6_novelty/p6_01_sensitivity.json (nstemi_only),A2; A3; NSTEMI coding not based on ST elevation,Gate 1 condition met
+C10,5.4,About 60% of the ST/T effect is specific to the acute event,phase6_novelty/p6_01_sensitivity.json (negative_control),negative control captures confounding + selection + pre-existing CAD jointly,upper-bound interpretation
+C11,5.2,QRS-duration effect is not validated; RR effect is not MI-specific,phase5_estimation/LAYER2_ESTIMATES.csv (machine); phase6_novelty/DECONFOUNDED_ECG_EFFECTS.csv,measurement validity,excluded from claims
+C12,5.5,MI explains <0.2% of each beta-VAE latent's variance; latents add no MI information beyond handcrafted features,phase6_novelty/LATENT_AUDIT.csv; p6_02_latent_audit.json,A3; latent provenance verified (phase2 p2_05),negative result
+C13,5.6,Model-implied lateral ST shift grows with risk profile,phase6_novelty/COUNTERFACTUAL_PROFILES.csv,outcome-model correct specification; not observed counterfactuals,exploratory
+C14,6,Results are robust to ECG-selection weighting,phase7_stress_test/p7_02_selection.json,A4 given measured selection covariates,survives
+C15,6,BMI does not confound either layer measurably,phase7_stress_test/p7_03_bmi.json,BMI-available subset representative of BMI confounding,survives
+C16,6,Strict prior-only history flags produce a spurious inverse hypertension association,phase7_stress_test/LAYER1_HISTORY_VARIANTS.csv; phase2_data_audit/p2_01_admissions.json,first-admission structural zeros,explained
+C17,6,The ST/T pattern holds in every age and sex subgroup; magnitudes differ,phase7_stress_test/SUBGROUPS_LAYER2.csv; SUBGROUP_INTERACTIONS_LAYER2.csv,A2; A3; A4,descriptive modification
+C18,2,ECGdeli aVL/aVF labels were swapped and corrected,phase5_estimation/ESTIMATION_REPORT.md section 2; roadmap/definitions.py,Goldberger identity,verified
+C19,2,Stored beta-VAE embeddings reproduce exactly from the checkpoint,phase2_data_audit/p2_05_vae_provenance.json,-,verified
+C20,2,Legacy baseline models are not comparable to causal estimates,models/baselines/results.json; src/models/train_baselines.py,-,context only
