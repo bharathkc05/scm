@@ -1,0 +1,52 @@
+{
+  "profiles": [
+    "55y man, no comorbidity",
+    "65y man, diabetes + HTN",
+    "75y woman, HTN + CKD",
+    "70y man, D + H + CKD + prior MI"
+  ],
+  "bootstrap_reps": 200,
+  "per_patient_deviation_among_mi": {
+    "ST_lateral_mean": {
+      "median_deviation_sd": -0.23843487207894426,
+      "share_beyond_1sd_in_effect_direction": 0.23320928584086478
+    },
+    "ST_max_depression": {
+      "median_deviation_sd": 0.10244423008433033,
+      "share_beyond_1sd_in_effect_direction": 0.13556618819776714
+    },
+    "ST_max_elevation": {
+      "median_deviation_sd": -0.17685380246756796,
+      "share_beyond_1sd_in_effect_direction": 0.1369838738259791
+    },
+    "ST_Elev_I": {
+      "median_deviation_sd": -0.22907396582751116,
+      "share_beyond_1sd_in_effect_direction": 0.215311004784689
+    },
+    "ST_Elev_aVL": {
+      "median_deviation_sd": -0.12110730514798451,
+      "share_beyond_1sd_in_effect_direction": 0.18164097111465533
+    },
+    "ST_Elev_V5": {
+      "median_deviation_sd": -0.21404051677981756,
+      "share_beyond_1sd_in_effect_direction": 0.21566542619174198
+    },
+    "T_Amp_V5": {
+      "median_deviation_sd": -0.2865812092244383,
+      "share_beyond_1sd_in_effect_direction": 0.2223994329257487
+    },
+    "T_Amp_V6": {
+      "median_deviation_sd": -0.24291036593642168,
+      "share_beyond_1sd_in_effect_direction": 0.20822257664362928
+    },
+    "T_Amp_aVR": {
+      "median_deviation_sd": 0.22076875753922412,
+      "share_beyond_1sd_in_effect_direction": 0.25412014885699097
+    },
+    "T_Amp_V4": {
+      "median_deviation_sd": -0.2622048818444628,
+      "share_beyond_1sd_in_effect_direction": 0.2179691653375864
+    }
+  },
+  "caveat": "model-implied conditional expectations; not observed counterfactuals"
+}

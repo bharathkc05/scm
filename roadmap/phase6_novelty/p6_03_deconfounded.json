@@ -1,0 +1,93 @@
+{
+  "class_counts_point": {
+    "MI-attributable": 26,
+    "explained by confounding": 16,
+    "revealed by adjustment": 5,
+    "partly confounded": 3,
+    "no association": 3
+  },
+  "robust_point_features": [
+    "QRS_Dur_Global",
+    "Q_Amp_I",
+    "ST_Elev_I",
+    "T_Amp_II",
+    "ST_Elev_III",
+    "T_Amp_aVR",
+    "ST_Elev_aVR",
+    "Q_Amp_aVL",
+    "ST_Elev_aVL",
+    "T_Amp_V4",
+    "ST_Elev_V4",
+    "T_Amp_V5",
+    "ST_Elev_V5",
+    "T_Amp_V6",
+    "ST_Elev_V6"
+  ],
+  "explained_by_confounding": [
+    "S_Amp_V1",
+    "S_Amp_V2",
+    "R_Amp_I",
+    "R_Amp_II",
+    "R_Amp_III",
+    "Q_Amp_aVR",
+    "R_Amp_aVR",
+    "R_Amp_aVL",
+    "R_Amp_aVF",
+    "Q_Amp_V1",
+    "T_Amp_V2",
+    "Q_Amp_V4",
+    "R_Amp_V4",
+    "Q_Amp_V5",
+    "R_Amp_V5",
+    "Q_Amp_V6"
+  ],
+  "revealed_by_adjustment": [
+    "Q_Amp_II",
+    "Q_Amp_aVF",
+    "R_Amp_V1",
+    "R_Amp_V2",
+    "R_Amp_V6"
+  ],
+  "composites": {
+    "ST_inferior_mean": {
+      "crude_sd": 0.119,
+      "att_sd": 0.11,
+      "nstemi_att_sd": -0.083,
+      "negative_control_att_sd": 0.012,
+      "class": "MI-attributable",
+      "robust_mi_sign": false
+    },
+    "ST_anterior_mean": {
+      "crude_sd": -0.086,
+      "att_sd": -0.038,
+      "nstemi_att_sd": -0.122,
+      "negative_control_att_sd": 0.04,
+      "class": "partly confounded",
+      "robust_mi_sign": false
+    },
+    "ST_lateral_mean": {
+      "crude_sd": -0.463,
+      "att_sd": -0.363,
+      "nstemi_att_sd": -0.504,
+      "negative_control_att_sd": -0.104,
+      "class": "MI-attributable",
+      "robust_mi_sign": true
+    },
+    "ST_max_elevation": {
+      "crude_sd": 0.155,
+      "att_sd": 0.15,
+      "nstemi_att_sd": -0.01,
+      "negative_control_att_sd": 0.034,
+      "class": "MI-attributable",
+      "robust_mi_sign": false
+    },
+    "ST_max_depression": {
+      "crude_sd": -0.318,
+      "att_sd": -0.225,
+      "nstemi_att_sd": -0.203,
+      "negative_control_att_sd": -0.04,
+      "class": "MI-attributable",
+      "robust_mi_sign": true
+    }
+  }
+}

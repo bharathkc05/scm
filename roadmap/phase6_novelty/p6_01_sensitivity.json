@@ -1,0 +1,114 @@
+{
+  "gate1_nstemi_condition_pass": true,
+  "stability_pass_by_set": {
+    "nstemi_only": true,
+    "active_comparator_chest_pain": true,
+    "after_strict_timing": true,
+    "type2_excluded": true,
+    "first_ecg_has_features": true
+  },
+  "by_set": {
+    "nstemi_only": {
+      "n": 187314,
+      "exposed": 4149,
+      "sign_agreement_primary_significant": 0.9117647058823529,
+      "sign_agreement_ST_T_significant": 0.9545454545454546,
+      "ST_T_mean_abs_att_ratio_to_primary": 1.251026511695348,
+      "bh_significant_point": 42,
+      "corr_with_primary_att_sd": 0.9116278431724679,
+      "max_abs_att_sd": 0.4465588431922433,
+      "composites_att_sd": {
+        "w_ST_inferior_mean": -0.083,
+        "w_ST_anterior_mean": -0.122,
+        "w_ST_lateral_mean": -0.504,
+        "w_ST_max_elevation": -0.01,
+        "w_ST_max_depression": -0.203
+      }
+    },
+    "active_comparator_chest_pain": {
+      "n": 26186,
+      "exposed": 5643,
+      "sign_agreement_primary_significant": 0.9411764705882353,
+      "sign_agreement_ST_T_significant": 1.0,
+      "ST_T_mean_abs_att_ratio_to_primary": 1.3643582336207187,
+      "bh_significant_point": 45,
+      "corr_with_primary_att_sd": 0.9258358392999706,
+      "max_abs_att_sd": 0.5053202831746083,
+      "composites_att_sd": {
+        "w_ST_inferior_mean": 0.087,
+        "w_ST_anterior_mean": -0.117,
+        "w_ST_lateral_mean": -0.493,
+        "w_ST_max_elevation": 0.191,
+        "w_ST_max_depression": -0.353
+      }
+    },
+    "after_strict_timing": {
+      "n": 187141,
+      "exposed": 3976,
+      "sign_agreement_primary_significant": 1.0,
+      "sign_agreement_ST_T_significant": 1.0,
+      "ST_T_mean_abs_att_ratio_to_primary": 0.9776151702400429,
+      "bh_significant_point": 34,
+      "corr_with_primary_att_sd": 0.9872808415899366,
+      "max_abs_att_sd": 0.3667533918492696,
+      "composites_att_sd": {
+        "w_ST_inferior_mean": 0.123,
+        "w_ST_anterior_mean": -0.024,
+        "w_ST_lateral_mean": -0.314,
+        "w_ST_max_elevation": 0.139,
+        "w_ST_max_depression": -0.19
+      }
+    },
+    "type2_excluded": {
+      "n": 188728,
+      "exposed": 5563,
+      "sign_agreement_primary_significant": 1.0,
+      "sign_agreement_ST_T_significant": 1.0,
+      "ST_T_mean_abs_att_ratio_to_primary": 0.9957038134545717,
+      "bh_significant_point": 34,
+      "corr_with_primary_att_sd": 0.999889938758991,
+      "max_abs_att_sd": 0.3596966598200567,
+      "composites_att_sd": {
+        "w_ST_inferior_mean": 0.112,
+        "w_ST_anterior_mean": -0.039,
+        "w_ST_lateral_mean": -0.361,
+        "w_ST_max_elevation": 0.15,
+        "w_ST_max_depression": -0.226
+      }
+    },
+    "first_ecg_has_features": {
+      "n": 165135,
+      "exposed": 4787,
+      "sign_agreement_primary_significant": 1.0,
+      "sign_agreement_ST_T_significant": 1.0,
+      "ST_T_mean_abs_att_ratio_to_primary": 1.01946034409132,
+      "bh_significant_point": 32,
+      "corr_with_primary_att_sd": 0.9986803593405065,
+      "max_abs_att_sd": 0.3837297988178731,
+      "composites_att_sd": {
+        "w_ST_inferior_mean": 0.11,
+        "w_ST_anterior_mean": -0.03,
+        "w_ST_lateral_mean": -0.384,
+        "w_ST_max_elevation": 0.162,
+        "w_ST_max_depression": -0.24
+      }
+    },
+    "negative_control_future_mi": {
+      "n": 159071,
+      "exposed": 6938,
+      "sign_agreement_primary_significant": 0.7352941176470589,
+      "sign_agreement_ST_T_significant": 0.8181818181818182,
+      "ST_T_mean_abs_att_ratio_to_primary": 0.3799116010764172,
+      "bh_significant_point": 15,
+      "corr_with_primary_att_sd": 0.6684718925469466,
+      "max_abs_att_sd": 0.14932851574653155,
+      "composites_att_sd": {
+        "w_ST_inferior_mean": 0.012,
+        "w_ST_anterior_mean": 0.04,
+        "w_ST_lateral_mean": -0.104,
+        "w_ST_max_elevation": 0.034,
+        "w_ST_max_depression": -0.04
+      }
+    }
+  }
+}

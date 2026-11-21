@@ -30,17 +30,17 @@ def group_of(col: str) -> str:
     return "other"
 
 
-def estimate(df, cols, family_of, spec, folds, seed_offset, save_name=None):
+def estimate(df, cols, family_of, spec, folds, seed_offset, save_name=None, exposure="acute_mi", reps=REPS):
     y = df[cols].to_numpy(float)
-    x = df["acute_mi"].to_numpy(float)
+    x = df[exposure].to_numpy(float)
     sid = df["subject_id"].to_numpy()
-    nu = crossfit_continuous(df, "acute_mi", y, L2_COVS, spec, folds, need_m1=True)
+    nu = crossfit_continuous(df, exposure, y, L2_COVS, spec, folds, need_m1=True)
     a, d = att_terms(x, y, nu["e"], nu["m0"])
     att = a.sum(0) / d.sum()
-    att_boot = patient_bootstrap_ratio(sid, a, d, REPS, SEED + seed_offset)
+    att_boot = patient_bootstrap_ratio(sid, a, d, reps, SEED + seed_offset)
     ate_t = ate_cont_terms(x, y, nu["e"], nu["m0"], nu["m1"])
     ate = ate_t.mean(0)
-    ate_boot = patient_bootstrap_ratio(sid, ate_t, np.ones(len(x)), REPS, SEED + seed_offset + 1)
+    ate_boot = patient_bootstrap_ratio(sid, ate_t, np.ones(len(x)), reps, SEED + seed_offset + 1)
     ctrl = x == 0
     sd = y[ctrl].std(0, ddof=1)
     crude = y[x == 1].mean(0) - y[ctrl].mean(0)

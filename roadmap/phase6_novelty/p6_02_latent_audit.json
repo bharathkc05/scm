@@ -1,0 +1,96 @@
+{
+  "latents": 64,
+  "bh_significant": 43,
+  "median_r2_baseline": 0.005963223681399399,
+  "median_delta_r2_mi": 8.699148302537818e-05,
+  "max_delta_r2_mi": 0.001162834728021922,
+  "latents_where_mi_explains_more_than_baseline": 1,
+  "median_retained_share": 0.6234258225874058,
+  "top10_by_delta_r2": [
+    {
+      "latent": "z_ecg_57",
+      "delta_r2_mi_adjusted": 0.0012,
+      "r2_baseline": 0.0304,
+      "att_sd": 0.2008,
+      "top_handcrafted_feature": "T_Amp_aVR",
+      "top_feature_corr": 0.2514
+    },
+    {
+      "latent": "z_ecg_3",
+      "delta_r2_mi_adjusted": 0.0011,
+      "r2_baseline": 0.013,
+      "att_sd": -0.197,
+      "top_handcrafted_feature": "T_Amp_aVR",
+      "top_feature_corr": -0.3078
+    },
+    {
+      "latent": "z_ecg_11",
+      "delta_r2_mi_adjusted": 0.0008,
+      "r2_baseline": 0.0102,
+      "att_sd": 0.167,
+      "top_handcrafted_feature": "T_Amp_I",
+      "top_feature_corr": -0.2072
+    },
+    {
+      "latent": "z_ecg_31",
+      "delta_r2_mi_adjusted": 0.0007,
+      "r2_baseline": 0.0043,
+      "att_sd": 0.1541,
+      "top_handcrafted_feature": "T_Amp_aVR",
+      "top_feature_corr": 0.1955
+    },
+    {
+      "latent": "z_ecg_38",
+      "delta_r2_mi_adjusted": 0.0006,
+      "r2_baseline": 0.0044,
+      "att_sd": -0.1516,
+      "top_handcrafted_feature": "R_Amp_V2",
+      "top_feature_corr": 0.2113
+    },
+    {
+      "latent": "z_ecg_40",
+      "delta_r2_mi_adjusted": 0.0004,
+      "r2_baseline": 0.0104,
+      "att_sd": -0.1255,
+      "top_handcrafted_feature": "T_Amp_aVL",
+      "top_feature_corr": 0.2689
+    },
+    {
+      "latent": "z_ecg_56",
+      "delta_r2_mi_adjusted": 0.0004,
+      "r2_baseline": 0.0096,
+      "att_sd": -0.1206,
+      "top_handcrafted_feature": "Q_Amp_aVL",
+      "top_feature_corr": -0.229
+    },
+    {
+      "latent": "z_ecg_1",
+      "delta_r2_mi_adjusted": 0.0004,
+      "r2_baseline": 0.0674,
+      "att_sd": -0.1162,
+      "top_handcrafted_feature": "R_Amp_aVL",
+      "top_feature_corr": -0.4389
+    },
+    {
+      "latent": "z_ecg_23",
+      "delta_r2_mi_adjusted": 0.0004,
+      "r2_baseline": 0.0458,
+      "att_sd": 0.1159,
+      "top_handcrafted_feature": "R_Amp_aVF",
+      "top_feature_corr": 0.5451
+    },
+    {
+      "latent": "z_ecg_50",
+      "delta_r2_mi_adjusted": 0.0004,
+      "r2_baseline": 0.0019,
+      "att_sd": 0.1129,
+      "top_handcrafted_feature": "RR_Mean_Global",
+      "top_feature_corr": 0.1538
+    }
+  ],
+  "oof_auc_for_mi": {
+    "latents_residualized": 0.6589085007775662,
+    "handcrafted_point_residualized": 0.6525606646737006,
+    "baseline_covariates_only": 0.6529367317830984
+  }
+}
