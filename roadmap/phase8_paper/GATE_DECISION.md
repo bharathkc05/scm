@@ -10,7 +10,7 @@ All numbers in the tables are generated from phase outputs by `p8_01_tables.py`.
 
 | # | Item | Why |
 |---|---|---|
-| U1 | Literature review and full reference list | The roadmap requires it before any novelty claim; references marked † are unverified |
+| U1 | **Partly done (2026-11-21):** targeted literature review in `LITERATURE_REVIEW.md` (23 searches); 18 references verified (✅), 6 located with details to complete (◐); no study found estimating causal effects of MI on ECG features. **Remaining:** systematic PubMed/Embase search with a screening log, and completing the ◐ entries | The roadmap requires it before any novelty claim |
 | U2 | Authors, affiliations, target journal and its format/word limits | Not specified |
 | U3 | Clinical co-author review of the graph and the ECG interpretation | The roadmap's draft graph was "for clinical review" |
 | U4 | MIMIC data-use and PhysioNet credentialing statements | Required by the data licence |

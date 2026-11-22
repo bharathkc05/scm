@@ -1,8 +1,9 @@
 # A Causal Analysis of Acute Myocardial Infarction: Risk Factors and ECG Responses in MIMIC-IV
 
-**Draft v1 — 2026-11-21.** Authors and affiliations: *to be added.*
-Tables: `TABLES.md` (generated). Figures: `../phase6_novelty/figures/`. Every claim is mapped to its evidence
-and assumptions in `CLAIM_EVIDENCE_MAP.csv`. References marked † must be checked before submission.
+**Draft v1.1 — 2026-11-21** (references updated after the targeted literature review). Authors and
+affiliations: *to be added.* Tables: `TABLES.md` (generated). Figures: `../phase6_novelty/figures/`.
+Every claim is mapped to its evidence and assumptions in `CLAIM_EVIDENCE_MAP.csv`. Reference status
+(`LITERATURE_REVIEW.md`): ✅ verified; ◐ located, details to complete.
 
 ---
 
@@ -41,7 +42,7 @@ separates MI from non-MI ECGs in prediction models is confounding, not an effect
 
 ## 1. Introduction
 
-Models that detect MI from the 12-lead ECG reach high discrimination [†ECG-AI references], and our own
+Models that detect MI from the 12-lead ECG reach high discrimination [Strodthoff 2021; Al-Zaiti 2023], and our own
 baseline models did so in this cohort (AUROC up to 0.87; Table S1). Such models answer *whether* an ECG
 belongs to a patient with MI. They do not answer *what MI does to the ECG*. A classifier is free to use any
 feature that differs between MI and non-MI patients, including features that differ only because MI
@@ -59,17 +60,28 @@ We address two questions with a structural causal model on routinely collected h
 Layer 1 is a transparent, assumption-explicit confirmation of established risk factors, not a new discovery.
 The contribution is Layer 2, which treats the ECG as a consequence of MI rather than a predictor. It also
 supplies two audits that prediction studies do not: separating MI-attributable from confounded ECG
-differences, and a causal audit of a β-VAE embedding. To our knowledge this combination has not been
-reported. A systematic literature review is still required before claiming novelty [†].
+differences, and a causal audit of a β-VAE embedding.
+
+Related work has brought causal or counterfactual ideas to ECG analysis, but in the service of prediction.
+- Back-door adjustment has been built into classifiers to make them robust [Causal ECGNet 2025◐].
+- Counterfactual ECGs have been used to explain MI classifiers, by showing which input change would flip the
+  prediction [Tanyel 2025◐].
+- β-VAE factors have been used as interpretable predictors [van de Leur 2022].
+- Demographic "shortcuts" are typically checked only by ablation or subgroup performance.
+
+None of these estimates what MI does to each ECG feature under an explicit causal graph. None asks how much of
+a learned representation MI causes. A targeted literature search (November 2026; `LITERATURE_REVIEW.md`)
+found no such study. To our knowledge this combination has not been reported; a formal systematic search
+is planned before submission.
 
 ## 2. Data and cohort
 
-**Sources.** MIMIC-IV v2.2 [†Johnson 2023] provided admissions, demographics and ICD-9/ICD-10 diagnoses
+**Sources.** MIMIC-IV v2.2 [Johnson 2023] provided admissions, demographics and ICD-9/ICD-10 diagnoses
 for 431,231 adult admissions of 180,733 patients at Beth Israel Deaconess Medical Center. MIMIC-IV-ECG v1.0
-[†Gow 2023] provided 800,035 diagnostic 12-lead ECGs.
+[Gow 2023] provided 800,035 diagnostic 12-lead ECGs.
 
 **ECG features.**
-- *Handcrafted:* ECGdeli [†Pilia 2021] delineated each ECG. We used 53 point measurements (ST level and
+- *Handcrafted:* ECGdeli [Pilia 2021] delineated each ECG. We used 53 point measurements (ST level and
   Q, R, S and T amplitudes per lead, global QRS duration and RR interval); 41 beat-to-beat interquartile
   ranges were secondary outcomes.
 - *Lead-label correction:* MIMIC-IV-ECG stores the augmented limb leads in the order aVR, aVF, aVL, but
@@ -94,7 +106,8 @@ Layer 2 uses the earliest ECG with features per admission. Patients were kept wh
 Table 1 describes the cohorts.
 
 **Relation to prior baseline models.** Earlier prediction models on these data (Table S1) are reported for
-context only. They used a troponin-timed label, a cohort that excluded post-onset ECGs, the uncorrected
+context only. They used a troponin-timed label built from MIMIC-IV-ECG-Ext-ICD v1.0.1 [Strodthoff, PhysioNet], a cohort
+that excluded post-onset ECGs, the uncorrected
 aVL/aVF labels, and in-admission treatments as predictors. Their discrimination is therefore not comparable
 to, and not evidence for, the causal estimates.
 
@@ -140,9 +153,9 @@ diabetes and hypertension.
 ## 4. Methods
 
 **Estimators.** Augmented inverse-probability weighting (AIPW) with 5-fold cross-fitting, patients kept
-whole within folds [†Bang & Robins 2005; †Chernozhukov 2018].
+whole within folds [Bang & Robins 2005; Chernozhukov 2018].
 - *Layer 1:* risk differences and risk ratios for the ATE in the overlap region (propensity 0.01–0.99)
-  [†Crump 2009], with the ATT alongside. For diabetes and hypertension the overlap region includes every
+  [Crump 2009], with the ATT alongside. For diabetes and hypertension the overlap region includes every
   admission. For CKD and prior MI it includes 82% and 78% of admissions.
 - *Layer 2:* the primary estimand is the ATT in control-standard-deviation units. ATE weights left age
   imbalanced, so the ATE is not interpreted.
@@ -154,7 +167,7 @@ whole within folds [†Bang & Robins 2005; †Chernozhukov 2018].
 
 **Inference.** 1,000 patient-level bootstrap resamples with nuisances fixed (500 in stress tests).
 Benjamini–Hochberg FDR within the 53 point features, the 41 IQR features and the 64 latents
-[†Benjamini & Hochberg 1995].
+[Benjamini & Hochberg 1995].
 
 **Held-out check.** The test split was used once. Nuisances were fitted on training plus validation data
 and the estimates recomputed on test admissions.
@@ -162,7 +175,7 @@ and the estimates recomputed on test admissions.
 **Deconfounded ECG effects.** Each feature was classified as MI-attributable, partly confounded, explained
 by confounding, revealed by adjustment, or not associated, by comparing crude and adjusted contrasts. A
 feature was *robust* if it was significant after adjustment, kept its sign in NSTEMI, and had a negative-
-control effect below half the primary effect [†Lipsitch 2010].
+control effect below half the primary effect [Lipsitch 2010].
 
 **Latent audit.** For each latent we computed the cross-fitted R² from baseline factors, and the additional
 R² from MI. We also computed the out-of-fold AUC for MI from baseline-residualized latents and from
@@ -172,10 +185,10 @@ baseline-residualized handcrafted features.
 with and without MI. These are exploratory conditional predictions, not observed counterfactuals.
 
 **Stress tests.**
-- E-values for Layer 1 risk ratios, and for Layer 2 via RR ≈ exp(0.91·d) [†VanderWeele & Ding 2017;
-  †VanderWeele 2017].
+- E-values for Layer 1 risk ratios, and for Layer 2 via RR ≈ exp(0.91·d) [VanderWeele & Ding 2017;
+  VanderWeele 2017].
 - Inverse-probability-of-selection weights for having a feature ECG, modelled on 425,146 eligible
-  admissions [†Bareinboim & Tian 2015].
+  admissions [Bareinboim & Tian 2015].
 - Adjustment for pre-admission BMI from the outpatient record (55% coverage).
 - Principal-only, broad and type-1-only MI definitions.
 - Age (<65 / ≥65) and sex subgroups with interaction tests.
@@ -276,13 +289,24 @@ than 1 SD from their own predicted no-MI value in the direction of the effect.
 Treating the ECG as an effect of MI gives a different picture from treating it as a predictor. The
 MI-attributable ECG signature in hospitalized patients is lateral ST depression and T-wave flattening with
 reciprocal aVR elevation — the subendocardial-ischemia pattern expected in a cohort where three-quarters of
-infarctions are NSTEMI [†ECG ischemia references]. Several crude differences that a classifier would
+infarctions are NSTEMI. The literature reads aVR elevation with diffuse ST depression as supply–demand
+ischemia that predicts severe multivessel disease, rather than acute occlusion [aVR review◐]. Several crude
+differences that a classifier would
 exploit (R, Q and S amplitudes) are explained by who has an MI rather than by the infarction. The
 pattern's persistence in NSTEMI, against chest-pain comparators, after selection weighting and in every
 subgroup argues against coding circularity and selection as its source. The negative control limits the
 claim: roughly 40% of the effect magnitude is not specific to the acute event.
 
-The latent audit is a negative result with practical value. The β-VAE representation is dominated by
+The Layer 1 associations point the same way as the INTERHEART case-control estimates but are smaller
+(diabetes OR 2.37, hypertension OR 1.91 there [Yusuf 2004]). This is expected when everyone studied is
+hospitalized, because restricting to a common effect of illness distorts risk-factor associations
+[Griffith 2020]. It also matches our look-back analysis, where removing a recording artefact
+increased every risk ratio. The CKD association disappeared for MI coded as the reason for admission. That
+fits the literature linking CKD to NSTEMI and supply–demand infarction rather than to presenting MI
+[CKD–MI studies◐].
+
+The latent audit is a negative result with practical value. Earlier work used β-VAE factors as
+interpretable predictors [van de Leur 2022]. Our audit adds the causal question. The β-VAE representation is dominated by
 variation unrelated to MI and to measured patient factors, and adds no MI information beyond handcrafted
 features. It should not be used as an MI-specific node in causal models.
 
@@ -298,7 +322,7 @@ features. It should not be used as an MI-specific node in causal models.
    measurements, and a lead-labelling error was found and corrected during the analysis.
 6. Model-implied counterfactual ECGs are conditional predictions, not observed counterfactuals.
 7. Single centre; external validation is needed.
-8. A literature review to confirm novelty and complete the references is outstanding.
+8. The literature search was targeted, not systematic; a formal systematic search is planned.
 
 **Conclusion.** Under explicit and partly tested assumptions, acute MI causes a lateral ST-depression and
 T-wave pattern in hospitalized patients. About 60% of this pattern is specific to the acute event, and it
@@ -307,20 +331,36 @@ inform how ECG-based MI models are built and interpreted.
 
 ---
 
-## References († = verify details before submission; list incomplete pending literature review)
+## References
 
-1. †Johnson AEW, Bulgarelli L, Shen L, et al. MIMIC-IV, a freely accessible electronic health record dataset. *Scientific Data*. 2023.
-2. †Gow B, Pollard T, Nathanson LA, et al. MIMIC-IV-ECG: Diagnostic Electrocardiogram Matched Subset. PhysioNet. 2023.
-3. †Pilia N, Nagel C, Lenis G, et al. ECGdeli — an open source ECG delineation toolbox for MATLAB. *SoftwareX*. 2021.
-4. †Thygesen K, Alpert JS, Jaffe AS, et al. Fourth universal definition of myocardial infarction (2018). *Circulation*. 2018.
-5. †Bang H, Robins JM. Doubly robust estimation in missing data and causal inference models. *Biometrics*. 2005.
-6. †Chernozhukov V, Chetverikov D, Demirer M, et al. Double/debiased machine learning for treatment and structural parameters. *The Econometrics Journal*. 2018.
-7. †Crump RK, Hotz VJ, Imbens GW, Mitnik OA. Dealing with limited overlap in estimation of average treatment effects. *Biometrika*. 2009.
-8. †Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. *J R Stat Soc B*. 1995.
-9. †VanderWeele TJ, Ding P. Sensitivity analysis in observational research: introducing the E-value. *Annals of Internal Medicine*. 2017.
-10. †VanderWeele TJ. On a square-root transformation of the odds ratio for a common outcome. *Epidemiology*. 2017.
-11. †Lipsitch M, Tchetgen Tchetgen E, Cohen T. Negative controls: a tool for detecting confounding and bias in observational studies. *Epidemiology*. 2010.
-12. †Bareinboim E, Tian J. Recovering causal effects from selection bias. *AAAI*. 2015.
-13. †Higgins I, Matthey L, Pal A, et al. β-VAE: learning basic visual concepts with a constrained variational framework. *ICLR*. 2017.
-14. †Hernán MA, Robins JM. *Causal Inference: What If*. Chapman & Hall/CRC. 2020.
-15. [To add after literature review: ECG deep-learning MI detection; ECG patterns of NSTEMI and aVR elevation; causal analyses of ECG features; MIMIC-IV-ECG-Ext-ICD.]
+✅ verified in the targeted review; ◐ located, details to complete (see `LITERATURE_REVIEW.md`).
+
+**Data and tools**
+- ✅ Johnson AEW, Bulgarelli L, Shen L, et al. MIMIC-IV, a freely accessible electronic health record dataset. *Sci Data*. 2023;10:1. doi:10.1038/s41597-022-01899-x. *(Also cite the MIMIC-IV v2.2 PhysioNet dataset record — DOI to add.)*
+- ✅ Gow B, Pollard T, Nathanson LA, et al. MIMIC-IV-ECG: Diagnostic Electrocardiogram Matched Subset (version 1.0). PhysioNet. 2023. doi:10.13026/4nqg-sb35.
+- ✅ Strodthoff N, Lopez Alcaraz JM, Haverkamp W. MIMIC-IV-ECG-Ext-ICD: Diagnostic labels for MIMIC-IV-ECG (version 1.0.1). PhysioNet; arXiv:2312.11050.
+- ✅ Pilia N, Nagel C, Lenis G, Becker S, Dössel O, Loewe A. ECGdeli — an open source ECG delineation toolbox for MATLAB. *SoftwareX*. 2021;13:100639. doi:10.1016/j.softx.2020.100639.
+- ✅ Thygesen K, Alpert JS, Jaffe AS, et al. Fourth universal definition of myocardial infarction (2018). *Circulation*. 2018;138:e618–e651. doi:10.1161/CIR.0000000000000617.
+
+**Methods**
+- ✅ Bang H, Robins JM. Doubly robust estimation in missing data and causal inference models. *Biometrics*. 2005;61(4):962–973. doi:10.1111/j.1541-0420.2005.00377.x.
+- ✅ Chernozhukov V, Chetverikov D, Demirer M, et al. Double/debiased machine learning for treatment and structural parameters. *Econometrics J*. 2018;21(1):C1–C68.
+- ✅ Crump RK, Hotz VJ, Imbens GW, Mitnik OA. Dealing with limited overlap in estimation of average treatment effects. *Biometrika*. 2009;96(1):187–199. doi:10.1093/biomet/asn055.
+- ◐ Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. *J R Stat Soc B*. 1995;57(1):289–300.
+- ✅ VanderWeele TJ, Ding P. Sensitivity analysis in observational research: introducing the E-value. *Ann Intern Med*. 2017;167(4):268–274. doi:10.7326/M16-2607.
+- ✅ VanderWeele TJ. On a square-root transformation of the odds ratio for a common outcome. *Epidemiology*. 2017;28(6):e58–e60.
+- ✅ Lipsitch M, Tchetgen Tchetgen E, Cohen T. Negative controls: a tool for detecting confounding and bias in observational studies. *Epidemiology*. 2010;21(3):383–388. doi:10.1097/EDE.0b013e3181d61eeb.
+- ✅ Bareinboim E, Tian J. Recovering causal effects from selection bias. *Proc AAAI Conf Artif Intell*. 2015;29:3475–3481. doi:10.1609/aaai.v29i1.9679.
+- ✅ Higgins I, Matthey L, Pal A, Burgess C, Glorot X, Botvinick M, Mohamed S, Lerchner A. β-VAE: learning basic visual concepts with a constrained variational framework. *ICLR*. 2017.
+- ◐ Hernán MA, Robins JM. *Causal Inference: What If*. Boca Raton: Chapman & Hall/CRC; 2020.
+- ✅ Griffith GJ, et al. Collider bias undermines our understanding of COVID-19 disease risk and severity. *Nat Commun*. 2020. doi:10.1038/s41467-020-19478-2.
+
+**ECG and clinical context**
+- ✅ Strodthoff N, Wagner P, Schaeffter T, Samek W. Deep learning for ECG analysis: benchmarks and insights from PTB-XL. *IEEE J Biomed Health Inform*. 2021;25(5). doi:10.1109/JBHI.2020.3022989.
+- ✅ Al-Zaiti SS, et al. Machine learning for ECG diagnosis and risk stratification of occlusion myocardial infarction. *Nat Med*. 2023;29(7):1804–1813. doi:10.1038/s41591-023-02396-3.
+- ✅ van de Leur RR, et al. Improving explainability of deep neural network-based electrocardiogram interpretation using variational auto-encoders. *Eur Heart J Digit Health*. 2022;3:390–404.
+- ◐ Causal ECGNet: leveraging causal inference for robust ECG classification in cardiac disorders. 2025. PubMed 40458653 (authors and journal to complete).
+- ◐ Tanyel T, et al. Interpretable ECG analysis for myocardial infarction detection through counterfactuals. *Biomed Signal Process Control*. 2025; arXiv:2312.08304 (volume to complete).
+- ✅ Yusuf S, et al. Effect of potentially modifiable risk factors associated with myocardial infarction in 52 countries (the INTERHEART study): case-control study. *Lancet*. 2004;364(9438):937–952. doi:10.1016/S0140-6736(04)17018-9.
+- ◐ Review of ST elevation in aVR with diffuse ST depression (PMC12966643; full citation to complete).
+- ◐ CKD and MI subtype studies (ISCHEMIA-CKD analyses; albuminuria/eGFR and NSTEMI risk, *JAHA* 2018; KidDiCo) — full citations to complete.
