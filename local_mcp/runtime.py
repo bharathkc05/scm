@@ -22,6 +22,7 @@ class ServerContext:
     sandbox_error: str | None = None
     started: float = field(default_factory=time.time)
     calls: int = 0
+    cache: dict = field(default_factory=dict)   # derived from verified snapshots only (e.g. name-matching index)
 
 
 def audited(ctx: ServerContext, tool: str, redact: tuple[str, ...] = ()):

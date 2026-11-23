@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "built_at": "2026-11-23T05:49:50Z",
- "version": "548bfc21a0d8",
+ "built_at": "2026-11-23T06:08:39Z",
+ "version": "e2e347e885ab",
  "artifacts": [
   {
    "path": "data/roadmap/phase3/layer1.parquet",
@@ -238,6 +238,69 @@
    "mtime_ns": 1795322503356924500
   },
   {
+   "path": "roadmap/phase2_data_audit/p2_05_vae_provenance.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "1e8c47d79ea2d7a2d369540fa4038d2f5c7165b7b71e07811f75f4920b750660",
+   "size": 1508,
+   "mtime_ns": 1795322503268807800
+  },
+  {
+   "path": "roadmap/phase6_novelty/p6_01_sensitivity.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "ac5d22596a991d5a8f65a350e9644b08302b47c38814af588d870c15ded96251",
+   "size": 3997,
+   "mtime_ns": 1795322503320125900
+  },
+  {
+   "path": "roadmap/phase6_novelty/p6_02_latent_audit.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "dce450303003aba58b31c490a7711341822cdb5fd678fca809cad40f34bd0043",
+   "size": 2702,
+   "mtime_ns": 1795322503322125400
+  },
+  {
+   "path": "roadmap/phase7_stress_test/p7_02_selection.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "50f9d30bbc83d19becf9fbe7b30e25889d1b79609bd4794bfab75fe11bb0a680",
+   "size": 627,
+   "mtime_ns": 1795322503344570100
+  },
+  {
+   "path": "roadmap/phase7_stress_test/p7_03_bmi.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "5a06b47c7e7e18b6f8720670d7a6f63c28b9da1d5253f7cad1b23d506d26db9e",
+   "size": 1923,
+   "mtime_ns": 1795322503346919500
+  },
+  {
+   "path": "roadmap/phase7_stress_test/p7_05_subgroups.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "85b2b13ea55234cdecd4ecc5e214349da764f0449bfb89c02458846465023e9d",
+   "size": 7678,
+   "mtime_ns": 1795322503349918200
+  },
+  {
+   "path": "local_mcp/assets/variables.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "variables",
+   "sha256": "1c6075a77a0b742909c2e245cb847af2cdf8eabf6c4a70929055f4978de7efa5",
+   "size": 66045,
+   "mtime_ns": 1795413713764880700
+  },
+  {
    "path": "roadmap/phase9_demo/demo_params.json",
    "tier": "T3",
    "kind": "json",
@@ -247,13 +310,211 @@
    "mtime_ns": 1795322503362927400
   },
   {
+   "path": "local_mcp/sql/claims__all.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "673f77a61c84d6e2b8661e78b17043101ef54078497777267032dbf19e049086",
+   "size": 174,
+   "mtime_ns": 1795413613415202500
+  },
+  {
+   "path": "local_mcp/sql/ecg__all_sets.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "4c8bb8daf14a2ae9bf34c5f81c63a8a1a296d7cf818d8dccafe203815799f3b0",
+   "size": 149,
+   "mtime_ns": 1795413613404186300
+  },
+  {
+   "path": "local_mcp/sql/ecg__evalue.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "9d322f6947a82b63cca9e2c02e81710f3770c7b5253cce9714d61bcfdfdbab5d",
+   "size": 155,
+   "mtime_ns": 1795413613409202400
+  },
+  {
+   "path": "local_mcp/sql/ecg__group.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "b988e407837c4dcc577e728dbe6e72843a7e15804d1983983768a99a5ca0c249",
+   "size": 430,
+   "mtime_ns": 1795413613402989500
+  },
+  {
+   "path": "local_mcp/sql/ecg__group_summary.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "23163b09319d9c160441439bb2662210b66151f210d392752ad40411fb3020fc",
+   "size": 433,
+   "mtime_ns": 1795413613402989500
+  },
+  {
+   "path": "local_mcp/sql/ecg__interaction.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "0a840e20999688b8e8b88b5b72bf1448f5626ab450d4c0879ac7e0a5c363cc43",
+   "size": 194,
+   "mtime_ns": 1795413613407194700
+  },
+  {
+   "path": "local_mcp/sql/ecg__latent_one.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "1a85e93d5c6da094bc1ee41d997d84c9709976ea2cf95c979a139c1467f13f46",
+   "size": 232,
+   "mtime_ns": 1795413826272753000
+  },
+  {
+   "path": "local_mcp/sql/ecg__latent_summary.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "7e8efa63caea5b9a8c1c8f784e17c158c9a07b8d66f637481166359156dfb99e",
+   "size": 401,
+   "mtime_ns": 1795413613413203000
+  },
+  {
+   "path": "local_mcp/sql/ecg__latents.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "33e0072fa447f52250235029ad2f6be5d85f827414b717990352f697e9971d1a",
+   "size": 268,
+   "mtime_ns": 1795413613411202500
+  },
+  {
+   "path": "local_mcp/sql/ecg__measure.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "f34a1aab6ebe7377e43296ca24c50464388dd21cb40e8a5121426dc5ddab509b",
+   "size": 339,
+   "mtime_ns": 1795413613401920900
+  },
+  {
+   "path": "local_mcp/sql/ecg__subgroups.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "ae2fcfee11fa1e78c499d1fa442f9412136766b1c4c8b3060437e192b17c4af0",
+   "size": 138,
+   "mtime_ns": 1795413613405195900
+  },
+  {
+   "path": "local_mcp/sql/overview__cohort_flow.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "5c86437e38857826804f4707507832d1a0b0f6abb9652aa99d0a6859a1f10541",
+   "size": 92,
+   "mtime_ns": 1795413613388987600
+  },
+  {
+   "path": "local_mcp/sql/overview__l2_counts.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "f7e191f316778c05ad49bf7426d7c2f96f93e8a83a413a0df6cd4a105ba76d75",
+   "size": 281,
+   "mtime_ns": 1795413613390914800
+  },
+  {
+   "path": "local_mcp/sql/overview__l2_robust.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "392ccf329ac00fe9400707d0f85b6c4e6e7a871872d08829ec43c486422bc230",
+   "size": 279,
+   "mtime_ns": 1795413613394020100
+  },
+  {
+   "path": "local_mcp/sql/risk__checks.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "6bbcc1e517cc868b7494988b15a588ba0520a6c8df07aeb2e5747ecbdb67863c",
+   "size": 145,
+   "mtime_ns": 1795413613400022700
+  },
+  {
+   "path": "local_mcp/sql/risk__effect.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "f04ae6b5fbad9da04e21dafb02699e4817a3a4f0403ceb18317e755f2f42c226",
+   "size": 164,
+   "mtime_ns": 1795413613398915200
+  },
+  {
+   "path": "local_mcp/sql/risk__labels.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "1a34b157528d2a8abb45345bdc5c66ac9230fb63ec0025a83f31c3568a6d7697",
+   "size": 152,
+   "mtime_ns": 1795413613400916500
+  },
+  {
    "path": "local_mcp/sql/status__views.sql",
    "tier": "code",
    "kind": "sql",
    "view": null,
-   "sha256": "97616b480975f974795674453d1b6c55ae93db3ccb1fb8004ba955a6265d4243",
-   "size": 154,
-   "mtime_ns": 1795412895638718800
+   "sha256": "306aaa6ca257126183c15ff55e4116b6c5a0fd7e96e71bf97aa6f1126a51cb0f",
+   "size": 332,
+   "mtime_ns": 1795413735928287700
+  },
+  {
+   "path": "local_mcp/sql/variables__by_name.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "1170d9fd4663396582e9e5b0f3808c91018c800cfbf6b90f18d4230a8f4a6101",
+   "size": 85,
+   "mtime_ns": 1795413613397915800
+  },
+  {
+   "path": "local_mcp/sql/variables__names.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "3c2c1a8aab0c37f4fb5b8ba095fc5188b93ebec979fc56d7f467223ca2fbad6c",
+   "size": 156,
+   "mtime_ns": 1795413825277923900
+  },
+  {
+   "path": "local_mcp/sql/views__00_macros.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "8a6e3cfe6adc3898847ccf37abe19f32789e722b175c8566cfa3bd52f5415aeb",
+   "size": 1125,
+   "mtime_ns": 1795413505552968000
+  },
+  {
+   "path": "local_mcp/sql/views__10_layer1.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "a3a03acc9d4f8654c20212cfdb9722eccf72c38db4cc40e6d28b44ab9a5c53a9",
+   "size": 1037,
+   "mtime_ns": 1795413509857229400
+  },
+  {
+   "path": "local_mcp/sql/views__20_layer2.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "88150d94ad7fdaf2b20dac8489089769430011a8c6661567faaf44ab011ef018",
+   "size": 2042,
+   "mtime_ns": 1795413517098448700
   }
  ]
 }

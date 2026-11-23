@@ -183,8 +183,13 @@ con.execute("SET lock_configuration = true")         # the above cannot be undon
 - **Aggregate in the database.** T1 templates always end in `GROUP BY` with `count(*)`; there is no T1
   template without aggregation. Small-cell suppression is applied in SQL (`HAVING count(*) >= 11`), and
   complementary suppression and rounding in Python on the already-aggregated table.
-- **Freshness.** Views read files at query time. Before each query the registry compares the file's size and
-  modified time with startup; a change returns `INTEGRITY_MISMATCH` until `build_manifest.py` is re-run.
+- **Snapshots and freshness (as built in M2).** Small CSV results are loaded into in-memory tables right
+  after their hashes are verified, and JSON/SQL files are cached at the same moment, so tools always use exactly
+  the verified content. Only Parquet views are read lazily; before each query the registry re-checks those
+  files' size and modified time and returns `INTEGRITY_MISMATCH` if they changed. `server_status` reports any
+  on-disk change to any file. (Checking every file before every query cost ~0.3 s per overview on Windows.)
+- **Derived views.** `views__*.sql` templates (macros, `l1_effects`, `l1_checks`, `l2_effects`, `l2_class`,
+  `l2_subgroups`) give the tools three clean interfaces over the 24 result tables.
 
 **Which tools use DuckDB:** every tool that reads a table — `study_overview`, `describe_variable`
 (variable dictionary CSV), `get_risk_factor_effect`, `get_ecg_effect`, `get_subgroup_effects`,
@@ -254,7 +259,8 @@ which every client accepts.
 ```
 
 Error codes: `INVALID_ARGUMENT`, `DATA_NOT_PRESENT`, `INTEGRITY_MISMATCH`, `DISCLOSURE_BLOCKED`,
-`NOT_SUPPORTED` (e.g. a probability request).
+`NOT_SUPPORTED` (e.g. a probability request), `INTERNAL`. FastMCP prefixes the text with
+"Error executing tool <name>: " before the JSON body.
 
 ### 4.2 Tool specifications
 
@@ -555,7 +561,7 @@ It reuses `roadmap/config.py` (paths), `roadmap/definitions.py` (code lists, lea
 | # | Milestone | Done when |
 |---|---|---|
 | M1 ✅ (2026-11-23, 29 tests) | Scaffold: `server.py`, registry, manifest, DuckDB sandbox (`db.py`), envelope, `server_status` | A Python MCP client (`mcp.client.stdio`) launches the server, lists tools and gets a valid status. Nothing is printed to stdout outside JSON-RPC. The sandbox test suite reproduces every row of the table in 3.4 (allowed reads succeed; other files, raw MIMIC, URLs, extensions, `COPY TO` and config changes all fail). |
-| M2 | Results tools 1–6 and 11 from T2, each backed by SQL templates | Unit tests match every returned number to the source CSV/JSON; every template has a test; unknown names return `did_you_mean`; each warm query finishes in < 100 ms |
+| M2 ✅ (2026-11-23, 46 tests) | Results tools 1–6 and 11 from T2, each backed by SQL templates | Unit tests match every returned number to the source CSV/JSON; every template has a test; unknown names return `did_you_mean`; each warm query finishes in < 100 ms |
 | M3 | Computation tools 7–9 and 10 | `confounding_what_if(E, E)` returns worst case 1.00 for every result; `explain_ecg` matches `explainer.js` within 1e-9 on the 25 Phase 9 test cases; `cohort_summary` never emits a cell < 11, survives a differencing test, and returns `DATA_NOT_PRESENT` when T1 is moved away |
 | M4 | Guards and audit | Planted identifiers, shifted dates and oversized payloads are blocked; an outbound socket attempt raises; the audit chain verifies and breaks if a line is edited |
 | M5 | Multi-client | The same server works from the four configs in Section 6; a smoke script calls all 12 tools over stdio |

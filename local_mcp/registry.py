@@ -1,6 +1,7 @@
 """Manifest-driven registry: which artifacts exist on this machine, whether they are intact, and which
 DuckDB views the sandbox may expose. Data possession is the access model: absent files are never served.
 """
+import hashlib
 import json
 import re
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from local_mcp.paths import MANIFEST, ROOT
 VIEW_NAME = re.compile(r"^[a-z][a-z0-9_]{0,62}$")
 TEMPLATE_NAME = re.compile(r"^[a-z][a-z0-9_]*__[a-z0-9_]+$")
 READERS = {"parquet": "read_parquet", "csv": "read_csv_auto"}
+CACHED_KINDS = {"json", "sql"}
 TIERS = ("T1", "T2", "T3", "code")
 
 
@@ -36,6 +38,7 @@ class Artifact:
     status: str = "unchecked"          # ok | missing | mismatch
     check: str = ""                    # hash | stat | stat_changed_then_hash | full_hash
     seen: tuple[int, int] | None = None  # (size, mtime_ns) when verified
+    cached: str | None = None          # verified content of small text artifacts (json, sql)
 
 
 class Registry:
@@ -77,6 +80,13 @@ class Registry:
             a.check = "full_hash" if full else "stat_changed_then_hash"
         else:
             a.check = "hash"
+        if a.kind in CACHED_KINDS:
+            # Hash and cache the same bytes, so what the tools use is exactly what was verified.
+            data = a.abs_path.read_bytes()
+            ok = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest() == a.sha256
+            a.cached = data.decode("utf-8") if ok else None
+            a.status = "ok" if ok else "mismatch"
+            return
         a.status = "ok" if content_hash(a.abs_path, a.kind) == a.sha256 else "mismatch"
 
     def tiers(self) -> dict[str, str]:
@@ -104,7 +114,20 @@ class Registry:
         return changed
 
     def assert_fresh(self) -> None:
-        changed = self.changed_since_start()
+        """Before a query: re-check only files that are read lazily at query time (Parquet views).
+        CSV results are verified in-memory snapshots and JSON/SQL are verified cached text, so their on-disk
+        copies cannot change what a tool returns; server_status still reports any on-disk change."""
+        changed = []
+        for a in self.artifacts:
+            if a.status != "ok" or a.kind != "parquet":
+                continue
+            try:
+                st = a.abs_path.stat()
+            except FileNotFoundError:
+                changed.append(a.path)
+                continue
+            if (st.st_size, st.st_mtime_ns) != a.seen:
+                changed.append(a.path)
         if changed:
             raise IntegrityError(changed, "changed since the server started; re-run build_manifest.py and restart")
 
@@ -127,15 +150,34 @@ class Registry:
 
     def text(self, rel: str) -> str:
         a = self._artifact(rel)
-        if a.status != "ok":
+        if a.status != "ok" or a.cached is None:
             raise IntegrityError([rel], f"artifact is {a.status}")
-        self.assert_fresh()
-        return a.abs_path.read_text(encoding="utf-8")
+        return a.cached
 
     def template(self, name: str) -> str:
         if not TEMPLATE_NAME.match(name):
             raise ValueError(f"invalid template name {name!r}")
         return self.text(f"local_mcp/sql/{name}.sql")
+
+    def template_names(self, prefix: str = "") -> list[str]:
+        return sorted(Path(a.path).stem for a in self.artifacts
+                      if a.kind == "sql" and a.status == "ok" and Path(a.path).stem.startswith(prefix))
+
+    def json(self, rel: str):
+        return json.loads(self.text(rel))
+
+    def ref(self, view: str) -> tuple[str, str] | None:
+        """(path, sha256) of the artifact behind a base view, for provenance."""
+        for a in self.artifacts:
+            if a.view == view:
+                return a.path, a.sha256
+        return None
+
+    def find(self, rel: str) -> Artifact | None:
+        for a in self.artifacts:
+            if a.path == rel:
+                return a
+        return None
 
     def raw_mimic_registered(self) -> bool:
         return any("data/raw" in a.path.lower() or a.path.lower().endswith(".duckdb") for a in self.artifacts)

@@ -26,14 +26,35 @@ class Sandbox:
         if self.allowlist:
             con.execute(f"SET allowed_paths = [{', '.join(sql_str(p) for p in self.allowlist)}]")
         con.execute("SET enable_external_access = false")
+        # Names are validated by the registry and paths come from the manifest, never from tool input.
+        # Small CSV result tables are snapshotted into memory right after their hashes were verified (fast, and
+        # exactly the verified content); large Parquet files stay as lazy views so only queried columns are read.
         self.views: list[str] = []
-        for view, path, reader in registry.views():      # names validated by the registry; paths from manifest
-            con.execute(f"CREATE VIEW {view} AS SELECT * FROM {reader}({sql_str(path)})")
+        for view, path, reader in registry.views():
+            kind = "TABLE" if reader == "read_csv_auto" else "VIEW"
+            con.execute(f"CREATE {kind} {view} AS SELECT * FROM {reader}({sql_str(path)})")
             self.views.append(view)
         con.execute("SET lock_configuration = true")
         self.con = con
         # Warm-up: plans every view once and records sizes for server_status.
         self.row_counts = {v: int(con.execute(f"SELECT count(*) FROM {v}").fetchone()[0]) for v in self.views}
+        # Derived views and macros from reviewed templates (views__*.sql), in name order. A template whose base
+        # views are absent (e.g. a tier missing on this machine) is skipped and reported, not fatal.
+        self.derived: list[str] = []
+        self.derived_errors: dict[str, str] = {}
+        for name in registry.template_names("views__"):
+            try:
+                con.execute(registry.template(name))
+                self.derived.append(name)
+            except duckdb.Error as e:
+                self.derived_errors[name] = f"{type(e).__name__}: {str(e).splitlines()[0]}"
+        # Relations are fixed after startup; cache the set for has().
+        self.relations = {r[0] for r in con.execute(
+            "SELECT view_name FROM duckdb_views() WHERE NOT internal "
+            "UNION ALL SELECT table_name FROM duckdb_tables()").fetchall()}
+
+    def has(self, *relations: str) -> bool:
+        return all(r in self.relations for r in relations)
 
     def query(self, template: str, params: tuple | list = ()) -> list[dict]:
         """Run a reviewed template from local_mcp/sql with typed, bound parameters."""

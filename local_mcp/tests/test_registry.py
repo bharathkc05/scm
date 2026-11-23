@@ -28,6 +28,7 @@ class RegistryTests(unittest.TestCase):
         (self.tmp / "res/est.csv").write_bytes(b"name,value\na,1\nb,2\n")
         (self.tmp / "res/params.json").write_text('{"k": 1}\n')
         (self.tmp / "local_mcp/sql/t__count.sql").write_text("SELECT count(*) AS n FROM est\n")
+        (self.tmp / "local_mcp/sql/t__t1count.sql").write_text("SELECT count(*) AS n FROM t1\n")
         self.manifest = self.tmp / "manifest.json"
         write(build(self.tmp, ARTS, self.tmp / "local_mcp/sql"), self.manifest)
 
@@ -73,13 +74,23 @@ class RegistryTests(unittest.TestCase):
         t1 = [a for a in r.artifacts if a.tier == "T1"][0]
         self.assertEqual((t1.status, t1.check), ("ok", "stat_changed_then_hash"))
 
-    def test_change_after_start_blocks_queries(self):
+    def test_lazy_parquet_change_after_start_blocks_queries(self):
         r = self.reg()
         sb = Sandbox(r)
-        with (self.tmp / "res/est.csv").open("ab") as f:
-            f.write(b"c,3\n")
+        self.assertEqual(sb.query("t__t1count"), [{"n": 100}])
+        duckdb.sql(f"COPY (SELECT range AS id, 0 AS flag FROM range(5)) "
+                   f"TO '{(self.tmp / 'data/roadmap/phase3/t1.parquet').as_posix()}' (FORMAT parquet)")
         with self.assertRaises(IntegrityError):
-            sb.query("t__count")
+            sb.query("t__t1count")
+
+    def test_csv_and_json_changes_after_start_keep_serving_the_verified_snapshot(self):
+        r = self.reg()
+        sb = Sandbox(r)
+        (self.tmp / "res/est.csv").write_bytes(b"name,value\na,1\nb,2\nc,3\n")
+        (self.tmp / "res/params.json").write_text('{"k": 999}\n')
+        self.assertEqual(sb.query("t__count"), [{"n": 2}])              # in-memory snapshot of verified content
+        self.assertEqual(r.json("res/params.json"), {"k": 1})            # cached verified text
+        self.assertEqual(sorted(r.changed_since_start()), ["res/est.csv", "res/params.json"])  # still reported
 
     def test_template_names_are_validated(self):
         r = self.reg()

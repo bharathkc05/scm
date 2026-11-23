@@ -18,6 +18,8 @@ from mcp.client.stdio import stdio_client
 from mcp.types import LATEST_PROTOCOL_VERSION
 
 SERVER = Path(__file__).resolve().parents[1] / "server.py"
+EXPECTED_TOOLS = ["study_overview", "describe_variable", "get_risk_factor_effect", "get_ecg_effect",
+                  "get_subgroup_effects", "robustness_card", "trace_claim", "server_status"]
 CMD = [sys.executable, "-X", "utf8", str(SERVER)]
 ENV = {**os.environ, "PYTHONUTF8": "1"}
 
@@ -32,15 +34,23 @@ class StdioClient(unittest.TestCase):
                         tools = (await s.list_tools()).tools
                         res = await s.call_tool("server_status", {})
                         bad = await s.call_tool("server_status", {"verify_full": "not-a-bool"})
-                        return init, tools, res, bad
+                        ecg = await s.call_tool("get_ecg_effect", {"measure": "lateral ST"})
+                        card_err = await s.call_tool("robustness_card", {"result_id": "hypertension"})
+                        return init, tools, res, bad, ecg, card_err
 
-        init, tools, res, bad = asyncio.run(run())
+        init, tools, res, bad, ecg, card_err = asyncio.run(run())
         self.assertEqual(init.serverInfo.name, "scm-causal-mi")
         self.assertIn("aggregate", init.instructions)
-        tool = {t.name: t for t in tools}["server_status"]
-        self.assertTrue(tool.annotations.readOnlyHint)
-        self.assertFalse(tool.annotations.openWorldHint)
-        self.assertIsNotNone(tool.outputSchema)
+        self.assertEqual(sorted(t.name for t in tools), sorted(EXPECTED_TOOLS))
+        for tool in tools:
+            self.assertTrue(tool.annotations.readOnlyHint, tool.name)
+            self.assertFalse(tool.annotations.openWorldHint, tool.name)
+            self.assertIsNotNone(tool.outputSchema, tool.name)
+        self.assertFalse(ecg.isError)
+        self.assertEqual(ecg.structuredContent["result"]["rows"][0]["measure"], "ST_lateral_mean")
+        self.assertTrue(card_err.isError)                 # structured error the LLM can act on
+        text = card_err.content[0].text                   # FastMCP prefixes "Error executing tool <name>: "
+        self.assertEqual(json.loads(text[text.index("{"):])["error"]["code"], "INVALID_ARGUMENT")
 
         self.assertFalse(res.isError)
         body = res.structuredContent
@@ -88,7 +98,7 @@ class StdoutPurity(unittest.TestCase):
             self.assertIn("result", until(1))
             send({"jsonrpc": "2.0", "method": "notifications/initialized"})
             send({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
-            self.assertEqual([t["name"] for t in until(2)["result"]["tools"]], ["server_status"])
+            self.assertEqual(sorted(t["name"] for t in until(2)["result"]["tools"]), sorted(EXPECTED_TOOLS))
             send({"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "server_status", "arguments": {}}})
             self.assertFalse(until(3)["result"].get("isError", False))
         finally:

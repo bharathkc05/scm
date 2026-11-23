@@ -49,6 +49,13 @@ ARTIFACTS = [
     ("roadmap/phase7_stress_test/LAYER1_HISTORY_VARIANTS.csv", "T2", "csv", "layer1_history_variants"),
     ("roadmap/phase8_paper/CLAIM_EVIDENCE_MAP.csv", "T2", "csv", "claim_evidence_map"),
     ("roadmap/phase8_paper/TABLE1_COHORT.csv", "T2", "csv", "table1_cohort"),
+    ("roadmap/phase2_data_audit/p2_05_vae_provenance.json", "T2", "json", None),
+    ("roadmap/phase6_novelty/p6_01_sensitivity.json", "T2", "json", None),
+    ("roadmap/phase6_novelty/p6_02_latent_audit.json", "T2", "json", None),
+    ("roadmap/phase7_stress_test/p7_02_selection.json", "T2", "json", None),
+    ("roadmap/phase7_stress_test/p7_03_bmi.json", "T2", "json", None),
+    ("roadmap/phase7_stress_test/p7_05_subgroups.json", "T2", "json", None),
+    ("local_mcp/assets/variables.csv", "T2", "csv", "variables"),
     # T3 model parameters and assets
     ("roadmap/phase9_demo/demo_params.json", "T3", "json", None),
 ]

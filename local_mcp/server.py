@@ -27,17 +27,18 @@ from local_mcp.db import Sandbox  # noqa: E402
 from local_mcp.paths import AUDIT_LOG  # noqa: E402
 from local_mcp.registry import Registry  # noqa: E402
 from local_mcp.runtime import ServerContext  # noqa: E402
-from local_mcp.tools import status  # noqa: E402
+from local_mcp.tools import orientation, provenance, results, status  # noqa: E402
 
 INSTRUCTIONS = (
     "Local server for a causal study of acute myocardial infarction (MIMIC-IV, hospitalized adults). "
     "All computation runs on the user's machine; tools return only aggregate results, never patient rows. "
-    "Call server_status to check that the data and the sandbox are intact. Quote each tool's 'summary' and "
-    "'caveats' with any number you report."
+    "Call study_overview first; use result IDs (L1:<exposure>:<set>, L2:<measure>) to chain tools. "
+    "Quote each tool's 'summary' and 'caveats' with any number you report, and never present an estimate as a "
+    "diagnosis or a probability of MI for an individual."
 )
 
 
-def build_app() -> FastMCP:
+def build_context(audit_path=AUDIT_LOG) -> ServerContext:
     registry = Registry()
     sandbox, sandbox_error = None, None
     try:
@@ -45,9 +46,14 @@ def build_app() -> FastMCP:
     except Exception as e:  # keep serving server_status so the problem is visible to the client
         sandbox_error = f"{type(e).__name__}: {e}"
         logging.getLogger("local_mcp").error("DuckDB sandbox unavailable: %s", sandbox_error)
-    ctx = ServerContext(registry=registry, sandbox=sandbox, audit=AuditLog(AUDIT_LOG), sandbox_error=sandbox_error)
+    return ServerContext(registry=registry, sandbox=sandbox, audit=AuditLog(audit_path), sandbox_error=sandbox_error)
+
+
+def build_app(ctx: ServerContext | None = None) -> FastMCP:
+    ctx = ctx or build_context()
     app = FastMCP(SERVER_NAME, instructions=INSTRUCTIONS, log_level="WARNING")
-    status.register(app, ctx)
+    for module in (orientation, results, provenance, status):
+        module.register(app, ctx)
     return app
 
 
