@@ -47,6 +47,8 @@ models/*
 *.png
 *.jpg
 *.jpeg
+# ...except the MCP server's figure assets, which the manifest pins by hash
+!local_mcp/assets/figures/*.png
 
 # OS
 .DS_Store
