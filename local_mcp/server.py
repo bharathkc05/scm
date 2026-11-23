@@ -27,7 +27,7 @@ from local_mcp.db import Sandbox  # noqa: E402
 from local_mcp.paths import AUDIT_LOG  # noqa: E402
 from local_mcp.registry import Registry  # noqa: E402
 from local_mcp.runtime import ServerContext  # noqa: E402
-from local_mcp.tools import orientation, provenance, results, status  # noqa: E402
+from local_mcp.tools import computation, figures, orientation, provenance, results, status  # noqa: E402
 
 INSTRUCTIONS = (
     "Local server for a causal study of acute myocardial infarction (MIMIC-IV, hospitalized adults). "
@@ -52,7 +52,7 @@ def build_context(audit_path=AUDIT_LOG) -> ServerContext:
 def build_app(ctx: ServerContext | None = None) -> FastMCP:
     ctx = ctx or build_context()
     app = FastMCP(SERVER_NAME, instructions=INSTRUCTIONS, log_level="WARNING")
-    for module in (orientation, results, provenance, status):
+    for module in (orientation, results, computation, figures, provenance, status):
         module.register(app, ctx)
     return app
 

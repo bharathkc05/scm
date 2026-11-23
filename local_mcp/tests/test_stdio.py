@@ -19,7 +19,8 @@ from mcp.types import LATEST_PROTOCOL_VERSION
 
 SERVER = Path(__file__).resolve().parents[1] / "server.py"
 EXPECTED_TOOLS = ["study_overview", "describe_variable", "get_risk_factor_effect", "get_ecg_effect",
-                  "get_subgroup_effects", "robustness_card", "trace_claim", "server_status"]
+                  "get_subgroup_effects", "robustness_card", "confounding_what_if", "cohort_summary", "explain_ecg",
+                  "render_figure", "trace_claim", "server_status"]
 CMD = [sys.executable, "-X", "utf8", str(SERVER)]
 ENV = {**os.environ, "PYTHONUTF8": "1"}
 
@@ -36,9 +37,13 @@ class StdioClient(unittest.TestCase):
                         bad = await s.call_tool("server_status", {"verify_full": "not-a-bool"})
                         ecg = await s.call_tool("get_ecg_effect", {"measure": "lateral ST"})
                         card_err = await s.call_tool("robustness_card", {"result_id": "hypertension"})
-                        return init, tools, res, bad, ecg, card_err
+                        fig = await s.call_tool("render_figure", {"figure_id": "st_t_effects"})
+                        return init, tools, res, bad, ecg, card_err, fig
 
-        init, tools, res, bad, ecg, card_err = asyncio.run(run())
+        init, tools, res, bad, ecg, card_err, fig = asyncio.run(run())
+        self.assertFalse(fig.isError)
+        self.assertEqual([c.type for c in fig.content], ["image", "text"])
+        self.assertEqual(fig.structuredContent["result"]["figure_id"], "st_t_effects")
         self.assertEqual(init.serverInfo.name, "scm-causal-mi")
         self.assertIn("aggregate", init.instructions)
         self.assertEqual(sorted(t.name for t in tools), sorted(EXPECTED_TOOLS))

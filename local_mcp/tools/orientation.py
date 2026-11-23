@@ -88,7 +88,8 @@ def study_overview(ctx: ServerContext) -> Envelope:
         tiers_present=ctx.registry.tiers(),
         result_id_format={"layer1": "L1:<diabetes|hypertension|ckd|prior_mi>:<primary|alternative>",
                           "layer2": "L2:<measure>, e.g. L2:ST_lateral_mean"},
-        suggested_next_tools=["get_risk_factor_effect", "get_ecg_effect", "robustness_card", "get_subgroup_effects",
+        suggested_next_tools=["get_risk_factor_effect", "get_ecg_effect", "robustness_card", "confounding_what_if",
+                              "get_subgroup_effects", "explain_ecg", "cohort_summary", "render_figure",
                               "describe_variable", "trace_claim"])
     survives = sum(h.verdict.startswith("survives") for h in l1)
     summary = (f"{cohort.get('layer1_admissions', 0):,} admissions ({cohort.get('layer1_acute_mi', 0):,} acute MI) for "

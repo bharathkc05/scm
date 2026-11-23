@@ -58,6 +58,12 @@ ARTIFACTS = [
     ("local_mcp/assets/variables.csv", "T2", "csv", "variables"),
     # T3 model parameters and assets
     ("roadmap/phase9_demo/demo_params.json", "T3", "json", None),
+    ("local_mcp/assets/profile_model.json", "T3", "json", None),
+    ("local_mcp/assets/figures/st_t_effects.png", "T3", "png", None),
+    ("local_mcp/assets/figures/crude_vs_adjusted.png", "T3", "png", None),
+    ("local_mcp/assets/figures/latent_audit.png", "T3", "png", None),
+    ("local_mcp/assets/figures/counterfactual_profiles.png", "T3", "png", None),
+    ("local_mcp/assets/figures/cohort_flow.png", "T3", "png", None),
 ]
 
 

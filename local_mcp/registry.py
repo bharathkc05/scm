@@ -14,6 +14,7 @@ VIEW_NAME = re.compile(r"^[a-z][a-z0-9_]{0,62}$")
 TEMPLATE_NAME = re.compile(r"^[a-z][a-z0-9_]*__[a-z0-9_]+$")
 READERS = {"parquet": "read_parquet", "csv": "read_csv_auto"}
 CACHED_KINDS = {"json", "sql"}
+BINARY_CACHED_KINDS = {"png"}
 TIERS = ("T1", "T2", "T3", "code")
 
 
@@ -39,6 +40,7 @@ class Artifact:
     check: str = ""                    # hash | stat | stat_changed_then_hash | full_hash
     seen: tuple[int, int] | None = None  # (size, mtime_ns) when verified
     cached: str | None = None          # verified content of small text artifacts (json, sql)
+    cached_bytes: bytes | None = None  # verified content of small binary assets (png)
 
 
 class Registry:
@@ -85,6 +87,12 @@ class Registry:
             data = a.abs_path.read_bytes()
             ok = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest() == a.sha256
             a.cached = data.decode("utf-8") if ok else None
+            a.status = "ok" if ok else "mismatch"
+            return
+        if a.kind in BINARY_CACHED_KINDS:
+            data = a.abs_path.read_bytes()
+            ok = hashlib.sha256(data).hexdigest() == a.sha256
+            a.cached_bytes = data if ok else None
             a.status = "ok" if ok else "mismatch"
             return
         a.status = "ok" if content_hash(a.abs_path, a.kind) == a.sha256 else "mismatch"
@@ -165,6 +173,12 @@ class Registry:
 
     def json(self, rel: str):
         return json.loads(self.text(rel))
+
+    def bytes(self, rel: str) -> bytes:
+        a = self._artifact(rel)
+        if a.status != "ok" or a.cached_bytes is None:
+            raise IntegrityError([rel], f"artifact is {a.status}")
+        return a.cached_bytes
 
     def ref(self, view: str) -> tuple[str, str] | None:
         """(path, sha256) of the artifact behind a base view, for provenance."""

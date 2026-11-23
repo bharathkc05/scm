@@ -172,7 +172,7 @@ def ecg_rows() -> list[dict]:
     return rows
 
 
-def main() -> Path:
+def export_dictionary() -> Path:
     ASSETS.mkdir(exist_ok=True)
     rows = clinical_rows() + ecg_rows()
     names = [r["name"] for r in rows]
@@ -185,6 +185,112 @@ def main() -> Path:
     return out
 
 
+# ---------------------------------------------------------------------------- M3: profile model for explain_ecg
+def export_profile_model(reps: int = 200) -> Path:
+    """With-MI outcome model on the SAME training-split design as the Phase 9 no-MI model, plus patient-level
+    bootstrap draws of the effect coefficients (m1 - m0), so explain_ecg can give intervals for any profile.
+    Aggregate parameters only; no patient rows are written."""
+    import numpy as np
+    import pandas as pd
+
+    from roadmap.config import DATA_OUT, PHASE_DIRS, SEED
+    from roadmap.estimators import Design, ols
+    from roadmap.phase5_estimation.queries import L2_COVS
+    from roadmap.phase7_stress_test.common import ROBUST, spec
+
+    l2 = pd.read_parquet(DATA_OUT / "phase3/layer2.parquet")
+    train = l2[(l2["set_primary"] == 1) & (l2["split"] == "train")].reset_index(drop=True)
+    des = Design(spec("layer2"), L2_COVS).fit(train)
+    x = des.transform(train)
+    y = train[[f"w_{m}" for m in ROBUST]].to_numpy(float)
+    mi = train["acute_mi"].to_numpy() == 1
+    b0, b1 = ols(x[~mi], y[~mi]), ols(x[mi], y[mi])
+
+    demo = json.loads((PHASE_DIRS[9] / "demo_params.json").read_text())["structural"]
+    assert demo["measures"] == ROBUST
+    assert np.allclose(b0[0], demo["intercept"], atol=1e-9) and np.allclose(b0[1:].T, demo["coef"], atol=1e-9), \
+        "no-MI model does not reproduce demo_params.json"
+
+    rng = np.random.default_rng(SEED + 900)
+    rows_of = train.groupby("subject_id").indices
+    pats = np.array(list(rows_of))
+    draws = np.empty((reps, len(ROBUST), x.shape[1] + 1))
+    for r in range(reps):
+        idx = np.concatenate([rows_of[p] for p in rng.choice(pats, len(pats), replace=True)])
+        m = mi[idx]
+        draws[r] = (ols(x[idx][m], y[idx][m]) - ols(x[idx][~m], y[idx][~m])).T
+    out = ASSETS / "profile_model.json"
+    out.write_text(json.dumps({
+        "note": "With-MI model (m1) on the Phase 9 training-split design; effect draws are bootstrap (m1 - m0) "
+                "coefficient vectors [intercept, coef...] per measure. Fitted on training-split rows only.",
+        "measures": ROBUST, "n_train_controls": int((~mi).sum()), "n_train_mi": int(mi.sum()),
+        "bootstrap_reps": reps, "seed": SEED + 900,
+        "m1_intercept": [round(float(v), 10) for v in b1[0]],
+        "m1_coef": [[round(float(v), 10) for v in col] for col in b1[1:].T],
+        "effect_draws": [[[float(f"{v:.6g}") for v in vec] for vec in rep] for rep in draws],
+    }) + "\n", encoding="utf-8")
+    return out
+
+
+# ---------------------------------------------------------------------------- M3: figure PNGs for render_figure
+def export_figures() -> list[Path]:
+    """PNG renders of the Phase 6 figures (+ cohort flow). The committed SVGs are not rewritten."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import pandas as pd
+
+    import roadmap.phase6_novelty.p6_05_figures as f6
+
+    fig_dir = ASSETS / "figures"
+    fig_dir.mkdir(parents=True, exist_ok=True)
+    names = {"fig1_crude_vs_adjusted": "crude_vs_adjusted", "fig2_st_t_effects": "st_t_effects",
+             "fig3_latent_audit": "latent_audit", "fig4_counterfactual_profiles": "counterfactual_profiles"}
+    written = []
+    original = plt.Figure.savefig
+
+    def png_only(self, path, *a, **k):
+        target = fig_dir / f"{names[Path(str(path)).stem]}.png"
+        original(self, target, dpi=110, metadata={"Software": None})
+        written.append(target)
+
+    plt.Figure.savefig = png_only
+    try:
+        f6.fig_crude_vs_adjusted(); f6.fig_st_t_forest(); f6.fig_latent_audit(); f6.fig_profiles()
+    finally:
+        plt.Figure.savefig = original
+        plt.close("all")
+
+    flow = pd.read_csv(ROOT / "roadmap/phase3_dataset/cohort_flow.csv")
+    fig, ax = plt.subplots(figsize=(6.4, 3.8))
+    labels = flow["step"].str.strip().tolist()[::-1]
+    ax.barh(labels, flow["admissions"].tolist()[::-1], color=f6.BLUE, height=0.6)
+    for i, v in enumerate(flow["admissions"].tolist()[::-1]):
+        ax.text(v, i, f" {v:,}", va="center", fontsize=8, color=f6.INK2)
+    ax.set_xscale("log")
+    ax.set_xlabel("Admissions (log scale)")
+    ax.set_title("Cohort flow")
+    ax.tick_params(axis="y", labelsize=7.5)
+    fig.tight_layout()
+    target = fig_dir / "cohort_flow.png"
+    fig.savefig(target, dpi=110, metadata={"Software": None})
+    plt.close(fig)
+    return written + [target]
+
+
+def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--only", choices=["dictionary", "profile", "figures"], help="export one asset only")
+    a = ap.parse_args()
+    if a.only in (None, "dictionary"):
+        p = export_dictionary()
+        print(f"wrote {p} ({sum(1 for _ in p.open(encoding='utf-8')) - 1} variables)")
+    if a.only in (None, "profile"):
+        print(f"wrote {export_profile_model()}")
+    if a.only in (None, "figures"):
+        print("wrote", ", ".join(p.name for p in export_figures()))
+
+
 if __name__ == "__main__":
-    p = main()
-    print(f"wrote {p} ({sum(1 for _ in p.open(encoding='utf-8')) - 1} variables)")
+    main()

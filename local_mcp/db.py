@@ -56,10 +56,17 @@ class Sandbox:
     def has(self, *relations: str) -> bool:
         return all(r in self.relations for r in relations)
 
-    def query(self, template: str, params: tuple | list = ()) -> list[dict]:
-        """Run a reviewed template from local_mcp/sql with typed, bound parameters."""
+    def query(self, template: str, params: tuple | list = (), fragments: dict[str, str] | None = None) -> list[dict]:
+        """Run a reviewed template from local_mcp/sql with typed, bound parameters.
+
+        `fragments` fill {placeholders} in templates that need variable SQL structure (e.g. GROUP BY columns);
+        callers must build them only from fixed whitelists, never from tool input.
+        """
         self.registry.assert_fresh()
-        cur = self.con.execute(self.registry.template(template), list(params))
+        sql = self.registry.template(template)
+        if fragments:
+            sql = sql.format(**fragments)
+        cur = self.con.execute(sql, list(params))
         cols = [d[0] for d in cur.description]
         return [dict(zip(cols, row)) for row in cur.fetchall()]
 

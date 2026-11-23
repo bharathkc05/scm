@@ -181,8 +181,10 @@ con.execute("SET lock_configuration = true")         # the above cannot be undon
   typed parameters. Typed parameters run in under 10 ms; untyped ones cost about 0.5 s to plan the first
   time, hence the warm-up at startup.
 - **Aggregate in the database.** T1 templates always end in `GROUP BY` with `count(*)`; there is no T1
-  template without aggregation. Small-cell suppression is applied in SQL (`HAVING count(*) >= 11`), and
-  complementary suppression and rounding in Python on the already-aggregated table.
+  template without aggregation, so patient rows never reach Python. As built (M3), suppression runs in Python
+  on the aggregated cells, because complementary suppression must know where the small cells are: cells under
+  11 are hidden, then the smallest other cell in any table line holding exactly one hidden cell, repeated until
+  no line isolates a hidden cell; visible counts are rounded to the nearest 5.
 - **Snapshots and freshness (as built in M2).** Small CSV results are loaded into in-memory tables right
   after their hashes are verified, and JSON/SQL files are cached at the same moment, so tools always use exactly
   the verified content. Only Parquet views are read lazily; before each query the registry re-checks those
@@ -470,7 +472,11 @@ Python port of the Phase 9 explainer (`explainer.js`), using the same `demo_para
 }
 ```
 - **Profile mode** (no ECG given): expected value of each of the 16 eligible measures with and without MI,
-  with 95% intervals from stored bootstrap coefficient draws.
+  with 95% intervals from stored bootstrap coefficient draws. As built (M3): the with-MI model and 200
+  patient-level bootstrap draws of the effect coefficients are fitted on the same training-split design as the
+  Phase 9 no-MI model (`assets/profile_model.json`; the export asserts the no-MI part reproduces
+  `demo_params.json`), so both modes share one expected-without-MI value. Phase 6 profiles used all splits;
+  directions agree.
 - **Comparison mode:** observed vs expected-without-MI, the difference in SD, the study's average MI effect
   with its CI, direction agreement per group, and flags (unknown timing, beat count, out-of-range inputs).
 
@@ -562,7 +568,7 @@ It reuses `roadmap/config.py` (paths), `roadmap/definitions.py` (code lists, lea
 |---|---|---|
 | M1 ✅ (2026-11-23, 29 tests) | Scaffold: `server.py`, registry, manifest, DuckDB sandbox (`db.py`), envelope, `server_status` | A Python MCP client (`mcp.client.stdio`) launches the server, lists tools and gets a valid status. Nothing is printed to stdout outside JSON-RPC. The sandbox test suite reproduces every row of the table in 3.4 (allowed reads succeed; other files, raw MIMIC, URLs, extensions, `COPY TO` and config changes all fail). |
 | M2 ✅ (2026-11-23, 46 tests) | Results tools 1–6 and 11 from T2, each backed by SQL templates | Unit tests match every returned number to the source CSV/JSON; every template has a test; unknown names return `did_you_mean`; each warm query finishes in < 100 ms |
-| M3 | Computation tools 7–9 and 10 | `confounding_what_if(E, E)` returns worst case 1.00 for every result; `explain_ecg` matches `explainer.js` within 1e-9 on the 25 Phase 9 test cases; `cohort_summary` never emits a cell < 11, survives a differencing test, and returns `DATA_NOT_PRESENT` when T1 is moved away |
+| M3 ✅ (2026-11-23, 60 tests) | Computation tools 7–9 and 10 | `confounding_what_if(E, E)` returns worst case 1.00 for every result; `explain_ecg` matches `explainer.js` within 1e-9 on the 25 Phase 9 test cases; `cohort_summary` never emits a cell < 11, survives a differencing test, and returns `DATA_NOT_PRESENT` when T1 is moved away |
 | M4 | Guards and audit | Planted identifiers, shifted dates and oversized payloads are blocked; an outbound socket attempt raises; the audit chain verifies and breaks if a line is edited |
 | M5 | Multi-client | The same server works from the four configs in Section 6; a smoke script calls all 12 tools over stdio |
 | M6 | Demo and evaluation | 15 golden questions with expected tools and values pass in Claude Code; red-team prompts (ask for patient rows, IDs, probabilities) are refused by design |

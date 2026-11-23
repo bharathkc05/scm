@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "built_at": "2026-11-23T06:08:39Z",
- "version": "e2e347e885ab",
+ "built_at": "2026-11-23T06:31:30Z",
+ "version": "4301cda47b0c",
  "artifacts": [
   {
    "path": "data/roadmap/phase3/layer1.parquet",
@@ -310,6 +310,60 @@
    "mtime_ns": 1795322503362927400
   },
   {
+   "path": "local_mcp/assets/profile_model.json",
+   "tier": "T3",
+   "kind": "json",
+   "view": null,
+   "sha256": "19159d75b7a770f6ffad22a1a00d7c976370f4469b0639a08944e24a4025d48d",
+   "size": 1683139,
+   "mtime_ns": 1795415094939050200
+  },
+  {
+   "path": "local_mcp/assets/figures/st_t_effects.png",
+   "tier": "T3",
+   "kind": "png",
+   "view": null,
+   "sha256": "8262c0e596c837f3d88c0d18c0d2b70b86e387488c083fd8ce96e30dbe7fcf69",
+   "size": 52965,
+   "mtime_ns": 1795415121407206400
+  },
+  {
+   "path": "local_mcp/assets/figures/crude_vs_adjusted.png",
+   "tier": "T3",
+   "kind": "png",
+   "view": null,
+   "sha256": "c74b2fb34c4c16fedc5688970c982c1642917ff0ad875d5064803d2413e45149",
+   "size": 51114,
+   "mtime_ns": 1795415121301188000
+  },
+  {
+   "path": "local_mcp/assets/figures/latent_audit.png",
+   "tier": "T3",
+   "kind": "png",
+   "view": null,
+   "sha256": "82ab39d775d044b51a25e191a966987e39aac4cdba54f1e9dfe47e9c682f1ca6",
+   "size": 42621,
+   "mtime_ns": 1795415121684755900
+  },
+  {
+   "path": "local_mcp/assets/figures/counterfactual_profiles.png",
+   "tier": "T3",
+   "kind": "png",
+   "view": null,
+   "sha256": "ac924040df100a0aa2177f76dcc8b5a8b9ef3e257c4be390d9918973be6c9fa9",
+   "size": 30712,
+   "mtime_ns": 1795415121754320100
+  },
+  {
+   "path": "local_mcp/assets/figures/cohort_flow.png",
+   "tier": "T3",
+   "kind": "png",
+   "view": null,
+   "sha256": "ff9f896c2239b8dfd09b639e2e24b9cfc9041fa4ddf1eff3b8d24af35180b01c",
+   "size": 44148,
+   "mtime_ns": 1795415121886379400
+  },
+  {
    "path": "local_mcp/sql/claims__all.sql",
    "tier": "code",
    "kind": "sql",
@@ -317,6 +371,15 @@
    "sha256": "673f77a61c84d6e2b8661e78b17043101ef54078497777267032dbf19e049086",
    "size": 174,
    "mtime_ns": 1795413613415202500
+  },
+  {
+   "path": "local_mcp/sql/cohort__grouped.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "1a74a21dbf036e269c615ec51cc3e34391612651d27eea696a142aaf92833a03",
+   "size": 474,
+   "mtime_ns": 1795415373421989400
   },
   {
    "path": "local_mcp/sql/ecg__all_sets.sql",
@@ -407,6 +470,51 @@
    "sha256": "ae2fcfee11fa1e78c499d1fa442f9412136766b1c4c8b3060437e192b17c4af0",
    "size": 138,
    "mtime_ns": 1795413613405195900
+  },
+  {
+   "path": "local_mcp/sql/figure__cohort_flow.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "fb820f83f57a7086a158534c43384ac06525495eca91c7f50369ec7cebb8f072",
+   "size": 119,
+   "mtime_ns": 1795415373428062600
+  },
+  {
+   "path": "local_mcp/sql/figure__counterfactual_profiles.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "dc744fc89b00a44577cefcabe6ad9a389556aa0f48ddc8d9bb2df69a51741ff3",
+   "size": 236,
+   "mtime_ns": 1795415373427145300
+  },
+  {
+   "path": "local_mcp/sql/figure__crude_vs_adjusted.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "38343c8a80e3513fd3cf28f22ba935581754f1a8385e086480543f7f724ddbf5",
+   "size": 199,
+   "mtime_ns": 1795415373423914300
+  },
+  {
+   "path": "local_mcp/sql/figure__latent_audit.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "37f37e18bc1aa96066e5180e147916e345a7bc7714265f40a25a048d850229b7",
+   "size": 233,
+   "mtime_ns": 1795415373427145300
+  },
+  {
+   "path": "local_mcp/sql/figure__st_t_effects.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "2014d3f9462881114da382041a69ff06567c453a803799191013a99224203afb",
+   "size": 274,
+   "mtime_ns": 1795415373422913600
   },
   {
    "path": "local_mcp/sql/overview__cohort_flow.sql",
