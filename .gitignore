@@ -50,6 +50,14 @@ models/*
 # ...except the MCP server's figure assets, which the manifest pins by hash
 !local_mcp/assets/figures/*.png
 
+# MCP client configs hold machine-specific absolute paths: commit the templates in local_mcp/configs/templates/
+# only (.vscode/mcp.json is already covered by .vscode/ above)
+local_mcp/configs/rendered/
+.mcp.json
+.mcp.json.bak
+.cursor/
+.agents/
+
 # OS
 .DS_Store
 Thumbs.db

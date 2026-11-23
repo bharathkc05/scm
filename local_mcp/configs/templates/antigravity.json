@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "scm-causal-mi": {
+      "command": "{{PYTHON}}",
+      "args": ["-X", "utf8", "{{SCM_ROOT}}/local_mcp/server.py"],
+      "env": {"SCM_ROOT": "{{SCM_ROOT}}", "PYTHONUTF8": "1"},
+      "cwd": "{{SCM_ROOT}}",
+      "timeoutSeconds": 60
+    }
+  }
+}

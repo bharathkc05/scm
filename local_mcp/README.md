@@ -1,10 +1,15 @@
 # Local MCP server (`scm-causal-mi`)
 
 Local stdio MCP server over the causal-MI study results. Design and roadmap: [DESIGN.md](DESIGN.md).
-**Status: M4 complete** — all 12 tools: `study_overview`, `describe_variable`, `get_risk_factor_effect`,
-`get_ecg_effect`, `get_subgroup_effects`, `robustness_card`, `confounding_what_if`, `cohort_summary`,
-`explain_ecg`, `render_figure`, `trace_claim`, `server_status`; every response passes the egress guard.
-Next: M5 client configs, M6 demo evaluation.
+**Status: M5 complete.** The server has 12 tools, and every response passes the egress guard:
+
+- `study_overview`, `describe_variable`
+- `get_risk_factor_effect`, `get_ecg_effect`, `get_subgroup_effects`, `robustness_card`
+- `confounding_what_if`, `cohort_summary`, `explain_ecg`
+- `render_figure`, `trace_claim`, `server_status`
+
+The same server runs from config templates for Claude Code, Cursor, GitHub Copilot (VS Code), Antigravity and
+Claude Desktop. Next: M6, the demo evaluation.
 
 All commands run from the repo root with the project interpreter
 (`C:/Users/Acer/Desktop/Capstone/Capstone/cuda_env/Scripts/python.exe`, shown as `python`).
@@ -13,9 +18,28 @@ All commands run from the repo root with the project interpreter
 |---|---|
 | Regenerate assets (dictionary, profile model ~1.5 min, figure PNGs) | `python -X utf8 local_mcp/export_assets.py` (or `--only dictionary\|profile\|figures`) |
 | Rebuild the manifest after re-running any roadmap phase or editing SQL | `python -X utf8 local_mcp/build_manifest.py` |
-| Run the tests (66) | `python -X utf8 -m unittest discover -s local_mcp/tests -t . -v` |
+| Run the tests (80) | `python -X utf8 -m unittest discover -s local_mcp/tests -t . -v` |
 | Start the server by hand (it waits for a client on stdin) | `python -X utf8 local_mcp/server.py` |
+| Render every client config for this machine (into git-ignored `configs/rendered/`) | `python -X utf8 local_mcp/configs/render.py` |
+| Smoke-test every config: launch as the client would, call all 12 tools | `python -X utf8 local_mcp/smoke.py` (`-v` per call, `--quick`, `--config <installed file>`) |
 | Register with Claude Code (local scope, not committed) | `claude mcp add scm-causal-mi -- "<python>" -X utf8 "<repo>/local_mcp/server.py"` |
+
+### Connect a client
+
+Run `render.py --install <client>` with the project interpreter. It merges the `scm-causal-mi` entry into the
+client's file, keeps any other servers, and saves the previous file as `.bak`. Then reload the client.
+
+| Client | Command | Writes | Then |
+|---|---|---|---|
+| Claude Code | `--install claude_code` | `.mcp.json` | Start `claude` in the repo, approve the project server, check with `/mcp` |
+| Cursor | `--install cursor` | `.cursor/mcp.json` | Settings → MCP: enable `scm-causal-mi` |
+| GitHub Copilot (VS Code) | `--install vscode` | `.vscode/mcp.json` | Start it from the file's CodeLens or *MCP: List Servers*; use Agent mode |
+| Antigravity | `--install antigravity` | `.agents/mcp_config.json` | Reload the agent's MCP servers |
+| Claude Desktop | `--install claude_desktop --target "%APPDATA%/Claude/claude_desktop_config.json"` | that file | Restart the app |
+
+Use `--print <client>` to paste the entry by hand instead (for example into a global file, or a VS Code file
+that has comments), and `--python <path>` to pin a different interpreter. Every written file holds absolute
+paths for this machine and is git-ignored.
 
 Try asking the client: *"Give me the study overview"*, *"Is the hypertension result robust?"*,
 *"Could smoking explain it?"*, *"What does MI do to lateral ST?"*, *"Show the ST/T figure"*,
@@ -38,7 +62,9 @@ Try asking the client: *"Give me the study overview"*, *"Is the hypertension res
 | `tools/ecg_explainer.py` | Python port of the Phase 9 browser explainer (parity-tested through Node) |
 | `egress.py` | Egress guard: blocks identifiers, MIMIC shifted dates, denylisted keys, long lists and payloads > 32 KB |
 | `guards.py`, `audit.py`, `envelope.py`, `runtime.py` | Network guard, hash-chained audit log, response envelope, audited wrapper (applies the egress guard) |
-| `tests/` | Sandbox, registry, guard, audit, results-vs-source-CSV checks, latency, stdio end-to-end |
+| `configs/templates/`, `configs/render.py` | Client config templates (placeholders only) and the renderer/installer |
+| `smoke.py` | Launches the server from each client config (config env over a minimal environment, neutral cwd) and calls all 12 tools |
+| `tests/` | Sandbox, registry, guard, audit, results-vs-source-CSV checks, latency, stdio end-to-end, client configs |
 
 ## Data access
 

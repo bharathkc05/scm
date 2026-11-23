@@ -555,7 +555,8 @@ local_mcp/
   export_assets.py    PNGs from SVGs, bootstrap coefficient draws, variable dictionary
   assets/             generated PNGs, draws, dictionary (aggregate only)
   tests/              unittest suites + stdio smoke test + golden demo questions
-  configs/            client config templates
+  configs/            client config templates (templates/), render.py (render / --print / --install)
+  smoke.py            launch the server from each client config and call all 12 tools over stdio
   DESIGN.md
 ```
 
@@ -570,7 +571,7 @@ It reuses `roadmap/config.py` (paths), `roadmap/definitions.py` (code lists, lea
 | M2 ✅ (2026-11-23, 46 tests) | Results tools 1–6 and 11 from T2, each backed by SQL templates | Unit tests match every returned number to the source CSV/JSON; every template has a test; unknown names return `did_you_mean`; each warm query finishes in < 100 ms |
 | M3 ✅ (2026-11-23, 60 tests) | Computation tools 7–9 and 10 | `confounding_what_if(E, E)` returns worst case 1.00 for every result; `explain_ecg` matches `explainer.js` within 1e-9 on the 25 Phase 9 test cases; `cohort_summary` never emits a cell < 11, survives a differencing test, and returns `DATA_NOT_PRESENT` when T1 is moved away |
 | M4 ✅ (2026-11-23, 66 tests) | Guards and audit | Planted identifiers, shifted dates and oversized payloads are blocked; an outbound socket attempt raises; the audit chain verifies and breaks if a line is edited |
-| M5 | Multi-client | The same server works from the four configs in Section 6; a smoke script calls all 12 tools over stdio |
+| M5 ✅ (2026-11-23, 80 tests) | Multi-client | The same server works from the four configs in Section 6; a smoke script calls all 12 tools over stdio |
 | M6 | Demo and evaluation | 15 golden questions with expected tools and values pass in Claude Code; red-team prompts (ask for patient rows, IDs, probabilities) are refused by design |
 
 Test locally with the Python SDK client rather than `npx @modelcontextprotocol/inspector`, which
@@ -621,6 +622,28 @@ the agent sees.
 
 Commit these as templates under `local_mcp/configs/` with a placeholder root. The real files contain
 machine-specific paths.
+
+**As built (M5).**
+
+- **Templates.** `local_mcp/configs/templates/<client>.json` hold `{{PYTHON}}` and `{{SCM_ROOT}}`. They also set
+  `PYTHONUTF8=1`, and Antigravity gets `cwd` and `timeoutSeconds`.
+- **Rendering.** `configs/render.py` fills the two placeholders with absolute forward-slash paths and writes the
+  results to git-ignored `configs/rendered/`. By default it uses the interpreter that runs it, and it first
+  checks that this interpreter can import `mcp`, `duckdb` and `pydantic`.
+- **Installing.** `--install <client>` merges the `scm-causal-mi` entry into the client's file and keeps every
+  other server and key. It saves the old file as `.bak`, and it refuses files it cannot parse, such as JSONC
+  with comments. Installed files (`.mcp.json`, `.cursor/`, `.agents/`, `.vscode/`) are git-ignored.
+  `--target` installs into a global file, such as Claude Desktop's config.
+- **Smoke test.** `local_mcp/smoke.py` launches each config the way a client does. The process gets the config's
+  `env` on top of the MCP SDK's minimal inherited environment, so nothing leaks in from the shell. It runs in
+  the config's `cwd`, or in a neutral temporary folder when there is none. The script then calls every tool once
+  and re-checks each response with the egress guard on the client side.
+- **Results.** All five configs pass, with about 2.7 s cold start, about 4 s for all 12 calls, and identical answers.
+  `tests/test_configs.py` runs the same check in the suite.
+- **Checked with a real client.** `claude mcp get` (Claude Code 2.1) parses the rendered `.mcp.json` as a
+  stdio project server with the intended command, args and env. Claude Code connects project servers only after
+  the user approves them in an interactive session. Cursor, Copilot and Antigravity have no headless mode, so
+  for them the smoke test stands in: it uses the same stdio launch semantics.
 
 ---
 
