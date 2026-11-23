@@ -9,7 +9,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
-from local_mcp import SERVER_NAME, __version__, audit, guards
+from local_mcp import SERVER_NAME, __version__, audit, egress, guards
 from local_mcp.envelope import Disclosure, Envelope, Provenance
 from local_mcp.paths import rel
 from local_mcp.registry import IntegrityError
@@ -47,6 +47,14 @@ class GuardState(BaseModel):
     blocked_attempts: int
 
 
+class EgressState(BaseModel):
+    active: bool = True
+    max_payload_bytes: int
+    max_list_items: int
+    checks: list[str]
+    blocked_responses: int
+
+
 class AuditState(BaseModel):
     path: str
     entries: int
@@ -65,6 +73,7 @@ class StatusResult(BaseModel):
     integrity: Integrity
     duckdb_sandbox: SandboxState
     network_guard: GuardState
+    egress_guard: EgressState
     raw_mimic_registered: bool
     view_row_counts: dict[str, int]
     calls_this_session: int
@@ -101,6 +110,10 @@ def _status(ctx: ServerContext, verify_full: bool) -> Envelope[StatusResult]:
                             t1_check="full_hash" if any(a.check == "full_hash" for a in t1) else "stat"),
         duckdb_sandbox=sandbox,
         network_guard=GuardState(**guards.state()),
+        egress_guard=EgressState(max_payload_bytes=egress.MAX_PAYLOAD_BYTES, max_list_items=egress.MAX_LIST_ITEMS,
+                                 checks=["denylisted_key", "large_integer", "identifier_in_text", "shifted_date",
+                                         "list_too_long", "payload_too_large"],
+                                 blocked_responses=ctx.egress_blocked),
         raw_mimic_registered=reg.raw_mimic_registered(),
         view_row_counts=sb.row_counts if sb is not None else {},
         calls_this_session=ctx.calls,
@@ -112,7 +125,8 @@ def _status(ctx: ServerContext, verify_full: bool) -> Envelope[StatusResult]:
                and all(sandbox.self_test.values()) and result.network_guard.active and chain["ok"])
     if healthy:
         summary = (f"Local server healthy: {result.integrity.verified} artifacts verified, DuckDB sandbox locked "
-                   f"with {sandbox.allowlisted_files} allowlisted files, network guard active, audit chain intact.")
+                   f"with {sandbox.allowlisted_files} allowlisted files, network and egress guards active, "
+                   f"audit chain intact.")
     else:
         summary = "Local server has problems; see integrity, duckdb_sandbox, network_guard and audit fields."
     caveats = []

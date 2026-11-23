@@ -11,5 +11,10 @@ AUDIT_LOG = STATE_DIR / "audit.jsonl"
 
 
 def rel(path: Path) -> str:
-    """Repository-relative POSIX path (never send absolute local paths to a client)."""
-    return Path(path).resolve().relative_to(ROOT).as_posix()
+    """Repository-relative POSIX path. Never send absolute local paths to a client: files outside the repo are
+    shown by name only."""
+    p = Path(path).resolve()
+    try:
+        return p.relative_to(ROOT).as_posix()
+    except ValueError:
+        return f"<outside repo>/{p.name}"

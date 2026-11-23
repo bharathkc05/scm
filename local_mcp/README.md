@@ -1,10 +1,10 @@
 # Local MCP server (`scm-causal-mi`)
 
 Local stdio MCP server over the causal-MI study results. Design and roadmap: [DESIGN.md](DESIGN.md).
-**Status: M3 complete** — all 12 tools: `study_overview`, `describe_variable`, `get_risk_factor_effect`,
+**Status: M4 complete** — all 12 tools: `study_overview`, `describe_variable`, `get_risk_factor_effect`,
 `get_ecg_effect`, `get_subgroup_effects`, `robustness_card`, `confounding_what_if`, `cohort_summary`,
-`explain_ecg`, `render_figure`, `trace_claim`, `server_status`. Next: M4 egress guard, M5 client configs,
-M6 demo evaluation.
+`explain_ecg`, `render_figure`, `trace_claim`, `server_status`; every response passes the egress guard.
+Next: M5 client configs, M6 demo evaluation.
 
 All commands run from the repo root with the project interpreter
 (`C:/Users/Acer/Desktop/Capstone/Capstone/cuda_env/Scripts/python.exe`, shown as `python`).
@@ -13,7 +13,7 @@ All commands run from the repo root with the project interpreter
 |---|---|
 | Regenerate assets (dictionary, profile model ~1.5 min, figure PNGs) | `python -X utf8 local_mcp/export_assets.py` (or `--only dictionary\|profile\|figures`) |
 | Rebuild the manifest after re-running any roadmap phase or editing SQL | `python -X utf8 local_mcp/build_manifest.py` |
-| Run the tests (60) | `python -X utf8 -m unittest discover -s local_mcp/tests -t . -v` |
+| Run the tests (66) | `python -X utf8 -m unittest discover -s local_mcp/tests -t . -v` |
 | Start the server by hand (it waits for a client on stdin) | `python -X utf8 local_mcp/server.py` |
 | Register with Claude Code (local scope, not committed) | `claude mcp add scm-causal-mi -- "<python>" -X utf8 "<repo>/local_mcp/server.py"` |
 
@@ -36,7 +36,8 @@ Try asking the client: *"Give me the study overview"*, *"Is the hypertension res
 | `tools/robustness.py` | Robustness cards and verdict rules shared by all results tools |
 | `tools/orientation.py`, `results.py`, `computation.py`, `figures.py`, `provenance.py`, `status.py` | The 12 tools |
 | `tools/ecg_explainer.py` | Python port of the Phase 9 browser explainer (parity-tested through Node) |
-| `guards.py`, `audit.py`, `envelope.py`, `runtime.py` | Network guard, hash-chained audit log, response envelope, audited wrapper |
+| `egress.py` | Egress guard: blocks identifiers, MIMIC shifted dates, denylisted keys, long lists and payloads > 32 KB |
+| `guards.py`, `audit.py`, `envelope.py`, `runtime.py` | Network guard, hash-chained audit log, response envelope, audited wrapper (applies the egress guard) |
 | `tests/` | Sandbox, registry, guard, audit, results-vs-source-CSV checks, latency, stdio end-to-end |
 
 ## Data access
