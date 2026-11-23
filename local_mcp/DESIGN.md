@@ -554,7 +554,7 @@ It reuses `roadmap/config.py` (paths), `roadmap/definitions.py` (code lists, lea
 
 | # | Milestone | Done when |
 |---|---|---|
-| M1 | Scaffold: `server.py`, registry, manifest, DuckDB sandbox (`db.py`), envelope, `server_status` | A Python MCP client (`mcp.client.stdio`) launches the server, lists tools and gets a valid status. Nothing is printed to stdout outside JSON-RPC. The sandbox test suite reproduces every row of the table in 3.4 (allowed reads succeed; other files, raw MIMIC, URLs, extensions, `COPY TO` and config changes all fail). |
+| M1 ✅ (2026-11-23, 29 tests) | Scaffold: `server.py`, registry, manifest, DuckDB sandbox (`db.py`), envelope, `server_status` | A Python MCP client (`mcp.client.stdio`) launches the server, lists tools and gets a valid status. Nothing is printed to stdout outside JSON-RPC. The sandbox test suite reproduces every row of the table in 3.4 (allowed reads succeed; other files, raw MIMIC, URLs, extensions, `COPY TO` and config changes all fail). |
 | M2 | Results tools 1–6 and 11 from T2, each backed by SQL templates | Unit tests match every returned number to the source CSV/JSON; every template has a test; unknown names return `did_you_mean`; each warm query finishes in < 100 ms |
 | M3 | Computation tools 7–9 and 10 | `confounding_what_if(E, E)` returns worst case 1.00 for every result; `explain_ecg` matches `explainer.js` within 1e-9 on the 25 Phase 9 test cases; `cohort_summary` never emits a cell < 11, survives a differencing test, and returns `DATA_NOT_PRESENT` when T1 is moved away |
 | M4 | Guards and audit | Planted identifiers, shifted dates and oversized payloads are blocked; an outbound socket attempt raises; the audit chain verifies and breaks if a line is edited |

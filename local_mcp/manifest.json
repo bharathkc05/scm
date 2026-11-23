@@ -1,0 +1,259 @@
+{
+ "schema": 1,
+ "built_at": "2026-11-23T05:49:50Z",
+ "version": "548bfc21a0d8",
+ "artifacts": [
+  {
+   "path": "data/roadmap/phase3/layer1.parquet",
+   "tier": "T1",
+   "kind": "parquet",
+   "view": "layer1",
+   "sha256": "aac2993bc3c74d122f76ebf6190a2e60fa1e399fee840c9630cb87d5923fd6cd",
+   "size": 5819839,
+   "mtime_ns": 1795260631470982800
+  },
+  {
+   "path": "data/roadmap/phase3/layer2.parquet",
+   "tier": "T1",
+   "kind": "parquet",
+   "view": "layer2",
+   "sha256": "b373339087d46ff11fa3d374c47db3907eba5d57dc5eb5f0eebe6f225cdf788d",
+   "size": 476453049,
+   "mtime_ns": 1795260639915687200
+  },
+  {
+   "path": "roadmap/phase3_dataset/cohort_flow.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "cohort_flow",
+   "sha256": "96bfea30767445d8770b4df879141fcbb75b088058ebc8e69396a1aad2ac72a2",
+   "size": 540,
+   "mtime_ns": 1795322503272806700
+  },
+  {
+   "path": "roadmap/phase4_graph/ADJUSTMENT_TABLE.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "adjustment_table",
+   "sha256": "0b2d0e017bac19e5f2c4beab5dd3603439397dbd6adda59f7644ce209f438e55",
+   "size": 4707,
+   "mtime_ns": 1795322503280812300
+  },
+  {
+   "path": "roadmap/phase4_graph/INDEPENDENCE_TESTS.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "independence_tests",
+   "sha256": "de804c360b453a69b10f0a0967a48889bc733fb676496c8565c898616ee1c17a",
+   "size": 871,
+   "mtime_ns": 1795322503283803200
+  },
+  {
+   "path": "roadmap/phase5_estimation/LAYER1_ESTIMATES.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "layer1_estimates",
+   "sha256": "0001198e129d9038dcdced775f53d3431603e61d7cef8bcd0aeea2af2e2b48e1",
+   "size": 7909,
+   "mtime_ns": 1795322503291807300
+  },
+  {
+   "path": "roadmap/phase5_estimation/LAYER1_DIAGNOSTICS.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "layer1_diagnostics",
+   "sha256": "a4c486ca72d23bad310e353fb2afeaeed79135c9da9459ec55440cb3821cf42e",
+   "size": 6540,
+   "mtime_ns": 1795322503290806300
+  },
+  {
+   "path": "roadmap/phase5_estimation/LAYER2_ESTIMATES.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "layer2_estimates",
+   "sha256": "5161c3244c05b82f5e5211c4d60473c634e475b171358658785c35fce1f2d070",
+   "size": 80776,
+   "mtime_ns": 1795322503295808600
+  },
+  {
+   "path": "roadmap/phase5_estimation/LAYER2_TEST_STABILITY.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "layer2_test_stability",
+   "sha256": "4ccce42353b6953e8ad6cb794bfbdde19e0557b8162e14b2555318cc6b25bd61",
+   "size": 3430,
+   "mtime_ns": 1795322503296810000
+  },
+  {
+   "path": "roadmap/phase6_novelty/SENSITIVITY_ESTIMATES.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "sensitivity_estimates",
+   "sha256": "50e3fd8e84972e931f5a7c1b4e8b46cf102403750e7e006ae634ad4964f66f19",
+   "size": 131290,
+   "mtime_ns": 1795322503313119800
+  },
+  {
+   "path": "roadmap/phase6_novelty/DECONFOUNDED_ECG_EFFECTS.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "deconfounded_ecg_effects",
+   "sha256": "522f2812b9b7bf93e3eb9e450b37ff665f522e97a9cc56ef6e72940cd3a016fc",
+   "size": 19689,
+   "mtime_ns": 1795322503306807300
+  },
+  {
+   "path": "roadmap/phase6_novelty/FEATURE_GROUP_SUMMARY.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "feature_group_summary",
+   "sha256": "30af607980f8591e5b5cd5867976482753c85649a3e82352059d287c343fa467",
+   "size": 390,
+   "mtime_ns": 1795322503307812100
+  },
+  {
+   "path": "roadmap/phase6_novelty/LATENT_AUDIT.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "latent_audit",
+   "sha256": "21f7a83f050a292923def63a8dab179b8db872d624fb7b356d33b466aeec584e",
+   "size": 13106,
+   "mtime_ns": 1795322503310131900
+  },
+  {
+   "path": "roadmap/phase6_novelty/COUNTERFACTUAL_PROFILES.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "counterfactual_profiles",
+   "sha256": "48beb9c4bfbcd4ad538bc3898572c085689f7b52d314ba412d1f3d92bec15d1d",
+   "size": 6756,
+   "mtime_ns": 1795322503305812700
+  },
+  {
+   "path": "roadmap/phase7_stress_test/EVALUES.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "evalues",
+   "sha256": "9c51d2fee44df4fdc057963cdfdcee8f66351be189de2150f6dbcf659a5d11ab",
+   "size": 2356,
+   "mtime_ns": 1795322503332801400
+  },
+  {
+   "path": "roadmap/phase7_stress_test/SELECTION_WEIGHTED_LAYER2.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "selection_weighted_layer2",
+   "sha256": "7a63678e28cafdabbdf71cf8ee01bf957b3bcc703642207c160bb1b0a3fabbf3",
+   "size": 5558,
+   "mtime_ns": 1795322503336815000
+  },
+  {
+   "path": "roadmap/phase7_stress_test/BMI_LAYER2_WITH.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "bmi_layer2_with",
+   "sha256": "2f4fe7c6597016557106cbc70df3fef5ba3881d4bd8daada2ca2552a40d0449d",
+   "size": 19514,
+   "mtime_ns": 1795322503329801200
+  },
+  {
+   "path": "roadmap/phase7_stress_test/BMI_LAYER2_WITHOUT.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "bmi_layer2_without",
+   "sha256": "d78d1a96321f7d335640676eaa4d96a450aadfce92f152b0edd80b941b1fa62f",
+   "size": 19515,
+   "mtime_ns": 1795322503331796100
+  },
+  {
+   "path": "roadmap/phase7_stress_test/OUTCOME_CODES_LAYER1.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "outcome_codes_layer1",
+   "sha256": "1bce36549b56564468f737e72e05e9e30b4446019eb4006c5075f39a8cdd8cdd",
+   "size": 2165,
+   "mtime_ns": 1795322503334799500
+  },
+  {
+   "path": "roadmap/phase7_stress_test/OUTCOME_CODES_LAYER2_BROAD.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "outcome_codes_layer2_broad",
+   "sha256": "825c998d0cc782de7c3cfb995d92cb86db6e357e9b37ac03be6b2c2be971658d",
+   "size": 19644,
+   "mtime_ns": 1795322503335800400
+  },
+  {
+   "path": "roadmap/phase7_stress_test/SUBGROUPS_LAYER1.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "subgroups_layer1",
+   "sha256": "bd766258167d38527fda5cce40e2525a122a33e31d3549a3fdeb532c5e5845d2",
+   "size": 2657,
+   "mtime_ns": 1795322503339220400
+  },
+  {
+   "path": "roadmap/phase7_stress_test/SUBGROUPS_LAYER2.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "subgroups_layer2",
+   "sha256": "744bd620d15f53bd29ecabea23943f524bcdad64adf1f200284280fb6e935b41",
+   "size": 79407,
+   "mtime_ns": 1795322503341225200
+  },
+  {
+   "path": "roadmap/phase7_stress_test/SUBGROUP_INTERACTIONS_LAYER2.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "subgroup_interactions_layer2",
+   "sha256": "8eab0518bb7f41691763a2e2cafbb0b503848981471d73621505dbb98199170e",
+   "size": 3919,
+   "mtime_ns": 1795322503342220900
+  },
+  {
+   "path": "roadmap/phase7_stress_test/LAYER1_HISTORY_VARIANTS.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "layer1_history_variants",
+   "sha256": "ce88791b563f2cd68a30928a104d8991b916d4d45ed44bdc193845cfa3ac4946",
+   "size": 2154,
+   "mtime_ns": 1795322503333798300
+  },
+  {
+   "path": "roadmap/phase8_paper/CLAIM_EVIDENCE_MAP.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "claim_evidence_map",
+   "sha256": "db4ad13092ee006cb168c30f30277131c4fe79c31688a06c57cb9af757995fae",
+   "size": 3914,
+   "mtime_ns": 1795322503352918400
+  },
+  {
+   "path": "roadmap/phase8_paper/TABLE1_COHORT.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "table1_cohort",
+   "sha256": "13acdeb33570a3cf29f4a4719fa1786349c36619dd1ca5dde45adeba9376e1f8",
+   "size": 682,
+   "mtime_ns": 1795322503356924500
+  },
+  {
+   "path": "roadmap/phase9_demo/demo_params.json",
+   "tier": "T3",
+   "kind": "json",
+   "view": null,
+   "sha256": "0bfb9d708b35b734d5f40c530bb94ad5d7c05fee845924338ebf5152af60dceb",
+   "size": 39389,
+   "mtime_ns": 1795322503362927400
+  },
+  {
+   "path": "local_mcp/sql/status__views.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "97616b480975f974795674453d1b6c55ae93db3ccb1fb8004ba955a6265d4243",
+   "size": 154,
+   "mtime_ns": 1795412895638718800
+  }
+ ]
+}
