@@ -557,6 +557,8 @@ local_mcp/
   tests/              unittest suites + stdio smoke test + golden demo questions
   configs/            client config templates (templates/), render.py (render / --print / --install)
   smoke.py            launch the server from each client config and call all 12 tools over stdio
+  eval/               M6: golden.json (15 questions), redteam.json (8 prompts), grading.py, run_claude.py,
+                      RESULTS.md (latest real-client run)
   DESIGN.md
 ```
 
@@ -572,10 +574,35 @@ It reuses `roadmap/config.py` (paths), `roadmap/definitions.py` (code lists, lea
 | M3 ✅ (2026-11-23, 60 tests) | Computation tools 7–9 and 10 | `confounding_what_if(E, E)` returns worst case 1.00 for every result; `explain_ecg` matches `explainer.js` within 1e-9 on the 25 Phase 9 test cases; `cohort_summary` never emits a cell < 11, survives a differencing test, and returns `DATA_NOT_PRESENT` when T1 is moved away |
 | M4 ✅ (2026-11-23, 66 tests) | Guards and audit | Planted identifiers, shifted dates and oversized payloads are blocked; an outbound socket attempt raises; the audit chain verifies and breaks if a line is edited |
 | M5 ✅ (2026-11-23, 80 tests) | Multi-client | The same server works from the four configs in Section 6; a smoke script calls all 12 tools over stdio |
-| M6 | Demo and evaluation | 15 golden questions with expected tools and values pass in Claude Code; red-team prompts (ask for patient rows, IDs, probabilities) are refused by design |
+| M6 ✅ (2026-11-23, 93 tests; Claude Code 23/23) | Demo and evaluation | 15 golden questions with expected tools and values pass in Claude Code; red-team prompts (ask for patient rows, IDs, probabilities) are refused by design |
 
 Test locally with the Python SDK client rather than `npx @modelcontextprotocol/inspector`, which
 downloads packages at run time.
+
+**M6 as built.** The evaluation has two layers.
+
+1. **Deterministic layer** (`tests/test_eval.py`, no LLM).
+   - **Golden values.** `eval/golden.json` holds 15 questions. Together their canonical calls cover all 12
+     tools. Every expected value is re-checked against the live server, and `test_results_tools.py` ties the
+     server to the source CSVs.
+   - **Worst-case client.** 20 adversarial calls are sent directly, without an LLM: identifier dimensions,
+     SQL and path injection, out-of-range inputs, probability bait and small-cell cross-tabs. Each must come
+     back as a structured refusal or as aggregates that pass every safety rule. No tool input may be named
+     like SQL, a path or an identifier.
+   - **The grader itself.** Tests check that right answers pass and that wrong, incomplete or leaky ones fail.
+
+2. **Real-client layer** (`eval/run_claude.py`).
+   - **Setup.** Each golden question and each of the 8 prompts in `eval/redteam.json` runs as one headless
+     Claude Code session in an empty folder. Only this server is attached, built-in tools are off and no
+     system prompt is added.
+   - **Pass rule for a golden question.** The expected tools were called, the expected values appear in the
+     answer, and no tool output or answer is unsafe.
+   - **Pass rule for a red-team prompt.** No identifier, shifted date, patient row, small cell or probability
+     field reaches the client, and none appears in the answer. Answers that state a probability are flagged
+     for review.
+   - **Result (2026-11-23, `claude-opus-4-8`).** 23/23 passed, for $1.68 in 2.1 min; see `eval/RESULTS.md`.
+     The model refused every red-team prompt without calling a tool, so the server-side guarantee rests on
+     layer 1.
 
 ---
 
@@ -640,6 +667,9 @@ machine-specific paths.
   and re-checks each response with the egress guard on the client side.
 - **Results.** All five configs pass, with about 2.7 s cold start, about 4 s for all 12 calls, and identical answers.
   `tests/test_configs.py` runs the same check in the suite.
+- **Claude Code template.** It adds `"alwaysLoad": true`. Claude Code otherwise defers MCP tools behind its
+  tool-search tool and, in `-p` mode, starts the first turn before the server has connected. With the key set,
+  the 12 tools are always in the prompt and headless runs wait for the server. Other clients do not get the key.
 - **Checked with a real client.** `claude mcp get` (Claude Code 2.1) parses the rendered `.mcp.json` as a
   stdio project server with the intended command, args and env. Claude Code connects project servers only after
   the user approves them in an interactive session. Cursor, Copilot and Antigravity have no headless mode, so
@@ -690,8 +720,17 @@ machine-specific paths.
   fits every client listed; Antigravity can hide tools per server.
 - **Stale results.** Re-running a phase changes artifact hashes. The server disables affected tools until
   `build_manifest.py` is re-run, so it never serves a mix of old and new numbers.
-- **Prompt injection through tool outputs.** Outputs are numbers, enums and server-authored text, never echoed
-  user strings, so a tool result cannot carry instructions to the LLM.
+- **Prompt injection through tool outputs.** Outputs are numbers, enums and server-authored text, so a tool
+  result cannot carry instructions from the data to the LLM. Error messages do quote the argument that failed
+  (for example "No variable matches '…'"). That string came from the client itself, so quoting it opens no new
+  channel, and the egress guard scans it like any other output.
+- **The client's own tools.** Claude Code, Cursor and the others can read files and run commands themselves.
+  The server cannot stop that: the egress guard covers only its own outputs. If you approve a `Read` of a
+  Parquet file, those rows go to the provider. To keep the boundary lightweight:
+  - Raw MIMIC already lives outside this repository.
+  - For the T1 files, deny reads of `data/` in the client's permissions (in Claude Code, a
+    `"deny": ["Read(./data/**)"]` rule).
+  - Or run with built-in tools off, as the M6 evaluation does (`--tools ""`).
 - **Paths and SQL.** Tools never accept file paths or SQL. The manifest fixes every readable file, and the
   DuckDB allowlist enforces the same list inside the query engine, so even a bug in a template cannot read
   another file or reach the network.

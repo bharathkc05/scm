@@ -35,7 +35,11 @@ class Templates(unittest.TestCase):
 
     def test_client_specific_shapes(self):
         self.assertEqual(template("vscode")[1]["servers"][render.SERVER_NAME]["type"], "stdio")
-        self.assertEqual(template("claude_code")[1]["mcpServers"][render.SERVER_NAME]["type"], "stdio")
+        cc = template("claude_code")[1]["mcpServers"][render.SERVER_NAME]
+        self.assertEqual(cc["type"], "stdio")
+        self.assertIs(cc["alwaysLoad"], True)      # tools in the prompt, not behind tool search; -p waits for it
+        for other in ("cursor", "vscode", "antigravity", "claude_desktop"):   # Claude Code-only key
+            self.assertNotIn("alwaysLoad", render.server_entry(template(other)[1]), other)
         ag = template("antigravity")[1]["mcpServers"][render.SERVER_NAME]
         self.assertEqual(ag["cwd"], "{{SCM_ROOT}}")
         self.assertIsInstance(ag["timeoutSeconds"], int)

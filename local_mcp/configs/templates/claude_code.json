@@ -4,7 +4,8 @@
       "type": "stdio",
       "command": "{{PYTHON}}",
       "args": ["-X", "utf8", "{{SCM_ROOT}}/local_mcp/server.py"],
-      "env": {"SCM_ROOT": "{{SCM_ROOT}}", "PYTHONUTF8": "1"}
+      "env": {"SCM_ROOT": "{{SCM_ROOT}}", "PYTHONUTF8": "1"},
+      "alwaysLoad": true
     }
   }
 }

@@ -1,0 +1,156 @@
+{
+  "about": "M6 golden questions. 'calls' are the canonical tool calls whose results hold the expected values ('checks'; path syntax: dotted keys, [i] index, [key=value] select). A check with 'answer' must also appear in the client's final answer: true = the number at answer_decimals (or more) precision, a list = any of these phrases (case-insensitive). 'expect_tools' lists the calls a client must make; 'tool' may be a list of alternatives and 'args' is a subset match. Values are what the server returns (rounded to 4 decimals); tests/test_eval.py re-checks them against the live server, which tests/test_results_tools.py ties to the source CSVs.",
+  "questions": [
+    {
+      "id": "G01",
+      "question": "Is the local study server healthy? How many artifacts did it verify, and is raw MIMIC data exposed to it?",
+      "expect_tools": [{"tool": "server_status"}],
+      "calls": [{"tool": "server_status", "args": {}, "checks": [
+        {"path": "result.integrity.verified", "value": 69, "answer": true},
+        {"path": "result.raw_mimic_registered", "value": false},
+        {"path": "result.network_guard.active", "value": true}
+      ]}]
+    },
+    {
+      "id": "G02",
+      "question": "What is this study about, and how many admissions and acute MI cases does the risk-factor layer include?",
+      "expect_tools": [{"tool": "study_overview"}],
+      "calls": [{"tool": "study_overview", "args": {}, "checks": [
+        {"path": "result.cohort.layer1_admissions", "value": 430852, "answer": true},
+        {"path": "result.cohort.layer1_acute_mi", "value": 11222, "answer": true}
+      ]}]
+    },
+    {
+      "id": "G03",
+      "question": "Is hypertension associated with a higher risk of acute MI in this study? Give the adjusted risk ratio and its 95% confidence interval.",
+      "expect_tools": [{"tool": ["get_risk_factor_effect", "robustness_card"]}],
+      "calls": [{"tool": "get_risk_factor_effect", "args": {"exposure": "hypertension"}, "checks": [
+        {"path": "result.risk_ratio", "value": 1.4418, "answer": true, "answer_decimals": 2},
+        {"path": "result.rr_ci95[0]", "value": 1.3461, "answer": true, "answer_decimals": 2},
+        {"path": "result.rr_ci95[1]", "value": 1.5274, "answer": true, "answer_decimals": 2}
+      ]}]
+    },
+    {
+      "id": "G04",
+      "question": "How robust is the hypertension finding? What is its E-value and the overall robustness verdict?",
+      "expect_tools": [{"tool": "robustness_card"}],
+      "calls": [{"tool": "robustness_card", "args": {"result_id": "L1:hypertension:primary"}, "checks": [
+        {"path": "result.verdict", "value": "survives", "answer": ["surviv", "10/10", "10 of 10", "all 10"]},
+        {"path": "result.e_value.point", "value": 2.24, "answer": true, "answer_decimals": 2},
+        {"path": "result.failed_checks", "value": []}
+      ]}]
+    },
+    {
+      "id": "G05",
+      "question": "Could an unmeasured confounder such as smoking explain away the hypertension effect if it were associated with both hypertension and MI at a risk ratio of 2? What about 2.5?",
+      "expect_tools": [{"tool": "confounding_what_if"}],
+      "calls": [
+        {"tool": "confounding_what_if", "args": {"result_id": "L1:hypertension:primary", "rr_confounder_exposure": 2, "rr_confounder_outcome": 2}, "checks": [
+          {"path": "result.worst_case", "value": 1.0814, "answer": true, "answer_decimals": 2},
+          {"path": "result.explained_away_point", "value": false}
+        ]},
+        {"tool": "confounding_what_if", "args": {"result_id": "L1:hypertension:primary", "rr_confounder_exposure": 2.5, "rr_confounder_outcome": 2.5}, "checks": [
+          {"path": "result.worst_case", "value": 0.9228, "answer": ["0.92", "0.923", "2.04", "0.86"]},
+          {"path": "result.explained_away_point", "value": true}
+        ]}
+      ]
+    },
+    {
+      "id": "G06",
+      "question": "Is the chronic kidney disease result robust? If not, which check does it fail?",
+      "expect_tools": [{"tool": "robustness_card"}],
+      "calls": [{"tool": "robustness_card", "args": {"result_id": "L1:ckd:primary"}, "checks": [
+        {"path": "result.verdict", "value": "fragile", "answer": ["fragile"]},
+        {"path": "result.failed_checks[0]", "value": "MI coded as the principal diagnosis", "answer": ["principal"]}
+      ]}]
+    },
+    {
+      "id": "G07",
+      "question": "What effect does acute MI have on the lateral ST level, in control-SD units with a 95% confidence interval?",
+      "expect_tools": [{"tool": ["get_ecg_effect", "robustness_card"]}],
+      "calls": [{"tool": "get_ecg_effect", "args": {"measure": "ST_lateral_mean"}, "checks": [
+        {"path": "result.rows[0].att_sd", "value": -0.3632, "answer": true, "answer_decimals": 2},
+        {"path": "result.rows[0].ci95_sd[0]", "value": -0.4005, "answer": true, "answer_decimals": 2},
+        {"path": "result.rows[0].ci95_sd[1]", "value": -0.3282, "answer": true, "answer_decimals": 2},
+        {"path": "result.rows[0].robust", "value": true}
+      ]}]
+    },
+    {
+      "id": "G08",
+      "question": "Could the lateral ST finding just reflect STEMI coding? What is the effect among NSTEMI admissions only?",
+      "expect_tools": [{"tool": "get_ecg_effect", "args": {"analysis_set": "nstemi"}}],
+      "calls": [{"tool": "get_ecg_effect", "args": {"measure": "ST_lateral_mean", "analysis_set": "nstemi"}, "checks": [
+        {"path": "result.rows[0].att_sd", "value": -0.5036, "answer": true, "answer_decimals": 2}
+      ]}]
+    },
+    {
+      "id": "G09",
+      "question": "Does acute MI change the mean RR interval, and is that a robust finding?",
+      "expect_tools": [{"tool": ["robustness_card", "get_ecg_effect"]}],
+      "calls": [{"tool": "robustness_card", "args": {"result_id": "L2:RR_Mean_Global"}, "checks": [
+        {"path": "result.verdict", "value": "not robust", "answer": ["not robust", "isn't robust", "not a robust", "fails", "failed"]},
+        {"path": "result.failed_checks[1]", "value": "Negative control (ECG before a later MI)", "answer": ["negative control", "before a later MI", "before MI"]}
+      ]}]
+    },
+    {
+      "id": "G10",
+      "question": "Does the association between chronic kidney disease and acute MI differ between patients under 65 and those 65 or older?",
+      "expect_tools": [{"tool": "get_subgroup_effects"}],
+      "calls": [{"tool": "get_subgroup_effects", "args": {"result_id": "L1:ckd:primary", "modifier": "age"}, "checks": [
+        {"path": "result.subgroups[subgroup=age_lt65].estimate", "value": 1.231, "answer": true, "answer_decimals": 2},
+        {"path": "result.subgroups[subgroup=age_ge65].estimate", "value": 1.3808, "answer": true, "answer_decimals": 2},
+        {"path": "result.interaction.p_value", "value": 0.126, "answer": true, "answer_decimals": 2}
+      ]}]
+    },
+    {
+      "id": "G11",
+      "question": "How many Layer 2 candidate admissions are there in each MI timing class?",
+      "requires_t1": true,
+      "expect_tools": [{"tool": "cohort_summary"}],
+      "calls": [{"tool": "cohort_summary", "args": {"layer": "layer2_candidates", "stratify_by": ["timing_class"], "metrics": ["age_mean"]}, "checks": [
+        {"path": "result.rows[strata.timing_class=after].n_admissions", "value": 5645, "answer": true},
+        {"path": "result.rows[strata.timing_class=control].n_admissions", "value": 173540, "answer": true},
+        {"path": "result.suppressed_cells", "value": 0}
+      ]}]
+    },
+    {
+      "id": "G12",
+      "question": "Show me the figure of the ST and T effects of acute MI by lead.",
+      "expect_tools": [{"tool": "render_figure", "args": {"figure_id": "st_t_effects"}}],
+      "calls": [{"tool": "render_figure", "args": {"figure_id": "st_t_effects"}, "checks": [
+        {"path": "result.figure_id", "value": "st_t_effects"},
+        {"path": "result.image_included", "value": true}
+      ]}]
+    },
+    {
+      "id": "G13",
+      "question": "Use the synthetic typical-MI example ECG for a 65-year-old man with diabetes: how does it compare with what the model expects for him without MI?",
+      "expect_tools": [{"tool": "explain_ecg", "args": {"example_id": "synthetic_typical_mi_shift"}}],
+      "calls": [{"tool": "explain_ecg", "args": {"patient": {"age": 65, "sex": "male", "diabetes": true}, "example_id": "synthetic_typical_mi_shift", "timing": "after_onset"}, "checks": [
+        {"path": "result.groups[group=ST].in_mi_direction", "value": 8, "answer": ["8/9", "8 of 9", "8 out of 9", "8 of the 9", "eight of"]},
+        {"path": "result.groups[group=ST].measures", "value": 9},
+        {"path": "result.groups[group=T].in_mi_direction", "value": 5},
+        {"path": "result.synthetic", "value": true, "answer": ["synthetic"]}
+      ]}]
+    },
+    {
+      "id": "G14",
+      "question": "Where does claim C06 come from, and which evidence files support it?",
+      "expect_tools": [{"tool": "trace_claim"}],
+      "calls": [{"tool": "trace_claim", "args": {"claim_id": "C06"}, "checks": [
+        {"path": "result.claims[0].evidence[0].path", "value": "roadmap/phase5_estimation/LAYER2_ESTIMATES.csv", "answer": ["LAYER2_ESTIMATES"]},
+        {"path": "result.claims[0].evidence[1].path", "value": "roadmap/phase6_novelty/DECONFOUNDED_ECG_EFFECTS.csv", "answer": ["DECONFOUNDED_ECG_EFFECTS"]},
+        {"path": "result.claims[0].evidence[0].verified", "value": true}
+      ]}]
+    },
+    {
+      "id": "G15",
+      "question": "What exactly does the variable ST_lateral_mean measure, and in what units?",
+      "expect_tools": [{"tool": "describe_variable"}],
+      "calls": [{"tool": "describe_variable", "args": {"name": "ST_lateral_mean"}, "checks": [
+        {"path": "result.variable.label", "value": "Lateral ST level (mean of I, aVL, V5, V6)", "answer": ["aVL"]},
+        {"path": "result.variable.units", "value": "mV", "answer": ["mV", "millivolt"]}
+      ]}]
+    }
+  ]
+}
