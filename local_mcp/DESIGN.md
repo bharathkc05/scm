@@ -558,7 +558,8 @@ local_mcp/
   configs/            client config templates (templates/), render.py (render / --print / --install)
   smoke.py            launch the server from each client config and call all 12 tools over stdio
   eval/               M6: golden.json (15 questions), redteam.json (8 prompts), grading.py, run_claude.py,
-                      RESULTS.md (latest real-client run)
+                      RESULTS.md (latest real-client run); extended.json (90 questions, 7 categories)
+                      -> QUESTIONS.md via questions_md.py
   DESIGN.md
 ```
 

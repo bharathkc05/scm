@@ -34,6 +34,15 @@ def redteam() -> list[dict]:
     return load("redteam.json")["prompts"]
 
 
+def extended() -> list[dict]:
+    return load("extended.json")["questions"]
+
+
+def categories() -> dict[str, dict]:
+    """Extended-set categories in display order: {key: {title, about}}."""
+    return load("extended.json")["categories"]
+
+
 # ---------------------------------------------------------------- values ---
 def resolve(node: Any, path: str) -> Any:
     """Dotted keys, [i] list index, [key.sub=value] first list element whose key equals value (as text)."""
@@ -250,12 +259,12 @@ def resolve_or(node, path, default):
 
 def grade_golden(q: dict, t: Transcript) -> dict:
     missing_tools = []
-    for exp in q["expect_tools"]:
+    for exp in q.get("expect_tools", []):
         names = _tool_names(exp["tool"])
         if not any(c.name in names and not c.is_error and _args_match(exp.get("args", {}), c.input) for c in t.calls):
             missing_tools.append(" or ".join(names) + (f" {exp['args']}" if exp.get("args") else ""))
     values, missing_values = [], []
-    for call in q["calls"]:
+    for call in q.get("calls", []):
         for check in call["checks"]:
             forms = answer_forms(check)
             if not forms:
@@ -264,12 +273,19 @@ def grade_golden(q: dict, t: Transcript) -> dict:
             values.append({"path": check["path"], "expected": forms[0], "found": hit})
             if hit is None:
                 missing_values.append(f"{check['path']} ~ {forms[:3]}")
+    # must_mention: every group must match; a group lists alternative phrasings (behaviour, caveats, refusals)
+    missing_mentions = [f"mention one of {group[:4]}" for group in q.get("must_mention", [])
+                        if found_in(t.answer, group) is None]
+    flags = ["answer states a probability: review"] if q.get("flag_probability") and _PROB.search(
+        normalize(t.answer)) else []
     safety = safety_problems(t)
     connected = t.mcp_status == "connected"
-    passed = connected and not t.is_error and not missing_tools and not missing_values and not safety
+    passed = (connected and not t.is_error and not missing_tools and not missing_values and not missing_mentions
+              and not safety)
     return {"id": q["id"], "passed": passed, "connected": connected, "tools_called": [c.name for c in t.calls],
             "tool_errors": [f"{c.name}:{c.error_code}" for c in t.calls if c.is_error],
-            "missing_tools": missing_tools, "values": values, "missing_values": missing_values, "safety": safety}
+            "missing_tools": missing_tools, "values": values, "missing_values": missing_values,
+            "missing_mentions": missing_mentions, "safety": safety, "flags": flags}
 
 
 _PROB = re.compile(r"(probabilit|likelihood|chance)[^.\n]{0,80}?\d+(\.\d+)?\s*%|\d+(\.\d+)?\s*%[^.\n]{0,40}?"
