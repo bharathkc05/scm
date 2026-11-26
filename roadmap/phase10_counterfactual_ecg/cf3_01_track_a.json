@@ -1,0 +1,549 @@
+{
+  "training": {
+    "rows": 25244,
+    "mi_episodes": 2092,
+    "controls": 23152,
+    "patients": 25152,
+    "mi_by_type": {
+      "nstemi": 1464,
+      "stemi_inferior": 218,
+      "stemi_anterior": 142,
+      "type2": 137,
+      "stemi_other": 73,
+      "other": 58
+    },
+    "design": "age_df5_int_agexall",
+    "covariates": [
+      "sex_male",
+      "diabetes_primary",
+      "hypertension_primary",
+      "ckd_primary",
+      "prior_mi_primary"
+    ],
+    "st_artefact_rule": "|ST_Elev| > 2.0 mV set to missing before composites"
+  },
+  "pairs": {
+    "val": {
+      "after": 756,
+      "before": 810
+    },
+    "test": {
+      "after": 3007,
+      "before": 3308
+    },
+    "primary_test_pairs": 1380,
+    "primary_test_patients": 1315
+  },
+  "rho_pair_val": {
+    "before": {
+      "add": {
+        "Q_Amp_I": 0.54,
+        "ST_Elev_I": 0.529,
+        "T_Amp_II": 0.345,
+        "ST_Elev_III": 0.537,
+        "T_Amp_aVR": 0.457,
+        "ST_Elev_aVR": 0.513,
+        "Q_Amp_aVL": 0.549,
+        "ST_Elev_aVL": 0.488,
+        "T_Amp_V4": 0.36,
+        "ST_Elev_V4": 0.46,
+        "T_Amp_V5": 0.371,
+        "ST_Elev_V5": 0.409,
+        "T_Amp_V6": 0.341,
+        "ST_Elev_V6": 0.574,
+        "ST_lateral_mean": 0.521,
+        "ST_max_depression": 0.759
+      },
+      "remove": {
+        "Q_Amp_I": 0.581,
+        "ST_Elev_I": 0.309,
+        "T_Amp_II": 0.316,
+        "ST_Elev_III": 0.372,
+        "T_Amp_aVR": 0.422,
+        "ST_Elev_aVR": 0.338,
+        "Q_Amp_aVL": 0.596,
+        "ST_Elev_aVL": 0.351,
+        "T_Amp_V4": 0.303,
+        "ST_Elev_V4": 0.242,
+        "T_Amp_V5": 0.317,
+        "ST_Elev_V5": 0.204,
+        "T_Amp_V6": 0.301,
+        "ST_Elev_V6": 0.293,
+        "ST_lateral_mean": 0.263,
+        "ST_max_depression": 0.455
+      }
+    },
+    "after": {
+      "add": {
+        "Q_Amp_I": 0.446,
+        "ST_Elev_I": 0.435,
+        "T_Amp_II": 0.303,
+        "ST_Elev_III": 0.512,
+        "T_Amp_aVR": 0.469,
+        "ST_Elev_aVR": 0.466,
+        "Q_Amp_aVL": 0.62,
+        "ST_Elev_aVL": 0.449,
+        "T_Amp_V4": 0.353,
+        "ST_Elev_V4": 0.496,
+        "T_Amp_V5": 0.364,
+        "ST_Elev_V5": 0.393,
+        "T_Amp_V6": 0.33,
+        "ST_Elev_V6": 0.478,
+        "ST_lateral_mean": 0.514,
+        "ST_max_depression": 0.555
+      },
+      "remove": {
+        "Q_Amp_I": 0.535,
+        "ST_Elev_I": 0.298,
+        "T_Amp_II": 0.236,
+        "ST_Elev_III": 0.288,
+        "T_Amp_aVR": 0.429,
+        "ST_Elev_aVR": 0.312,
+        "Q_Amp_aVL": 0.516,
+        "ST_Elev_aVL": 0.305,
+        "T_Amp_V4": 0.287,
+        "ST_Elev_V4": 0.243,
+        "T_Amp_V5": 0.301,
+        "ST_Elev_V5": 0.195,
+        "T_Amp_V6": 0.276,
+        "ST_Elev_V6": 0.273,
+        "ST_lateral_mean": 0.292,
+        "ST_max_depression": 0.346
+      }
+    }
+  },
+  "composite_st_t": {
+    "primary": {
+      "add": {
+        "n_pairs": 1378,
+        "n_patients": 1313,
+        "mae_sd": {
+          "A1_additive": 1.0094,
+          "A2_shrunk": 0.9373,
+          "no_change": 1.0123,
+          "population_mean": 1.0161
+        },
+        "A1_additive_minus_no_change": {
+          "diff": -0.0029,
+          "ci": [
+            -0.0163,
+            0.0099
+          ]
+        },
+        "A1_additive_minus_population_mean": {
+          "diff": -0.0067,
+          "ci": [
+            -0.0281,
+            0.0166
+          ]
+        },
+        "A2_shrunk_minus_no_change": {
+          "diff": -0.075,
+          "ci": [
+            -0.0932,
+            -0.0564
+          ]
+        },
+        "A2_shrunk_minus_population_mean": {
+          "diff": -0.0788,
+          "ci": [
+            -0.0904,
+            -0.0677
+          ]
+        },
+        "coverage_90_A1_additive": {
+          "mean": 0.897,
+          "range": [
+            0.879,
+            0.918
+          ]
+        },
+        "coverage_90_A2_shrunk": {
+          "mean": 0.889,
+          "range": [
+            0.879,
+            0.909
+          ]
+        }
+      },
+      "remove": {
+        "n_pairs": 1378,
+        "n_patients": 1313,
+        "mae_sd": {
+          "A1_additive": 1.0094,
+          "A2_shrunk": 0.6815,
+          "no_change": 1.0123,
+          "population_mean": 0.7254
+        },
+        "A1_additive_minus_no_change": {
+          "diff": -0.0029,
+          "ci": [
+            -0.0163,
+            0.0099
+          ]
+        },
+        "A1_additive_minus_population_mean": {
+          "diff": 0.284,
+          "ci": [
+            0.2509,
+            0.3165
+          ]
+        },
+        "A2_shrunk_minus_no_change": {
+          "diff": -0.3309,
+          "ci": [
+            -0.3605,
+            -0.3031
+          ]
+        },
+        "A2_shrunk_minus_population_mean": {
+          "diff": -0.0439,
+          "ci": [
+            -0.0551,
+            -0.0328
+          ]
+        },
+        "coverage_90_A1_additive": {
+          "mean": 0.897,
+          "range": [
+            0.879,
+            0.918
+          ]
+        },
+        "coverage_90_A2_shrunk": {
+          "mean": 0.916,
+          "range": [
+            0.896,
+            0.938
+          ]
+        }
+      }
+    },
+    "all_before": {
+      "add": {
+        "n_pairs": 3299,
+        "n_patients": 2661,
+        "mae_sd": {
+          "A1_additive": 1.0234,
+          "A2_shrunk": 0.9421,
+          "no_change": 0.9955,
+          "population_mean": 1.0256
+        },
+        "A1_additive_minus_no_change": {
+          "diff": 0.0279,
+          "ci": [
+            0.0177,
+            0.0379
+          ]
+        },
+        "A1_additive_minus_population_mean": {
+          "diff": -0.0022,
+          "ci": [
+            -0.0193,
+            0.014
+          ]
+        },
+        "A2_shrunk_minus_no_change": {
+          "diff": -0.0535,
+          "ci": [
+            -0.0661,
+            -0.0399
+          ]
+        },
+        "A2_shrunk_minus_population_mean": {
+          "diff": -0.0836,
+          "ci": [
+            -0.0921,
+            -0.0743
+          ]
+        },
+        "coverage_90_A1_additive": {
+          "mean": 0.895,
+          "range": [
+            0.884,
+            0.911
+          ]
+        },
+        "coverage_90_A2_shrunk": {
+          "mean": 0.891,
+          "range": [
+            0.875,
+            0.903
+          ]
+        }
+      },
+      "remove": {
+        "n_pairs": 3299,
+        "n_patients": 2661,
+        "mae_sd": {
+          "A1_additive": 1.0234,
+          "A2_shrunk": 0.7099,
+          "no_change": 0.9955,
+          "population_mean": 0.7562
+        },
+        "A1_additive_minus_no_change": {
+          "diff": 0.0279,
+          "ci": [
+            0.0177,
+            0.0379
+          ]
+        },
+        "A1_additive_minus_population_mean": {
+          "diff": 0.2672,
+          "ci": [
+            0.2417,
+            0.2892
+          ]
+        },
+        "A2_shrunk_minus_no_change": {
+          "diff": -0.2856,
+          "ci": [
+            -0.3048,
+            -0.2645
+          ]
+        },
+        "A2_shrunk_minus_population_mean": {
+          "diff": -0.0463,
+          "ci": [
+            -0.0549,
+            -0.0384
+          ]
+        },
+        "coverage_90_A1_additive": {
+          "mean": 0.895,
+          "range": [
+            0.884,
+            0.911
+          ]
+        },
+        "coverage_90_A2_shrunk": {
+          "mean": 0.908,
+          "range": [
+            0.893,
+            0.922
+          ]
+        }
+      }
+    },
+    "all_after": {
+      "add": {
+        "n_pairs": 3000,
+        "n_patients": 2748,
+        "mae_sd": {
+          "A1_additive": 1.0263,
+          "A2_shrunk": 0.9311,
+          "no_change": 0.9727,
+          "population_mean": 0.9965
+        },
+        "A1_additive_minus_no_change": {
+          "diff": 0.0536,
+          "ci": [
+            0.0412,
+            0.0659
+          ]
+        },
+        "A1_additive_minus_population_mean": {
+          "diff": 0.0298,
+          "ci": [
+            0.0133,
+            0.0464
+          ]
+        },
+        "A2_shrunk_minus_no_change": {
+          "diff": -0.0416,
+          "ci": [
+            -0.0551,
+            -0.0256
+          ]
+        },
+        "A2_shrunk_minus_population_mean": {
+          "diff": -0.0654,
+          "ci": [
+            -0.0738,
+            -0.0574
+          ]
+        },
+        "coverage_90_A1_additive": {
+          "mean": 0.906,
+          "range": [
+            0.892,
+            0.935
+          ]
+        },
+        "coverage_90_A2_shrunk": {
+          "mean": 0.902,
+          "range": [
+            0.888,
+            0.916
+          ]
+        }
+      },
+      "remove": {
+        "n_pairs": 3000,
+        "n_patients": 2748,
+        "mae_sd": {
+          "A1_additive": 1.0263,
+          "A2_shrunk": 0.7093,
+          "no_change": 0.9727,
+          "population_mean": 0.753
+        },
+        "A1_additive_minus_no_change": {
+          "diff": 0.0536,
+          "ci": [
+            0.0412,
+            0.0659
+          ]
+        },
+        "A1_additive_minus_population_mean": {
+          "diff": 0.2733,
+          "ci": [
+            0.2516,
+            0.2958
+          ]
+        },
+        "A2_shrunk_minus_no_change": {
+          "diff": -0.2633,
+          "ci": [
+            -0.2816,
+            -0.2449
+          ]
+        },
+        "A2_shrunk_minus_population_mean": {
+          "diff": -0.0436,
+          "ci": [
+            -0.0507,
+            -0.0372
+          ]
+        },
+        "coverage_90_A1_additive": {
+          "mean": 0.906,
+          "range": [
+            0.892,
+            0.935
+          ]
+        },
+        "coverage_90_A2_shrunk": {
+          "mean": 0.904,
+          "range": [
+            0.89,
+            0.923
+          ]
+        }
+      }
+    }
+  },
+  "consistency_with_phase5_att": {
+    "Q_Amp_I": {
+      "track_a_mean_tau_sd": 0.198,
+      "phase5_att_sd": 0.072,
+      "tau_model_se_sd_median": 0.18
+    },
+    "ST_Elev_I": {
+      "track_a_mean_tau_sd": -0.406,
+      "phase5_att_sd": -0.361,
+      "tau_model_se_sd_median": 0.224
+    },
+    "T_Amp_II": {
+      "track_a_mean_tau_sd": -0.178,
+      "phase5_att_sd": -0.149,
+      "tau_model_se_sd_median": 0.194
+    },
+    "ST_Elev_III": {
+      "track_a_mean_tau_sd": 0.241,
+      "phase5_att_sd": 0.226,
+      "tau_model_se_sd_median": 0.247
+    },
+    "T_Amp_aVR": {
+      "track_a_mean_tau_sd": 0.354,
+      "phase5_att_sd": 0.291,
+      "tau_model_se_sd_median": 0.184
+    },
+    "ST_Elev_aVR": {
+      "track_a_mean_tau_sd": 0.291,
+      "phase5_att_sd": 0.238,
+      "tau_model_se_sd_median": 0.214
+    },
+    "Q_Amp_aVL": {
+      "track_a_mean_tau_sd": 0.205,
+      "phase5_att_sd": 0.081,
+      "tau_model_se_sd_median": 0.17
+    },
+    "ST_Elev_aVL": {
+      "track_a_mean_tau_sd": -0.421,
+      "phase5_att_sd": -0.341,
+      "tau_model_se_sd_median": 0.242
+    },
+    "T_Amp_V4": {
+      "track_a_mean_tau_sd": -0.264,
+      "phase5_att_sd": -0.255,
+      "tau_model_se_sd_median": 0.204
+    },
+    "ST_Elev_V4": {
+      "track_a_mean_tau_sd": -0.175,
+      "phase5_att_sd": -0.167,
+      "tau_model_se_sd_median": 0.231
+    },
+    "T_Amp_V5": {
+      "track_a_mean_tau_sd": -0.35,
+      "phase5_att_sd": -0.335,
+      "tau_model_se_sd_median": 0.195
+    },
+    "ST_Elev_V5": {
+      "track_a_mean_tau_sd": -0.305,
+      "phase5_att_sd": -0.241,
+      "tau_model_se_sd_median": 0.256
+    },
+    "T_Amp_V6": {
+      "track_a_mean_tau_sd": -0.317,
+      "phase5_att_sd": -0.306,
+      "tau_model_se_sd_median": 0.192
+    },
+    "ST_Elev_V6": {
+      "track_a_mean_tau_sd": -0.349,
+      "phase5_att_sd": -0.243,
+      "tau_model_se_sd_median": 0.244
+    },
+    "ST_lateral_mean": {
+      "track_a_mean_tau_sd": -0.429,
+      "phase5_att_sd": -0.363,
+      "tau_model_se_sd_median": 0.234
+    },
+    "ST_max_depression": {
+      "track_a_mean_tau_sd": -0.325,
+      "phase5_att_sd": -0.225,
+      "tau_model_se_sd_median": 0.22
+    }
+  },
+  "gate_cf_g1": {
+    "A1_additive": {
+      "add": {
+        "beats_both_baselines": false,
+        "coverage_90": 0.897,
+        "coverage_ok": true,
+        "pass": false
+      },
+      "remove": {
+        "beats_both_baselines": false,
+        "coverage_90": 0.897,
+        "coverage_ok": true,
+        "pass": false
+      },
+      "pass": false
+    },
+    "A2_shrunk": {
+      "add": {
+        "beats_both_baselines": true,
+        "coverage_90": 0.889,
+        "coverage_ok": true,
+        "pass": true
+      },
+      "remove": {
+        "beats_both_baselines": true,
+        "coverage_90": 0.916,
+        "coverage_ok": true,
+        "pass": true
+      },
+      "pass": true
+    }
+  }
+}

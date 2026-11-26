@@ -151,3 +151,102 @@ leads are reordered by the names in the `.hea` header, and a median beat is adde
 **Training material for Track B** (QC-passing median beats in the Phase 10 `train` split): 9,113 during-MI ECGs,
 5,261 other ECGs of MI patients and 24,256 controls. The validation and test splits each have about 4,800 controls,
 2,000 during-MI ECGs and 1,100 others. There are also 21,144 QC-passing PTB-XL ECGs for the external test.
+
+---
+
+# Phase 10, CF3: Track A, feature-level individual counterfactuals
+
+**Date:** 2026-11-27 · **Gate CF-G1: PASS for A2 (shrunk), FAIL for A1 (additive, pre-specified)** ·
+**Accepted by the user 2026-11-27.**
+
+Code: [cf3_01_track_a.py](cf3_01_track_a.py) (about 40 s). Results: [cf3_01_track_a.json](cf3_01_track_a.json),
+[CF3_PAIR_VALIDATION.csv](CF3_PAIR_VALIDATION.csv) (per measure) and [CF3_SUBGROUPS.csv](CF3_SUBGROUPS.csv).
+Tests: [test_cf3.py](test_cf3.py) (8 tests, all passing).
+
+## Model
+
+- **Measures:** the 16 robust measures (Phases 6–7), taken from the CF2 ECGdeli features with correct lead labels.
+  |ST_Elev| > 2 mV is set to missing, then the values are winsorized with the Phase 3 bounds.
+- **Structural model:** the Phase 5 design (5-df age spline, sex, diabetes, hypertension, CKD, prior MI, with
+  interactions), fitted on the Phase 10 `train` split only:
+  - `m0` (no MI): OLS on 23,152 training controls, one ECG per never-MI patient;
+  - `m1` (MI): OLS on 2,092 training MI episodes (the earliest QC-passing during-MI ECG of each), with MI-type
+    dummies. By type: NSTEMI 1,464, STEMI inferior 218, STEMI anterior 142, type 2 137, other STEMI 73, other 58.
+- **Counterfactual** (abduction, action, prediction): the patient's own deviation is `u = y_obs − m_obs(L)`, and
+  `y_cf = m_cf(L) + ρ·u`.
+  - **A1, additive** (pre-specified in the roadmap): ρ = 1, which is `y_cf = y_obs ∓ τ(L, type)`.
+  - **A2, shrunk** (added at CF3 design, before any test-set result): ρ per measure and direction, fitted by least
+    squares on `pair_val` only.
+- **Baselines:** "no change" (copy the other ECG) and "population mean" (`m_cf(L)`, what `explain_ecg` gives today).
+- **Intervals:** split conformal at 90%, calibrated on `pair_val` residuals separately for before and after
+  baselines.
+
+## Results on the primary test set (1,378 pairs, 1,313 patients)
+
+Mean absolute error over the 14 ST/T measures, in control-SD units:
+
+| Direction | A1 additive | **A2 shrunk** | No change | Population mean | 90% coverage (A1 / A2) |
+|---|---|---|---|---|---|
+| Add MI (before ECG → during-MI ECG) | 1.009 | **0.937** | 1.012 | 1.016 | 0.897 / 0.889 |
+| Remove MI (during-MI ECG → before ECG) | 1.009 | **0.682** | 1.012 | 0.725 | 0.897 / 0.916 |
+
+- **A2 vs the baselines** (95% patient-bootstrap CIs):
+  - Add MI: −0.075 [−0.093, −0.056] vs no change; −0.079 [−0.090, −0.068] vs population mean.
+  - Remove MI: −0.331 vs no change; −0.044 [−0.055, −0.033] vs population mean.
+  - Per measure, A2 beats both baselines on 14 of 14 ST/T measures when adding MI. When removing MI it beats no
+    change on 14 of 14 and the population mean on 12 of 14. It is never worse.
+- **A1 is no better than either baseline when adding MI**: −0.003 [−0.016, 0.010] vs no change. When removing MI it
+  is clearly worse than the population mean (+0.28).
+- **Sensitivity sets** (all before baselines, 3,299 pairs; all after baselines, 3,000 pairs): the same pattern. A2
+  beats both baselines in both directions.
+- **Interval width:** the median 90% half-width is 1.9 SD (add MI) and 1.6 SD (remove MI).
+
+## What this means
+
+1. **Only 30–60% of a patient's own deviation persists between visits** (ρ on `pair_val`: 0.31–0.76 for adding MI,
+   0.20–0.60 for removing it). Two ECGs months apart differ by about 1 SD on each ST/T measure even without MI.
+   Copying the whole deviation (A1) carries that noise into the counterfactual. Shrinking it (A2) is the
+   regression-to-the-mean correction.
+2. **Individual counterfactuals are possible, but imprecise.** The best model cuts the error by 7–8% when adding MI
+   and 6% (vs the population mean) when removing it. The remaining error, about 0.9 SD, is mostly visit-to-visit
+   variation that no feature-level model can predict. The 90% intervals are honest (coverage 0.89–0.92), but wide.
+3. **Removing MI is easier than adding it** (0.68 vs 0.94 SD). Baseline ECGs vary less, and MI changes differ a lot
+   between patients in ways the covariates and MI type do not capture.
+4. **Consistency with Phases 5–7:** Track A's average effect over the primary MI episodes has the same sign as the
+   Phase 5 ATT on 16 of 16 measures, at similar size (for example, lateral ST −0.43 vs −0.36 SD). Model uncertainty
+   in τ for one patient is about 0.2 SD.
+
+**Subgroups** (primary set, A2):
+- **NSTEMI** (1,084 pairs): beats both baselines in both directions.
+- **STEMI** (243 pairs): adding MI, 1.13 vs 1.26 (no change) and 1.20 (population mean). Removing MI, it ties the
+  population mean (0.66 vs 0.64).
+- **Anterior STEMI** (87 pairs): the largest errors (1.38 SD when adding MI) and **under-coverage (77%)**. The
+  intervals are too narrow there.
+- **Time gap** (quartiles from 1–55 days to 2–10 years): the pattern is stable. A2 helps most for short gaps.
+
+## Deviations from the roadmap
+
+1. **A2 was added; it was not in the roadmap.** It was written before any test-set evaluation, its only tuned
+   parameters (ρ) come from `pair_val`, and `pair_test` was used once. The pre-specified A1 fails the gate, and that
+   is reported as such.
+2. **Intervals are split conformal on `pair_val`, not bootstrap.** A bootstrap refit only measures model uncertainty
+   in τ (about 0.2 SD). The real error is dominated by visit-to-visit variation (about 1 SD), so bootstrap intervals
+   would cover far below 90%. The bootstrap is still run and reported as model uncertainty.
+3. **MI type includes the STEMI territory** (anterior, inferior, other), because ST changes are territory-specific.
+
+## Decisions for you before CF4
+
+1. **Accept CF3**, with Gate CF-G1 passed by A2 and failed by A1, as above?
+2. **Track A model for CF6 (MCP):** I propose **A2** with its conformal intervals. The tool would always report the
+   interval and the validation error, and would say that about 0.9 SD of error remains, so it is not a precise
+   individual prediction.
+3. **Anterior STEMI under-coverage:** I propose a warning in CF6 for STEMI, and especially anterior STEMI, that the
+   intervals are too narrow there. `pair_val` has only 98 STEMI pairs with a before baseline (38 anterior), too few for type-specific calibration.
+   Track B (CF4–CF5) is the place to try to do better on STEMI morphology.
+
+## Decisions recorded (2026-11-27)
+
+1. **CF3 accepted.** Gate CF-G1 is passed by A2 and failed by the pre-specified A1, and both results are reported.
+2. **Track A model for CF6:** A2 with its split-conformal 90% intervals. The tool always reports the interval and
+   the validation error, and does not present the result as a precise individual prediction.
+3. **STEMI warning:** CF6 warns that intervals are too narrow for STEMI, especially anterior STEMI.
