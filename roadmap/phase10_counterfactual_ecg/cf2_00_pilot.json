@@ -1,0 +1,64 @@
+{
+  "ecgs": 300,
+  "by_dataset": {
+    "mimic": 250,
+    "ptbxl": 50
+  },
+  "status": {
+    "ok": 295,
+    "no_median_beat": 5
+  },
+  "qc_pass_rate": {
+    "mimic": 0.972,
+    "ptbxl": 0.96
+  },
+  "errors": {},
+  "beats_used_median": 11.0,
+  "limb_identity_median_r": {
+    "aVF~(II+III)/2": 0.999,
+    "aVL~(I-III)/2": 0.999,
+    "aVR~-(I+II)/2": 0.999,
+    "aVF~(I-III)/2 (swapped order)": -0.295
+  },
+  "limb_identity_share_r_above_0.9": {
+    "aVF~(II+III)/2": 1.0,
+    "aVL~(I-III)/2": 1.0,
+    "aVR~-(I+II)/2": 1.0,
+    "aVF~(I-III)/2 (swapped order)": 0.003
+  },
+  "st_median_beat_vs_ecgdeli_r": {
+    "I": 0.833,
+    "II": 0.76,
+    "III": 0.563,
+    "aVR": 0.816,
+    "aVL": 0.61,
+    "aVF": 0.587,
+    "V1": 0.793,
+    "V2": 0.822,
+    "V3": 0.221,
+    "V4": 0.047,
+    "V5": 0.737,
+    "V6": 0.849
+  },
+  "vs_legacy_feature_file": {
+    "n": 117,
+    "pearson_r": {
+      "ST_Elev_I": 1.0,
+      "ST_Elev_II": 1.0,
+      "ST_Elev_III": 1.0,
+      "ST_Elev_aVR": 1.0,
+      "ST_Elev_aVL": 1.0,
+      "ST_Elev_aVF": 1.0,
+      "ST_Elev_V1": 1.0,
+      "ST_Elev_V2": 1.0,
+      "ST_Elev_V3": 1.0,
+      "ST_Elev_V4": 1.0,
+      "ST_Elev_V5": 1.0,
+      "ST_Elev_V6": 1.0,
+      "T_Amp_I": 1.0,
+      "T_Amp_aVL": 1.0,
+      "T_Amp_aVF": 1.0,
+      "T_Amp_V5": 1.0
+    }
+  }
+}

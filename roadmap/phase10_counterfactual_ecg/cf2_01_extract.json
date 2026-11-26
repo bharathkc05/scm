@@ -1,0 +1,21 @@
+{
+  "stages": [
+    "shards_stage1",
+    "shards_stage2",
+    "shards_stage3"
+  ],
+  "ecgs": 117625,
+  "by_dataset": {
+    "mimic": 95826,
+    "ptbxl": 21799
+  },
+  "status": {
+    "ok": 115040,
+    "no_median_beat": 2347,
+    "error": 238
+  },
+  "qc_pass_rate_by_dataset": {
+    "mimic": 0.9539,
+    "ptbxl": 0.9699
+  }
+}
