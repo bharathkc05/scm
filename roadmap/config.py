@@ -41,6 +41,11 @@ PATHS = {
     "raw_d_icd_diagnoses": RAW / "MIMIC-IV-2.2/hosp/d_icd_diagnoses.csv",
     "raw_omr": RAW / "MIMIC-IV-2.2/hosp/omr.csv",
     "raw_ecg_record_list": RAW / "MIMIC-IV-ECG-1.0/record_list.csv",
+    # --- Phase 10 (counterfactual ECGs): raw waveforms, ECG-linked diagnoses, external data ---
+    "raw_ecg_dir": RAW / "MIMIC-IV-ECG-1.0",
+    "raw_ecg_ext_icd": RAW / "MIMIC-IV-ECG-Ext-ICD-1.0.1/records_w_diag_icd10.csv",
+    "ptbxl_dir": RAW / "PTB-XL-1.0.3",
+    "ptbxl_plus_dir": RAW / "PTB-XL+-1.0.1",
 }
 
 # Patient-level outputs go here (under data/, so git-ignored). Reports/aggregates go in PHASE_DIRS.
@@ -57,6 +62,7 @@ PHASE_DIRS = {
     7: ROADMAP / "phase7_stress_test",
     8: ROADMAP / "phase8_paper",
     9: ROADMAP / "phase9_demo",
+    10: ROADMAP / "phase10_counterfactual_ecg",
 }
 
 

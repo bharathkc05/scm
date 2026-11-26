@@ -1,0 +1,103 @@
+{
+  "episodes": {
+    "acute_mi_admissions": 11222,
+    "patients": 9459,
+    "by_kind": {
+      "nstemi": 7581,
+      "stemi": 1917,
+      "type2": 1443,
+      "other_unspecified": 281
+    },
+    "stemi_by_territory": {
+      "inferior": 915,
+      "anterior": 698,
+      "unspecified": 147,
+      "other_site": 77,
+      "lateral": 51,
+      "posterior": 29
+    },
+    "multi_territory_stemi": 11,
+    "after_onset_context": 6481,
+    "troponin_tested_share": 0.928,
+    "troponin_rise_found_share": 0.894,
+    "troponin_rise_h_from_arrival_iqr": [
+      0.4,
+      1.1,
+      4.9
+    ],
+    "revascularised_share": 0.434
+  },
+  "ecg_index": {
+    "ecgs": 271341,
+    "by_role": {
+      "control": 150794,
+      "other_mi_patient": 67610,
+      "during": 44810,
+      "baseline_before": 4175,
+      "baseline_after": 4055
+    },
+    "mi_patients_with_ecg": 8791,
+    "control_patients": 150794,
+    "during_ecgs_hours_from_arrival_iqr": [
+      4.5,
+      25.4,
+      89.8
+    ]
+  },
+  "pairs": {
+    "episodes": 6205,
+    "patients": 5159,
+    "with_before": 4506,
+    "with_after": 4055,
+    "with_both": 2356,
+    "first_episode": 4984,
+    "after_onset_context": 3563,
+    "before_follows_earlier_mi": 824,
+    "by_kind": {
+      "nstemi": 4499,
+      "stemi": 1017,
+      "type2": 525,
+      "other_unspecified": 164
+    },
+    "stemi_by_territory": {
+      "inferior": 482,
+      "anterior": 375,
+      "unspecified": 78,
+      "other_site": 36,
+      "lateral": 25,
+      "posterior": 21
+    },
+    "before_gap_days_iqr": [
+      30.9,
+      121.8,
+      455.4
+    ],
+    "after_gap_days_iqr": [
+      54.6,
+      97.7,
+      231.8
+    ]
+  },
+  "splits": {
+    "rule": "pair patients 80% pair_test / 20% pair_val by MI kind of their first pair episode; everyone else keeps the Phase 3 split",
+    "patients_by_cf_split": {
+      "train": 122942,
+      "validation": 26349,
+      "test": 26283,
+      "pair_test": 4128,
+      "pair_val": 1031
+    },
+    "pair_patients_by_cf_split": {
+      "pair_test": 4128,
+      "pair_val": 1031
+    },
+    "pair_patients_moved_out_of_phase3_train": 3571,
+    "sha256": "6f0fc44fd664daafa7d011b63eff11e94c47cfdb4c9218a9ef8aff1d79a246d8",
+    "seed": 20261121
+  },
+  "gate_cf_g0": {
+    "rule": "at least 3,000 pair patients in pair_test",
+    "pair_test_patients": 4128,
+    "pass": true
+  }
+}
