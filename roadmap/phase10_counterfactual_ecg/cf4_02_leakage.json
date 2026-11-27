@@ -1,0 +1,17 @@
+{
+  "model": "cvae_b1.0_l10",
+  "auroc_z_only": 0.5906,
+  "auroc_covariates_only": 0.8301,
+  "auroc_covariates_plus_z": 0.8413,
+  "delta_auroc_z_given_covariates": 0.0112,
+  "delta_ci95": [
+    -0.004,
+    0.0239
+  ],
+  "z_only_score_correlation": {
+    "age_z": 0.151,
+    "hr_z": -0.032,
+    "sex_male": 0.012,
+    "prior_mi_any": 0.066
+  }
+}

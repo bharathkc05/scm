@@ -250,3 +250,95 @@ Mean absolute error over the 14 ST/T measures, in control-SD units:
 2. **Track A model for CF6:** A2 with its split-conformal 90% intervals. The tool always reports the interval and
    the validation error, and does not present the result as a precise individual prediction.
 3. **STEMI warning:** CF6 warns that intervals are too narrow for STEMI, especially anterior STEMI.
+
+---
+
+# Phase 10, CF4: Track B, conditional β-VAE on median beats
+
+**Date:** 2026-11-27 · **CF4 acceptance: 2 of 3 criteria pass as written; the adversary criterion fails (AUROC 0.59
+against ≤ 0.55)** ·
+**Accepted by the user 2026-11-27 with option (a).**
+
+Code: [cf4_model.py](cf4_model.py) (data and model), [cf4_01_train.py](cf4_01_train.py) (grid, selection, checks)
+and [cf4_02_leakage.py](cf4_02_leakage.py) (where the MI information in z comes from). Results:
+[CF4_SWEEP.csv](CF4_SWEEP.csv), [cf4_01_train.json](cf4_01_train.json) and [cf4_02_leakage.json](cf4_02_leakage.json).
+Tests: [test_cf4.py](test_cf4.py) (10 tests, all passing). Checkpoints are in `models/cf_vae/` (git-ignored).
+
+## Model and data
+
+- **Input:** the CF2 median beat, 12 leads × 400 samples (800 ms, QRS onset at 200 ms), in mV divided by the training
+  SD (0.178 mV).
+- **Condition c** (given to the encoder and to every decoder layer through FiLM):
+  - MI state: none, NSTEMI, STEMI anterior, STEMI inferior, other STEMI, type 2, other;
+  - age, sex, diabetes, hypertension, CKD;
+  - prior MI (a prior-MI code, or any MI episode discharged before the ECG);
+  - heart rate.
+- **Latent z:** 32 dimensions. A gradient-reversal adversary predicts the MI state from z.
+- **Size:** 7.6M parameters, about 6 s per epoch on the RTX 4050.
+- **Data:** 38,630 training and 8,082 validation median beats; no pair patient, and the test split is untouched.
+  Training beats by MI state: none 29,517, NSTEMI 6,140, STEMI inferior 982, STEMI anterior 765, type 2 675, other
+  STEMI 330, other 221. Sampling is weighted by 1/√count of the MI state.
+- **Grid:** β ∈ {0.5, 1, 2} × λ ∈ {10, 50, 200}, seed fixed, early stopping on validation loss. λ = 200 was added
+  after a 3-epoch smoke test, before the full runs.
+- **Selection rule (fixed in advance):** among runs with adversary AUROC ≤ 0.55, the lowest validation reconstruction
+  error. No run passed, so the rule fell back to the lowest AUROC: **β = 1, λ = 10**.
+
+## Results against the roadmap criteria
+
+| Criterion | Result | |
+|---|---|---|
+| Reconstruction at or below the current VAE's | Per-lead FVU **0.068** vs **0.278** (global FVU 0.032) | **Pass** |
+| Adversary on z: AUROC ≤ 0.55 | **0.591** (boosting probe; logistic 0.562). Best in the grid: 0.590–0.600 | **Fail** |
+| Reproducible from a fixed seed | Two runs: weights identical (max difference 0.0) | **Pass** |
+
+Raising the adversary weight made leakage **worse**, not better (λ = 200: AUROC 0.66–0.72). Gradient-reversal
+training becomes unstable at high weights: the in-training adversary is fooled, but a fresh probe still finds the
+information.
+
+## Where the leaked information comes from
+
+The roadmap criterion tests z **alone**. Assumption CF-A2 needs z to carry no MI information **beyond the covariates
+in c**, because the decoder already receives those covariates.
+
+| Probe predicting MI (validation) | AUROC |
+|---|---|
+| Covariates only (age, sex, comorbidities, heart rate) | 0.830 |
+| z only | 0.591 |
+| Covariates + z | 0.841 |
+| **What z adds to the covariates** | **+0.011 (95% CI −0.004 to +0.024)** |
+
+The z-only probe score correlates most with age (r = 0.15). z keeps some age-related beat shape, and age predicts MI
+strongly, so z alone looks informative. Given the covariates, z adds nothing statistically detectable. **The leak is
+mostly covariate information duplicated in z, not MI-specific morphology.**
+
+## Early look at the counterfactuals (validation MI beats, MI state set to "none")
+
+ST change at J + 60 ms, in mV:
+- **Anterior STEMI:** ST falls in V2–V4 (−0.065, −0.090, −0.074), with small reciprocal rises in III and aVR.
+- **Inferior STEMI:** ST falls in II, III and aVF (−0.038, −0.059, −0.049), with reciprocal rises in I, aVL and V2.
+- **NSTEMI:** ST rises slightly in I, II and V2–V6 (+0.01 to +0.02); the ST depression is removed.
+
+These are the right leads and the right directions for each territory. **The size may be too small:** the mean
+lateral ST shift is +0.0075 mV, about half the Phase 5 ATT (0.0156 mV). CF5 will test this formally, measured the same
+way as the ATT.
+
+## Decisions for you before CF5
+
+1. **Adversary criterion.** Two options:
+   - **(a) Recommended:** accept CF4, with the adversary criterion restated as conditional, which is what CF-A2
+     requires: **"z adds no MI information beyond the covariates: the CI of ΔAUROC includes 0, and its upper bound
+     is ≤ 0.03."** The selected model passes this (+0.011, CI −0.004 to +0.024). The marginal result (0.59) stays
+     reported as a fail of the criterion as first written. This change is made after seeing the results, and it is
+     labelled as such.
+   - **(b)** Keep the original criterion and try to remove the age information from z too, for example with a
+     second adversary on the covariates. That makes the model blurrier, and age-related shape is not what CF-A2
+     protects. I expect it to cost reconstruction quality for no causal gain.
+2. **The model for CF5** is `cvae_b1.0_l10`: the best reconstruction among the least-leaking runs.
+
+## Decisions recorded (2026-11-27)
+
+1. **CF4 accepted with option (a).** The adversary criterion is restated as conditional: z adds no MI information
+   beyond the covariates (the ΔAUROC CI includes 0, and its upper bound is ≤ 0.03). The selected model passes this
+   (+0.011, CI −0.004 to +0.024). The criterion as first written (z alone, AUROC ≤ 0.55) is reported as failed
+   (0.591). The restatement was made after seeing the results.
+2. **Model for CF5:** `cvae_b1.0_l10`.
