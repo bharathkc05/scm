@@ -37,6 +37,13 @@ FIGURES = {
                     "exploratory; model-implied, not observed counterfactuals)."),
         "axes": {"x": "Mean lateral ST level (mV)", "y": "Profile"},
         "view": "counterfactual_profiles", "phase": 6},
+    "cf_pair_validation": {
+        "title": "Individual counterfactuals vs real within-patient pairs",
+        "caption": ("Absolute error (control SD, averaged over the 14 ST/T measures) of Track A counterfactuals on "
+                    "held-out patients with an ECG before and during their MI, beside two baselines: copying the "
+                    "other ECG and the population expectation. The shrunk model A2 is what counterfactual_ecg uses."),
+        "axes": {"x": "Absolute error (control SD), lower is better", "y": "Method, per direction"},
+        "view": "cf_pair_validation", "phase": 10},
     "cohort_flow": {
         "title": "Cohort flow",
         "caption": "Admissions at each step from MIMIC-IV v2.2 to the Layer 2 primary set.",
@@ -83,7 +90,7 @@ def register(app: FastMCP, ctx: ServerContext) -> None:
     @audited(ctx, "render_figure")
     def _figure(
         figure_id: Annotated[Literal["st_t_effects", "crude_vs_adjusted", "latent_audit", "counterfactual_profiles",
-                                     "cohort_flow"], Field(description="Which figure")],
+                                     "cohort_flow", "cf_pair_validation"], Field(description="Which figure")],
         include_image: Annotated[bool, Field(description="Include the PNG image")] = True,
     ) -> Annotated[CallToolResult, Envelope[FigureResult]]:
         return render_figure(ctx, figure_id, include_image)

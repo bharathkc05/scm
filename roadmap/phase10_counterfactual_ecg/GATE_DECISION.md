@@ -359,3 +359,61 @@ random or chosen real patient:
 Random selection draws from held-out patients. Reports go to the git-ignored `data/roadmap/phase10/explorer/` and
 must never pass through the MCP server or a cloud service. Tests: [test_patient_explorer.py](test_patient_explorer.py)
 (8 tests). They include an exact match with the CF3 validation numbers, and they never print patient values.
+
+---
+
+# Phase 10, CF6: MCP integration
+
+**Date:** 2026-11-27 · **Acceptance: PASS** (109 MCP tests; smoke test 15 of 15 tools from all five client configs) ·
+awaiting your review.
+
+## What the server gained (12 → 15 tools)
+
+| Tool | What it answers | Inputs | Never returns |
+|---|---|---|---|
+| `counterfactual_ecg` | One ECG's 16 robust measures with MI **removed** (ECG recorded during MI) or **added** (choose NSTEMI, anterior / inferior / other STEMI, type 2, other). Track A model A2, 90% interval, and for each measure the error this model made on real held-out pairs. | Patient facts; per-lead ECGdeli features (12 ST levels, 5 T amplitudes, 2 Q amplitudes) **or** a synthetic profile ECG; which pairs calibrate the interval (before-MI or after-MI baselines) | Diagnosis, probability of MI, waveforms |
+| `clinical_what_if` | For one profile: risk ratio of do(diabetes / hypertension / CKD = yes) vs no, with a 95% interval, beside the study average. For an MI patient with the condition, the **probability of necessity**. Diabetes returns both adjustment sets as a bracket, as in Phase 5. | Patient facts, condition, whether the patient had an MI | **Absolute probabilities of MI** (server rule; they are computed internally for the ratio only) |
+| `counterfactual_validation` | How accurate individual counterfactuals are: composite and per-measure errors against both baselines, coverage, subgroups by MI type and time gap. | View, direction, pair set | Cells under 11 pairs |
+
+`render_figure` gains `cf_pair_validation`.
+
+## How it is built
+
+- **Export** ([cf6_01_export.py](cf6_01_export.py)) writes three T3 assets with aggregate parameters only:
+  - `cf_track_a.json`: the design, coefficients, ρ, conformal half-widths, input rules and validation metrics;
+  - `cf_clinical.json`: the Layer 1 do() models fitted on the Phase 3 training split, with 200 draws per arm from
+    the patient-clustered sandwich covariance;
+  - the figure.
+
+  The CF3 validation CSVs become two new DuckDB views (T2). The manifest grows from 69 to 78 artifacts.
+- **Portable arithmetic** (`local_mcp/tools/cf_math.py`) needs no numpy or sklearn. It matches the fitted Track A
+  model and the patient explorer's Layer 1 models **to 1e-9** on random profiles and every MI type.
+- **Guards:**
+  - Inputs are enums and bounded numbers. Unknown feature names are rejected, so a planted `subject_id` is refused,
+    and ST beyond 2 mV is rejected as an artefact.
+  - Patient facts and features are redacted in the audit log.
+  - All outputs pass the egress guard. The by-measure validation view nests methods inside each measure to stay
+    under the 60-item list cap and the 32 KB payload cap.
+- **Wording written by the server:**
+  - every counterfactual comes with its interval, the validation error and the STEMI warning (accepted at CF3);
+  - the clinical tool states that it gives no absolute probability, and lists the assumptions behind the
+    probability of necessity.
+
+## Deviations from the roadmap
+
+1. **No waveform image tool.** CF5 was skipped, so by the roadmap's own rule (gate CF-G2) Track B stays a local
+   research artifact. The roadmap's `counterfactual_ecg` image output and the synthetic exemplar bank are dropped.
+   `counterfactual_ecg` is the Track A feature-level tool instead, and `explain_ecg` is unchanged.
+2. **`clinical_what_if` is new** (agreed 2026-11-27, when you asked about individual reasoning). To keep the
+   server's standing rule (no individual probability of MI), it returns ratios and the probability of necessity
+   only. The local patient explorer still shows absolute risks.
+3. **`trace_claim` claims C21 onwards are not added yet.** They belong with the paper text, in CF7.
+4. **Eval sets:** G01 and F13 now expect 78 verified artifacts, and three golden questions (G16–G18) cover the new
+   tools. Their values were checked against the live server. They have **not** been run in Claude Code, because
+   that run is paid; that is part of CF7.
+
+## Decisions for you
+
+1. **Accept CF6?**
+2. **CF7** (documentation, evaluation and demo): run the golden set in Claude Code (about $2) including G16–G18,
+   add the Phase 10 claims, and write the Phase 10 report?

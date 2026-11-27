@@ -40,7 +40,7 @@ Direct retrieval of one entity, value or definition, with basic filtering.
 | F10 | What does claim C12 say, and what's the evidence behind it? | `trace_claim`: the beta-VAE latents add no MI information beyond the handcrafted features; evidence LATENT_AUDIT.csv, verified by hash. | `trace_claim` |
 | F11 | Show me the cohort flow diagram. | `render_figure(cohort_flow)`: the figure and its table. | `render_figure` |
 | F12 | What's the average age of heart-attack patients versus controls in the ECG layer? | `cohort_summary`: 69.9 years for after-onset MI vs about 64 for controls. *(needs the patient-level files)* | `cohort_summary` |
-| F13 | Is the data the server is using intact? | `server_status`: 69 artifacts verified, no mismatches. | `server_status` |
+| F13 | Is the data the server is using intact? | `server_status`: 78 artifacts verified, no mismatches. | `server_status` |
 
 ## 2. Analytical and multi-hop
 

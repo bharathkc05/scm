@@ -27,14 +27,16 @@ from local_mcp.db import Sandbox  # noqa: E402
 from local_mcp.paths import AUDIT_LOG  # noqa: E402
 from local_mcp.registry import Registry  # noqa: E402
 from local_mcp.runtime import ServerContext  # noqa: E402
-from local_mcp.tools import computation, figures, orientation, provenance, results, status  # noqa: E402
+from local_mcp.tools import (computation, counterfactual, figures, orientation, provenance, results,  # noqa: E402
+                             status)
 
 INSTRUCTIONS = (
     "Local server for a causal study of acute myocardial infarction (MIMIC-IV, hospitalized adults). "
     "All computation runs on the user's machine; tools return only aggregate results, never patient rows. "
     "Call study_overview first; use result IDs (L1:<exposure>:<set>, L2:<measure>) to chain tools. "
     "Quote each tool's 'summary' and 'caveats' with any number you report, and never present an estimate as a "
-    "diagnosis or a probability of MI for an individual."
+    "diagnosis or a probability of MI for an individual. Individual counterfactuals (counterfactual_ecg, "
+    "clinical_what_if) are model-based ranges: always report their interval and validation error."
 )
 
 
@@ -52,7 +54,7 @@ def build_context(audit_path=AUDIT_LOG) -> ServerContext:
 def build_app(ctx: ServerContext | None = None) -> FastMCP:
     ctx = ctx or build_context()
     app = FastMCP(SERVER_NAME, instructions=INSTRUCTIONS, log_level="WARNING")
-    for module in (orientation, results, computation, figures, provenance, status):
+    for module in (orientation, results, computation, counterfactual, figures, provenance, status):
         module.register(app, ctx)
     return app
 

@@ -56,6 +56,9 @@ ARTIFACTS = [
     ("roadmap/phase7_stress_test/p7_03_bmi.json", "T2", "json", None),
     ("roadmap/phase7_stress_test/p7_05_subgroups.json", "T2", "json", None),
     ("local_mcp/assets/variables.csv", "T2", "csv", "variables"),
+    ("roadmap/phase10_counterfactual_ecg/CF3_PAIR_VALIDATION.csv", "T2", "csv", "cf_pair_validation"),
+    ("roadmap/phase10_counterfactual_ecg/CF3_SUBGROUPS.csv", "T2", "csv", "cf_subgroups"),
+    ("roadmap/phase10_counterfactual_ecg/cf3_01_track_a.json", "T2", "json", None),
     # T3 model parameters and assets
     ("roadmap/phase9_demo/demo_params.json", "T3", "json", None),
     ("local_mcp/assets/profile_model.json", "T3", "json", None),
@@ -64,6 +67,9 @@ ARTIFACTS = [
     ("local_mcp/assets/figures/latent_audit.png", "T3", "png", None),
     ("local_mcp/assets/figures/counterfactual_profiles.png", "T3", "png", None),
     ("local_mcp/assets/figures/cohort_flow.png", "T3", "png", None),
+    ("local_mcp/assets/cf_track_a.json", "T3", "json", None),
+    ("local_mcp/assets/cf_clinical.json", "T3", "json", None),
+    ("local_mcp/assets/figures/cf_pair_validation.png", "T3", "png", None),
 ]
 
 

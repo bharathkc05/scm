@@ -1,4 +1,4 @@
-"""M5 smoke test: launch the server exactly as each MCP client config says, then call all 12 tools over stdio.
+"""M5 smoke test: launch the server exactly as each MCP client config says, then call all 15 tools over stdio.
 
     python -X utf8 local_mcp/smoke.py                            # every client template, rendered for this machine
     python -X utf8 local_mcp/smoke.py --client cursor vscode     # some clients
@@ -36,7 +36,8 @@ from local_mcp.configs import render  # noqa: E402
 
 EXPECTED_TOOLS = ("study_overview", "describe_variable", "get_risk_factor_effect", "get_ecg_effect",
                   "get_subgroup_effects", "robustness_card", "confounding_what_if", "cohort_summary", "explain_ecg",
-                  "render_figure", "trace_claim", "server_status")
+                  "render_figure", "trace_claim", "server_status", "counterfactual_ecg",
+                  "clinical_what_if", "counterfactual_validation")
 
 # One representative call per tool (server_status first, so a broken start is reported before anything else).
 SMOKE_CALLS: tuple[tuple[str, dict], ...] = (
@@ -55,6 +56,11 @@ SMOKE_CALLS: tuple[tuple[str, dict], ...] = (
                      "example_id": "synthetic_typical_mi_shift", "timing": "after_onset"}),
     ("render_figure", {"figure_id": "st_t_effects"}),
     ("trace_claim", {"claim_id": "C06"}),
+    ("counterfactual_ecg", {"patient": {"age": 65, "sex": "male", "hypertension": True}, "direction": "remove_mi",
+                            "mi_type": "nstemi", "example_id": "synthetic_expected"}),
+    ("clinical_what_if", {"patient": {"age": 65, "sex": "male", "hypertension": True}, "exposure": "hypertension",
+                          "had_mi": True}),
+    ("counterfactual_validation", {}),
 )
 QUICK_CALLS = SMOKE_CALLS[:1]
 GATED = {"cohort_summary": "DATA_NOT_PRESENT"}           # possession-gated: allowed to be absent on a public clone

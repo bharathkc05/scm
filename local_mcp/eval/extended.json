@@ -87,10 +87,10 @@
        {"path": "result.rows[strata.acute_mi=1].metrics.age_mean", "value": 69.9, "answer": true, "answer_decimals": 1},
        {"path": "result.rows[strata.acute_mi=0].metrics.age_mean", "value": 64.0, "answer": ["64.0", "63.7", "64 y", "about 64", "~64", "64 vs", "64,", "64)"]}]}]},
     {"id": "F13", "category": "factual", "question": "Is the data the server is using intact?",
-     "rubric": "`server_status`: 69 artifacts verified, no mismatches.",
+     "rubric": "`server_status`: 78 artifacts verified, no mismatches.",
      "expect_tools": [{"tool": "server_status"}],
      "calls": [{"tool": "server_status", "args": {}, "checks": [
-       {"path": "result.integrity.verified", "value": 69, "answer": true},
+       {"path": "result.integrity.verified", "value": 78, "answer": true},
        {"path": "result.integrity.mismatched", "value": []}]}]},
 
     {"id": "A01", "category": "analytical", "question": "Rank diabetes, high blood pressure, kidney disease and a previous heart attack by how much they raise heart-attack risk, and tell me which results hold up.",

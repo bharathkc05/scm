@@ -20,7 +20,8 @@ from mcp.types import LATEST_PROTOCOL_VERSION
 SERVER = Path(__file__).resolve().parents[1] / "server.py"
 EXPECTED_TOOLS = ["study_overview", "describe_variable", "get_risk_factor_effect", "get_ecg_effect",
                   "get_subgroup_effects", "robustness_card", "confounding_what_if", "cohort_summary", "explain_ecg",
-                  "render_figure", "trace_claim", "server_status"]
+                  "render_figure", "trace_claim", "server_status", "counterfactual_ecg", "clinical_what_if",
+                  "counterfactual_validation"]
 CMD = [sys.executable, "-X", "utf8", str(SERVER)]
 ENV = {**os.environ, "PYTHONUTF8": "1"}
 

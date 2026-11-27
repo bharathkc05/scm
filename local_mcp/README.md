@@ -1,12 +1,13 @@
 # Local MCP server (`scm-causal-mi`)
 
 Local stdio MCP server over the causal-MI study results. Design and roadmap: [DESIGN.md](DESIGN.md).
-**Status: M6 complete (all milestones).** The server has 12 tools, and every response passes the egress guard:
+**Status: M6 complete; Phase 10 tools added (CF6).** The server has 15 tools, and every response passes the egress guard:
 
 - `study_overview`, `describe_variable`
 - `get_risk_factor_effect`, `get_ecg_effect`, `get_subgroup_effects`, `robustness_card`
 - `confounding_what_if`, `cohort_summary`, `explain_ecg`
 - `render_figure`, `trace_claim`, `server_status`
+- `counterfactual_ecg`, `clinical_what_if`, `counterfactual_validation` (Phase 10: individual reasoning)
 
 The same server runs from config templates for Claude Code, Cursor, GitHub Copilot (VS Code), Antigravity and
 Claude Desktop. In real Claude Code it answered all 15 golden questions correctly and refused all 8 red-team
@@ -22,7 +23,7 @@ All commands run from the repo root with the project interpreter
 | Run the tests (98) | `python -X utf8 -m unittest discover -s local_mcp/tests -t . -v` |
 | Start the server by hand (it waits for a client on stdin) | `python -X utf8 local_mcp/server.py` |
 | Render every client config for this machine (into git-ignored `configs/rendered/`) | `python -X utf8 local_mcp/configs/render.py` |
-| Smoke-test every config: launch as the client would, call all 12 tools | `python -X utf8 local_mcp/smoke.py` (`-v` per call, `--quick`, `--config <installed file>`) |
+| Smoke-test every config: launch as the client would, call all 15 tools | `python -X utf8 local_mcp/smoke.py` (`-v` per call, `--quick`, `--config <installed file>`) |
 | Evaluate in real Claude Code: 15 golden questions + 8 red-team prompts, graded, summary in `eval/RESULTS.md` (uses your Claude login; about 7 cents per item) | `python -X utf8 local_mcp/eval/run_claude.py` (`--only G03 R03`, `--model sonnet`, `--dry-run`) |
 | Run the extended set: 90 questions in 7 categories ([eval/QUESTIONS.md](eval/QUESTIONS.md)), summary in `eval/RESULTS_EXTENDED.md` (about $11) | `python -X utf8 local_mcp/eval/run_claude.py --set extended` |
 | Regenerate `eval/QUESTIONS.md` after editing `eval/extended.json` | `python -X utf8 local_mcp/eval/questions_md.py` |
@@ -61,18 +62,20 @@ Try asking the client: *"Give me the study overview"*, *"Is the hypertension res
 | `server.py` | Entry point: network guard, registry, sandbox, tool registration, stdio |
 | `manifest.json` / `build_manifest.py` | Every readable file with tier, kind, DuckDB relation and SHA-256 (CRLF-normalised for text); raw MIMIC refused |
 | `export_assets.py` → `assets/` | `variables.csv` (193-variable dictionary), `profile_model.json` (with-MI model + 200 bootstrap draws, training split), `figures/*.png` |
+| `roadmap/phase10_counterfactual_ecg/cf6_01_export.py` → `assets/` | `cf_track_a.json` (Track A model A2, calibration, validation), `cf_clinical.json` (Layer 1 do() models + 200 sandwich draws), `figures/cf_pair_validation.png` |
 | `registry.py` | Tiers, integrity, verified text cache, freshness of lazy Parquet views |
 | `db.py` | DuckDB sandbox: allowlist, no network/extensions, locked config, CSV snapshots, derived views, self-test |
 | `sql/` | Reviewed templates: `views__*` (macros and derived views) and one file per query |
 | `tools/common.py` | Envelope builder, server-authored assumptions/caveats, name matching, E-values |
 | `tools/robustness.py` | Robustness cards and verdict rules shared by all results tools |
-| `tools/orientation.py`, `results.py`, `computation.py`, `figures.py`, `provenance.py`, `status.py` | The 12 tools |
+| `tools/orientation.py`, `results.py`, `computation.py`, `counterfactual.py`, `figures.py`, `provenance.py`, `status.py` | The 15 tools |
+| `tools/cf_math.py` | Portable Track A and Layer 1 do() arithmetic for the Phase 10 tools (parity-tested against the fitted models) |
 | `tools/ecg_explainer.py` | Python port of the Phase 9 browser explainer (parity-tested through Node) |
 | `egress.py` | Egress guard: blocks identifiers, MIMIC shifted dates, denylisted keys, long lists and payloads > 32 KB |
 | `guards.py`, `audit.py`, `envelope.py`, `runtime.py` | Network guard, hash-chained audit log, response envelope, audited wrapper (applies the egress guard) |
 | `configs/templates/`, `configs/render.py` | Client config templates (placeholders only) and the renderer/installer |
-| `smoke.py` | Launches the server from each client config (config env over a minimal environment, neutral cwd) and calls all 12 tools |
-| `eval/golden.json`, `eval/redteam.json` | 15 golden questions (expected tools, values checked against the live server) and 8 red-team prompts |
+| `smoke.py` | Launches the server from each client config (config env over a minimal environment, neutral cwd) and calls all 15 tools |
+| `eval/golden.json`, `eval/redteam.json` | 18 golden questions (expected tools, values checked against the live server) and 8 red-team prompts |
 | `eval/extended.json` → `eval/QUESTIONS.md` | 90 end-user questions in 7 categories (factual, analytical, diagnostic, predictive, interventional, counterfactual, edge cases), with rubrics and checks; the markdown is generated by `eval/questions_md.py` |
 | `eval/grading.py`, `eval/run_claude.py`, `eval/RESULTS.md` | Grader (tools called, values and required phrases in the answer, leaks), headless Claude Code runner, latest results |
 | `tests/` | Sandbox, registry, guard, audit, results-vs-source-CSV checks, latency, stdio end-to-end, client configs |

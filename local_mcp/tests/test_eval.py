@@ -76,9 +76,9 @@ class Golden(unittest.TestCase):
     def tearDownClass(cls):
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
-    def test_fifteen_questions_cover_all_twelve_tools(self):
+    def test_golden_questions_cover_every_tool(self):
         ids = [q["id"] for q in self.questions]
-        self.assertEqual(ids, [f"G{i:02d}" for i in range(1, 16)])
+        self.assertEqual(ids, [f"G{i:02d}" for i in range(1, 19)])
         expected = {n for q in self.questions for e in q["expect_tools"] for n in grading._tool_names(e["tool"])}
         canonical = {c["tool"] for q in self.questions for c in q["calls"]}
         self.assertEqual(canonical, set(EXPECTED_TOOLS))
@@ -87,7 +87,7 @@ class Golden(unittest.TestCase):
             self.assertTrue(q["question"].strip(), q["id"])
             self.assertTrue(all(c["checks"] for c in q["calls"]), q["id"])
         answered = [q["id"] for q in self.questions if any(grading.answer_forms(k) for c in q["calls"] for k in c["checks"])]
-        self.assertEqual(len(answered), 14, "every question except the figure needs a value in the answer")
+        self.assertEqual(len(answered), 17, "every question except the figure needs a value in the answer")
 
     def test_expected_values_match_the_live_server(self):
         for q in self.questions:

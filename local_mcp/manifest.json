@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "built_at": "2026-11-23T06:31:30Z",
- "version": "4301cda47b0c",
+ "built_at": "2026-11-27T03:26:02Z",
+ "version": "a0d71745fe63",
  "artifacts": [
   {
    "path": "data/roadmap/phase3/layer1.parquet",
@@ -301,6 +301,33 @@
    "mtime_ns": 1795413713764880700
   },
   {
+   "path": "roadmap/phase10_counterfactual_ecg/CF3_PAIR_VALIDATION.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "cf_pair_validation",
+   "sha256": "9b1f8d588af59f8fb0ce4f74937626c53e8e5302947ff35af29064bbccab7794",
+   "size": 40999,
+   "mtime_ns": 1795719964416797100
+  },
+  {
+   "path": "roadmap/phase10_counterfactual_ecg/CF3_SUBGROUPS.csv",
+   "tier": "T2",
+   "kind": "csv",
+   "view": "cf_subgroups",
+   "sha256": "829c3c37c969296ff4ca96c5bf05e8d9bb16862bd1963089a175eade704657e2",
+   "size": 3004,
+   "mtime_ns": 1795719965711850500
+  },
+  {
+   "path": "roadmap/phase10_counterfactual_ecg/cf3_01_track_a.json",
+   "tier": "T2",
+   "kind": "json",
+   "view": null,
+   "sha256": "b9406dd7f0e40efb6c2026f5859a77d2fe564aeb2a9d0040cb1168fd5793914e",
+   "size": 13023,
+   "mtime_ns": 1795719966743277200
+  },
+  {
    "path": "roadmap/phase9_demo/demo_params.json",
    "tier": "T3",
    "kind": "json",
@@ -362,6 +389,51 @@
    "sha256": "ff9f896c2239b8dfd09b639e2e24b9cfc9041fa4ddf1eff3b8d24af35180b01c",
    "size": 44148,
    "mtime_ns": 1795415121886379400
+  },
+  {
+   "path": "local_mcp/assets/cf_track_a.json",
+   "tier": "T3",
+   "kind": "json",
+   "view": null,
+   "sha256": "fa3ebec9b8e3b3f982386c18099a8f10ebaed15fdc7469cba4d729940b150893",
+   "size": 56057,
+   "mtime_ns": 1795749793542771900
+  },
+  {
+   "path": "local_mcp/assets/cf_clinical.json",
+   "tier": "T3",
+   "kind": "json",
+   "view": null,
+   "sha256": "f6370d9374cc9d34ffb8dc76cfe8b36b8ba7b734c135944b0c574968c6f7cfb2",
+   "size": 333655,
+   "mtime_ns": 1795749796160666500
+  },
+  {
+   "path": "local_mcp/assets/figures/cf_pair_validation.png",
+   "tier": "T3",
+   "kind": "png",
+   "view": null,
+   "sha256": "9ec6925dc445f587081958d0be4f3f6c72d280fea8885d8170e30af01918be01",
+   "size": 37841,
+   "mtime_ns": 1795749960966104200
+  },
+  {
+   "path": "local_mcp/sql/cf__by_measure.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "1802f5749fa4a88fdb95f235005ea7cb4bcd253321910f7545e5c141a850edf0",
+   "size": 265,
+   "mtime_ns": 1795749856180210100
+  },
+  {
+   "path": "local_mcp/sql/cf__subgroups.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "cb960fb8d821574d855708a019ccd37c48bd4db15f4338f3332b9cb638483e53",
+   "size": 180,
+   "mtime_ns": 1795749856200209400
   },
   {
    "path": "local_mcp/sql/claims__all.sql",
@@ -470,6 +542,15 @@
    "sha256": "ae2fcfee11fa1e78c499d1fa442f9412136766b1c4c8b3060437e192b17c4af0",
    "size": 138,
    "mtime_ns": 1795413613405195900
+  },
+  {
+   "path": "local_mcp/sql/figure__cf_pair_validation.sql",
+   "tier": "code",
+   "kind": "sql",
+   "view": null,
+   "sha256": "fe4c04b81ffe5cd4906d0389e78638acd4cec98fb8a5de6d4f0cf12dcfacd3de",
+   "size": 375,
+   "mtime_ns": 1795749856218210000
   },
   {
    "path": "local_mcp/sql/figure__cohort_flow.sql",

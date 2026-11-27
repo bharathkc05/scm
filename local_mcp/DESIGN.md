@@ -204,7 +204,7 @@ PNGs.
 
 ## 4. Toolset
 
-Twelve tools in four groups. All are annotated `readOnlyHint: true`, `idempotentHint: true` and
+Fifteen tools in five groups (tools 13–15 added in Phase 10, CF6). All are annotated `readOnlyHint: true`, `idempotentHint: true` and
 `openWorldHint: false` (they never touch the outside world). Names are snake_case ASCII ≤ 64 characters,
 which every client accepts.
 
@@ -222,6 +222,9 @@ which every client accepts.
 | 10 | `render_figure` | Presentation | T3 | file | Study figures as PNG plus their data table |
 | 11 | `trace_claim` | Trust | T2 | DuckDB | Any manuscript claim → evidence files, hashes, assumptions |
 | 12 | `server_status` | Trust | all | DuckDB + registry | Integrity, tiers present, sandbox state, versions |
+| 13 | `counterfactual_ecg` | Individual | T3 | arithmetic | Track A (CF3, model A2): the 16 robust measures of one user-supplied or synthetic ECG with MI removed or added, 90% interval and the error on real held-out pairs |
+| 14 | `clinical_what_if` | Individual | T3 | arithmetic | Profile-specific risk ratio under do(diabetes / hypertension / CKD) and the probability of necessity; never an absolute probability of MI |
+| 15 | `counterfactual_validation` | Individual | T2 | DuckDB | Pair-validation accuracy of the individual counterfactuals (by measure, MI type, time gap) |
 
 ### 4.1 Shared conventions
 
@@ -556,7 +559,7 @@ local_mcp/
   assets/             generated PNGs, draws, dictionary (aggregate only)
   tests/              unittest suites + stdio smoke test + golden demo questions
   configs/            client config templates (templates/), render.py (render / --print / --install)
-  smoke.py            launch the server from each client config and call all 12 tools over stdio
+  smoke.py            launch the server from each client config and call all 15 tools over stdio
   eval/               M6: golden.json (15 questions), redteam.json (8 prompts), grading.py, run_claude.py,
                       RESULTS.md (latest real-client run); extended.json (90 questions, 7 categories)
                       -> QUESTIONS.md via questions_md.py
@@ -576,6 +579,7 @@ It reuses `roadmap/config.py` (paths), `roadmap/definitions.py` (code lists, lea
 | M4 ✅ (2026-11-23, 66 tests) | Guards and audit | Planted identifiers, shifted dates and oversized payloads are blocked; an outbound socket attempt raises; the audit chain verifies and breaks if a line is edited |
 | M5 ✅ (2026-11-23, 80 tests) | Multi-client | The same server works from the four configs in Section 6; a smoke script calls all 12 tools over stdio |
 | M6 ✅ (2026-11-23, 93 tests; Claude Code 23/23) | Demo and evaluation | 15 golden questions with expected tools and values pass in Claude Code; red-team prompts (ask for patient rows, IDs, probabilities) are refused by design |
+| CF6 ✅ (2026-11-27, 109 tests) | Phase 10 individual reasoning | Tools 13–15; portable formulas match the fitted models to 1e-9; refusals for unknown fields, artefact ST and identifiers; smoke test passes 15 tools from all five configs; 3 new golden questions (G16–G18). Track B (waveforms) is not served: CF5 was skipped, so it stays a local research artifact |
 
 Test locally with the Python SDK client rather than `npx @modelcontextprotocol/inspector`, which
 downloads packages at run time.
@@ -670,7 +674,7 @@ machine-specific paths.
   `tests/test_configs.py` runs the same check in the suite.
 - **Claude Code template.** It adds `"alwaysLoad": true`. Claude Code otherwise defers MCP tools behind its
   tool-search tool and, in `-p` mode, starts the first turn before the server has connected. With the key set,
-  the 12 tools are always in the prompt and headless runs wait for the server. Other clients do not get the key.
+  the 15 tools are always in the prompt and headless runs wait for the server. Other clients do not get the key.
 - **Checked with a real client.** `claude mcp get` (Claude Code 2.1) parses the rendered `.mcp.json` as a
   stdio project server with the intended command, args and env. Claude Code connects project servers only after
   the user approves them in an interactive session. Cursor, Copilot and Antigravity have no headless mode, so

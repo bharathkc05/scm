@@ -6,7 +6,7 @@
       "question": "Is the local study server healthy? How many artifacts did it verify, and is raw MIMIC data exposed to it?",
       "expect_tools": [{"tool": "server_status"}],
       "calls": [{"tool": "server_status", "args": {}, "checks": [
-        {"path": "result.integrity.verified", "value": 69, "answer": true},
+        {"path": "result.integrity.verified", "value": 78, "answer": true},
         {"path": "result.raw_mimic_registered", "value": false},
         {"path": "result.network_guard.active", "value": true}
       ]}]
@@ -150,6 +150,36 @@
       "calls": [{"tool": "describe_variable", "args": {"name": "ST_lateral_mean"}, "checks": [
         {"path": "result.variable.label", "value": "Lateral ST level (mean of I, aVL, V5, V6)", "answer": ["aVL"]},
         {"path": "result.variable.units", "value": "mV", "answer": ["mV", "millivolt"]}
+      ]}]
+    },
+    {
+      "id": "G16",
+      "question": "Take a synthetic ECG for a 65-year-old man with hypertension during an NSTEMI. What would his lateral ST level be without the MI, and how accurate are such counterfactuals?",
+      "expect_tools": [{"tool": "counterfactual_ecg", "args": {"direction": "remove_mi", "mi_type": "nstemi"}}],
+      "calls": [{"tool": "counterfactual_ecg", "args": {"patient": {"age": 65, "sex": "male", "hypertension": true}, "direction": "remove_mi", "mi_type": "nstemi", "example_id": "synthetic_expected"}, "checks": [
+        {"path": "result.rows[measure=ST_lateral_mean].counterfactual", "value": 0.0052, "answer": true, "answer_decimals": 3},
+        {"path": "result.validation_st_t.model_error_sd", "value": 0.6815, "answer": true, "answer_decimals": 2},
+        {"path": "result.synthetic", "value": true}
+      ]}]
+    },
+    {
+      "id": "G17",
+      "question": "For a 70-year-old woman with diabetes and hypertension who had an MI, how much does diabetes raise her risk, and how likely is it that diabetes was necessary for her MI?",
+      "expect_tools": [{"tool": "clinical_what_if", "args": {"exposure": "diabetes", "had_mi": true}}],
+      "calls": [{"tool": "clinical_what_if", "args": {"patient": {"age": 70, "sex": "female", "diabetes": true, "hypertension": true}, "exposure": "diabetes", "had_mi": true}, "checks": [
+        {"path": "result.estimates[0].risk_ratio", "value": 1.9568, "answer": true, "answer_decimals": 2},
+        {"path": "result.estimates[0].probability_of_necessity", "value": 0.489, "answer": true, "answer_decimals": 2},
+        {"path": "result.estimates[1].risk_ratio", "value": 1.8378, "answer": true, "answer_decimals": 2}
+      ]}]
+    },
+    {
+      "id": "G18",
+      "question": "How accurate are the study's individual ECG counterfactuals compared with simply using the population average?",
+      "expect_tools": [{"tool": "counterfactual_validation"}],
+      "calls": [{"tool": "counterfactual_validation", "args": {}, "checks": [
+        {"path": "result.composite_st_t.add.mae_sd.A2_shrunk", "value": 0.9373, "answer": true, "answer_decimals": 2},
+        {"path": "result.composite_st_t.remove.mae_sd.A2_shrunk", "value": 0.6815, "answer": true, "answer_decimals": 2},
+        {"path": "result.composite_st_t.remove.mae_sd.population_mean", "value": 0.7254, "answer": true, "answer_decimals": 2}
       ]}]
     }
   ]
