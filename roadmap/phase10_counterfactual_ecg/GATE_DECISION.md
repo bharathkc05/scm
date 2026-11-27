@@ -342,3 +342,20 @@ way as the ATT.
    (+0.011, CI −0.004 to +0.024). The criterion as first written (z alone, AUROC ≤ 0.55) is reported as failed
    (0.591). The restatement was made after seeing the results.
 2. **Model for CF5:** `cvae_b1.0_l10`.
+
+---
+
+# Phase 10: patient explorer (replaces CF5, decided 2026-11-27)
+
+The user does not need waveform reconstruction validated as a product, so **CF5 is skipped**. Track B stays a local
+research artifact. In its place, [patient_explorer.py](patient_explorer.py) writes a **local-only** HTML report for a
+random or chosen real patient:
+- the timeline of ECGs and MI admissions;
+- Track A (A2) counterfactual measures with 90% intervals;
+- Track B median-beat overlays (observed beat plus the decoder's change);
+- for pair patients, the comparison with the patient's real other ECG;
+- clinical do() risks and the probability of necessity.
+
+Random selection draws from held-out patients. Reports go to the git-ignored `data/roadmap/phase10/explorer/` and
+must never pass through the MCP server or a cloud service. Tests: [test_patient_explorer.py](test_patient_explorer.py)
+(8 tests). They include an exact match with the CF3 validation numbers, and they never print patient values.

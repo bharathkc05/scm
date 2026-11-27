@@ -27,9 +27,10 @@ N_LEADS, N_SAMPLES, QRS_ON = 12, 400, 100
 
 
 # ----------------------------------------------------------------------------- data
-def build_rows() -> pd.DataFrame:
-    """One row per QC-passing MIMIC median beat in the Phase 10 train / validation / test splits (pair patients are
-    in pair_test / pair_val and therefore excluded), with its condition."""
+def build_rows(splits: tuple | None = ("train", "validation", "test")) -> pd.DataFrame:
+    """One row per QC-passing MIMIC median beat in the given Phase 10 splits (default: train / validation / test, so
+    pair patients, who are in pair_test / pair_val, are excluded), with its condition. splits=None keeps every
+    patient (the patient explorer); patients without a split get split 'none'."""
     from roadmap.phase10_counterfactual_ecg.cf3_01_track_a import episode_covs
     bi = pd.read_parquet(OUT / "beats_index.parquet")
     bi = bi[(bi.dataset == "mimic") & bi.qc_pass]
@@ -37,8 +38,8 @@ def build_rows() -> pd.DataFrame:
     ep = pd.read_parquet(OUT / "episodes.parquet")
     split = pd.read_parquet(OUT / "cf_splits.parquet").set_index("subject_id").cf_split.astype(object)
     d = bi[["row", "record_id", "hr", "j_offset_ms"]].merge(idx, left_on="record_id", right_on="study_id")
-    d["split"] = d.subject_id.map(split)
-    d = d[d.split.isin(["train", "validation", "test"])].copy()
+    d["split"] = d.subject_id.map(split).fillna("none")
+    d = (d[d.split.isin(splits)] if splits is not None else d).copy()
 
     # MI state: during-MI ECGs take the type of their episode; every other ECG is "none"
     e = episode_covs(ep).set_index("hadm_id")
@@ -60,7 +61,9 @@ def build_rows() -> pd.DataFrame:
         float).fillna(0)
     d["age_z"] = (d.age - 65.0) / 15.0
     d["hr_z"] = (d.hr - 75.0) / 20.0
-    keep = ["row", "record_id", "subject_id", "split", "role", "mi_state", "age", "hr", "j_offset_ms"] + COVS
+    d["prior_mi"] = d.prior_mi.fillna(0).astype(float)
+    keep = ["row", "record_id", "subject_id", "split", "role", "mi_state", "age", "hr", "j_offset_ms", "ecg_time",
+            "during_hadm_id", "prior_mi"] + COVS
     return d[keep].dropna(subset=COVS).sort_values("row").reset_index(drop=True)
 
 
