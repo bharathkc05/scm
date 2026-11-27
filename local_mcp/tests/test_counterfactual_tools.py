@@ -77,7 +77,7 @@ class Tools(unittest.TestCase):
 
     def test_refusals(self):
         cases = [
-            (features(3, subject_id=10000032), "Unknown ECG feature"),
+            (features(3, subject_id=12345678), "Unknown ECG feature"),
             ({k: v for k, v in features(3).items() if k != "ST_Elev_V4"}, "Missing ECG feature"),
             (features(3, ST_Elev_V2=12.0), "ECG input rejected"),
             (features(3, ST_Elev_V2=float("nan")), "ECG input rejected"),
