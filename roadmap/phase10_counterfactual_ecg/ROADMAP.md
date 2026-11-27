@@ -5,7 +5,7 @@
 counterfactual against patients who were really recorded both ways. Then expose the results through the
 `scm-causal-mi` MCP server without any real patient's ECG leaving the machine.
 
-**Status (2026-11-26):** plan only. The data audit for it is done; the numbers below come from the raw files.
+**Status (2026-11-27): complete.** CF0–CF4 and CF6–CF7 are done. CF5 was skipped by decision, and the local patient explorer replaces it. Results are in [PHASE10_REPORT.md](PHASE10_REPORT.md), and every gate and deviation is in [GATE_DECISION.md](GATE_DECISION.md). The plan below is kept as written on 2026-11-26.
 
 ---
 

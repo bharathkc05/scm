@@ -21,6 +21,11 @@ ASSUMPTIONS = {
     "A4": "Whether an ECG was recorded is ignorable given MI and the measured covariates.",
     "A5": "No unmeasured common cause of each chronic condition and MI (smoking and lipids violate this; E-values bound it).",
     "A6": "The shared metabolic cause of diabetes and hypertension acts on MI only through them.",
+    "CF-A2": "The patient's own deviation from the expected ECG does not change with MI; the share that persisted "
+             "between real visits (rho, fitted on validation pairs) is carried into the counterfactual.",
+    "CF-A3": "The MI effect depends only on age, sex, comorbidities and MI type, not on unmeasured traits "
+             "(not identifiable; bounded by the pair-validation error).",
+    "CF-A4": "Another visit's ECG is an acceptable stand-in for the patient without MI.",
 }
 L1_ASSUMPTIONS = ("A1", "A5", "A6")
 L2_ASSUMPTIONS = ("A2", "A3", "A4")

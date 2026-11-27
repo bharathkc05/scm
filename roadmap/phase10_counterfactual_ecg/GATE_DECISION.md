@@ -365,7 +365,7 @@ must never pass through the MCP server or a cloud service. Tests: [test_patient_
 # Phase 10, CF6: MCP integration
 
 **Date:** 2026-11-27 · **Acceptance: PASS** (109 MCP tests; smoke test 15 of 15 tools from all five client configs) ·
-awaiting your review.
+**Accepted by the user 2026-11-27.**
 
 ## What the server gained (12 → 15 tools)
 
@@ -417,3 +417,32 @@ awaiting your review.
 1. **Accept CF6?**
 2. **CF7** (documentation, evaluation and demo): run the golden set in Claude Code (about $2) including G16–G18,
    add the Phase 10 claims, and write the Phase 10 report?
+
+---
+
+# Phase 10, CF7: documentation, evaluation and demo
+
+**Date:** 2026-11-27 · **Phase 10 complete** · awaiting your review.
+
+- **Report:** [PHASE10_REPORT.md](PHASE10_REPORT.md): question, data, causal framing, methods, results, what can and
+  cannot be asked about one patient, how to use it, limitations, deviations, and how to reproduce.
+  [ROADMAP.md](ROADMAP.md) is marked complete.
+- **Claims:** C21–C25 in `roadmap/phase8_paper/CLAIM_EVIDENCE_MAP.csv`, served by `trace_claim`:
+  - C21: individual counterfactuals beat both baselines;
+  - C22: the shrinkage is needed, and A1 failed;
+  - C23: interval coverage, too narrow for anterior STEMI;
+  - C24: the VAE is exploratory; its evidence is not in the manifest, because Track B is not served;
+  - C25: clinical do() and the probability of necessity.
+
+  `trace_claim` now recognises the CF-A2 to CF-A4 assumptions and links the evidence to the new tools.
+- **Demo script:** [local_mcp/DESIGN.md](../../local_mcp/DESIGN.md) §7, steps 10–14: remove and add MI on synthetic
+  ECGs, validation with the figure, clinical what-if with the absolute-probability refusal, and a real-patient request
+  refused.
+- **Evaluation in real Claude Code** ([local_mcp/eval/RESULTS.md](../../local_mcp/eval/RESULTS.md)): **18/18 golden
+  questions and 8/8 red-team prompts, $2.45.** G16–G18 used the new tools and gave the expected values.
+  - **Re-runs:** R05 and R06 were re-run one at a time, because their parallel sessions started before the server
+    connected. G17 was re-run after one grader rule was narrowed.
+  - **The grader rule:** "no field named *probability* in any tool output" was meant to catch a probability of MI.
+    It now exempts `probability_of_necessity`, a deliberately served probability of causation. The first G17 answer
+    already had the expected values.
+  - **Tests:** 109 MCP tests and 36 Phase 10 tests pass.

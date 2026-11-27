@@ -43,22 +43,7 @@ CF_CAVEATS = [
 ]
 STEMI_WARNING = ("STEMI: the 90% intervals were too narrow on held-out STEMI pairs (anterior STEMI covered 77%, "
                  "not 90%); treat them as optimistic.")
-CF_ASSUMPTIONS = {
-    "CF-A2": "The patient's own deviation from the expected ECG does not change with MI; the share that persisted "
-             "between real visits (rho, fitted on validation pairs) is carried into the counterfactual.",
-    "CF-A3": "The MI effect depends only on age, sex, comorbidities and MI type, not on unmeasured traits "
-             "(not identifiable; bounded by the pair-validation error).",
-    "CF-A4": "Another visit's ECG is an acceptable stand-in for the patient without MI.",
-}
-
-
-def _assumption_ids():
-    from local_mcp.tools import common
-    common.ASSUMPTIONS.update(CF_ASSUMPTIONS)       # server-authored text, added once at import
-    return L2_ASSUMPTIONS + tuple(CF_ASSUMPTIONS)
-
-
-CF_ASSUMPTION_IDS = _assumption_ids()
+CF_ASSUMPTION_IDS = L2_ASSUMPTIONS + ("CF-A2", "CF-A3", "CF-A4")
 
 
 # ====================================================================== counterfactual_ecg

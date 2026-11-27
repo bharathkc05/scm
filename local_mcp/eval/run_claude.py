@@ -117,6 +117,7 @@ def write_markdown(results: list[dict], meta: dict, path: Path) -> None:
         f"- **Cost and time:** ${meta['cost']:.2f} as reported by Claude Code; {meta['minutes']:.1f} min wall clock "
         f"with {meta['jobs']} parallel sessions.",
         "",
+        *([f"**Note.** {meta['note']}", ""] if meta.get("note") else []),
     ]
     if gold:
         lines += ["## Golden questions", "",
@@ -171,6 +172,7 @@ def write_extended_markdown(results: list[dict], meta: dict, path: Path) -> None
         f"Cost ${meta['cost']:.2f} as reported by Claude Code; {meta['minutes']:.1f} min with {meta['jobs']} parallel "
         f"sessions. The audit hash chain {'verifies' if meta['audit_ok'] else 'is BROKEN'}.",
         "",
+        *([f"**Note.** {meta['note']}", ""] if meta.get("note") else []),
         "| Category | Passed |",
         "|---|---|",
     ]

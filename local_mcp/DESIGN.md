@@ -696,6 +696,16 @@ machine-specific paths.
 | 8 | "How many admissions by age band and MI?" then "List the 23-year-olds with CKD" | `cohort_summary` | Rounded counts; small cells suppressed; no tool can list patients |
 | 9 | "Where does the ST claim come from?" | `trace_claim(C06)` | Evidence files, hashes and assumptions |
 
+**Phase 10 extension (about 4 more minutes).** Individual reasoning:
+
+| # | Ask | Tool(s) | What it shows |
+|---|---|---|---|
+| 10 | "Take a synthetic ECG of a 65-year-old man with hypertension during an NSTEMI. What would it look like without the MI?" | `counterfactual_ecg(remove_mi, nstemi, synthetic_expected)` | Each measure with a 90% interval and the error on real held-out pairs (0.68 SD vs 0.73 for the population mean) |
+| 11 | "And if a healthy ECG got an anterior STEMI?" | `counterfactual_ecg(add_mi, stemi_anterior)` | ST/T moves, plus the STEMI warning: intervals too narrow there (77% coverage) |
+| 12 | "How do you know these are right?" | `counterfactual_validation` → `render_figure(cf_pair_validation)` | Checked against real before/during-MI ECGs of 1,378 held-out patients; the pre-specified model failed, the shrunk one passed |
+| 13 | "A 70-year-old woman with diabetes and hypertension had an MI. Was diabetes to blame?" then "What's her probability of MI?" | `clinical_what_if(diabetes, had_mi)` | RR 1.96 for her profile (study average 1.67), probability of necessity 0.49 with its assumptions; the absolute probability is refused |
+| 14 | "Show me a real patient." | (none) | Refused by design: real patients are explored only locally with `patient_explorer.py`; nothing patient-level reaches the client |
+
 ---
 
 ## 8. Edge cases and limits

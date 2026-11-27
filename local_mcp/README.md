@@ -10,8 +10,8 @@ Local stdio MCP server over the causal-MI study results. Design and roadmap: [DE
 - `counterfactual_ecg`, `clinical_what_if`, `counterfactual_validation` (Phase 10: individual reasoning)
 
 The same server runs from config templates for Claude Code, Cursor, GitHub Copilot (VS Code), Antigravity and
-Claude Desktop. In real Claude Code it answered all 15 golden questions correctly and refused all 8 red-team
-prompts ([eval/RESULTS.md](eval/RESULTS.md)).
+Claude Desktop. In real Claude Code it answered all 18 golden questions correctly (including the three Phase 10 tools) and refused
+all 8 red-team prompts ([eval/RESULTS.md](eval/RESULTS.md), run 2026-11-27).
 
 All commands run from the repo root with the project interpreter
 (`C:/Users/Acer/Desktop/Capstone/Capstone/cuda_env/Scripts/python.exe`, shown as `python`).
@@ -24,7 +24,7 @@ All commands run from the repo root with the project interpreter
 | Start the server by hand (it waits for a client on stdin) | `python -X utf8 local_mcp/server.py` |
 | Render every client config for this machine (into git-ignored `configs/rendered/`) | `python -X utf8 local_mcp/configs/render.py` |
 | Smoke-test every config: launch as the client would, call all 15 tools | `python -X utf8 local_mcp/smoke.py` (`-v` per call, `--quick`, `--config <installed file>`) |
-| Evaluate in real Claude Code: 15 golden questions + 8 red-team prompts, graded, summary in `eval/RESULTS.md` (uses your Claude login; about 7 cents per item) | `python -X utf8 local_mcp/eval/run_claude.py` (`--only G03 R03`, `--model sonnet`, `--dry-run`) |
+| Evaluate in real Claude Code: 18 golden questions + 8 red-team prompts, graded, summary in `eval/RESULTS.md` (uses your Claude login; about 7 cents per item) | `python -X utf8 local_mcp/eval/run_claude.py` (`--only G03 R03`, `--model sonnet`, `--dry-run`) |
 | Run the extended set: 90 questions in 7 categories ([eval/QUESTIONS.md](eval/QUESTIONS.md)), summary in `eval/RESULTS_EXTENDED.md` (about $11) | `python -X utf8 local_mcp/eval/run_claude.py --set extended` |
 | Regenerate `eval/QUESTIONS.md` after editing `eval/extended.json` | `python -X utf8 local_mcp/eval/questions_md.py` |
 | Register with Claude Code (local scope, not committed) | `claude mcp add scm-causal-mi -- "<python>" -X utf8 "<repo>/local_mcp/server.py"` |

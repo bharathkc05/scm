@@ -23,9 +23,13 @@ VIEW_TOOLS = {
     "subgroups_layer1": "get_subgroup_effects", "subgroups_layer2": "get_subgroup_effects",
     "subgroup_interactions_layer2": "get_subgroup_effects", "cohort_flow": "study_overview",
     "independence_tests": "study_overview", "adjustment_table": "get_risk_factor_effect",
+    "cf_pair_validation": "counterfactual_validation", "cf_subgroups": "counterfactual_validation",
 }
 PATH_TOOLS = {"roadmap/phase7_stress_test/p7_03_bmi.json": "robustness_card",
-              "roadmap/phase7_stress_test/p7_05_subgroups.json": "get_subgroup_effects"}
+              "roadmap/phase7_stress_test/p7_05_subgroups.json": "get_subgroup_effects",
+              "roadmap/phase10_counterfactual_ecg/cf3_01_track_a.json": "counterfactual_validation",
+              "local_mcp/assets/cf_track_a.json": "counterfactual_ecg",
+              "local_mcp/assets/cf_clinical.json": "clinical_what_if"}
 
 
 class Evidence(BaseModel):
@@ -69,7 +73,7 @@ def _evidence(ctx: ServerContext, cited: str) -> list[Evidence]:
 
 
 def _trace(ctx: ServerContext, row: dict) -> ClaimTrace:
-    ids = list(dict.fromkeys(re.findall(r"\bA[1-6]\b", row["assumptions"] or "")))
+    ids = list(dict.fromkeys(re.findall(r"(?<![\w-])(?:CF-A[2-4]|A[1-6])\b", row["assumptions"] or "")))
     ev = _evidence(ctx, row["evidence_files"] or "")
     tools = []
     for e in ev:

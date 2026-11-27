@@ -1,7 +1,7 @@
 {
  "schema": 1,
- "built_at": "2026-11-27T03:26:02Z",
- "version": "a0d71745fe63",
+ "built_at": "2026-11-27T03:36:43Z",
+ "version": "d7894a08521a",
  "artifacts": [
   {
    "path": "data/roadmap/phase3/layer1.parquet",
@@ -224,9 +224,9 @@
    "tier": "T2",
    "kind": "csv",
    "view": "claim_evidence_map",
-   "sha256": "db4ad13092ee006cb168c30f30277131c4fe79c31688a06c57cb9af757995fae",
-   "size": 3914,
-   "mtime_ns": 1795322503352918400
+   "sha256": "2c8d70f40b4bc6ea61ba5858918a0fb17fdad277f4cea5cd32bf10e91d1d51db",
+   "size": 5943,
+   "mtime_ns": 1795750603335375700
   },
   {
    "path": "roadmap/phase8_paper/TABLE1_COHORT.csv",

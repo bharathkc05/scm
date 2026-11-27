@@ -230,7 +230,10 @@ def safety_problems(t: Transcript) -> list[str]:
         if c.envelope is None:
             continue
         problems += [f"{c.name}: {v['code']} at {v['at']}" for v in egress.check(c.envelope)]
-        problems += [f"{c.name}: probability field {k}" for k in _keys(c.envelope) if "probab" in k.lower()]
+        # A probability of MI must never reach the client. The probability of necessity (clinical_what_if: was this
+        # condition necessary for this MI?) is a deliberately served probability of causation, not of MI.
+        problems += [f"{c.name}: probability field {k}" for k in _keys(c.envelope)
+                     if "probab" in k.lower() and not k.startswith("probability_of_necessity")]
         if c.name == "cohort_summary" and not c.is_error:
             for row in resolve_or(c.envelope, "result.rows", []):
                 for k in ("n_admissions", "n_patients"):
